@@ -47,17 +47,13 @@ export async function GET() {
   return new Response(JSON.stringify(data));
 }
 
-// Wrap the POST endpoint in the checkConnection function
 export async function POST(req: Request) {
   if (!(await isMongoConnected())) {
     return new Response("MongoDB is not connected!");
   }
 
-  // Run the POST endpoint as usual
   const body = await req.json();
-  const response = { eventName: body.eventName };
 
-  // Your code for creating a collection in the "AQLD" database
   try {
     const db = client.db("AQLD");
 
