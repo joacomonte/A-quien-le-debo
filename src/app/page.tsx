@@ -6,23 +6,17 @@ import Link from "next/link";
 import { Fragment, SetStateAction, useState } from "react";
 
 export default function Home() {
-  const [eventName, setEventName] = useState<any>("");
+  const [inputEventName, setInputEventName] = useState<any>("");
   const [response, setResponse] = useState<string>("");
   const [eventId, setEventId] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   let [isOpen, setIsOpen] = useState(false);
 
-  const handleInputChange = (event: {
-    target: { value: SetStateAction<string> };
-  }) => {
-    setEventName(event.target.value);
-  };
-
   const handleSubmit = async (event: { preventDefault: () => void }) => {
     event.preventDefault();
 
-    if (!eventName) {
+    if (!inputEventName) {
       alert("esta vacio tonto");
       return;
     }
@@ -34,7 +28,7 @@ export default function Home() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ eventName: eventName }),
+        body: JSON.stringify({ eventName: inputEventName }),
       });
 
       const responseBody = await response.json();
@@ -43,6 +37,7 @@ export default function Home() {
         alert(responseBody.msg);
         return;
       }
+      setIsOpen(true);
 
       setResponse(responseBody.eventName);
 
@@ -51,7 +46,6 @@ export default function Home() {
       console.error("Error:", error);
     } finally {
       setIsLoading(false);
-      setIsOpen(true);
     }
   };
 
@@ -80,11 +74,21 @@ export default function Home() {
               type="text"
               id="inputField"
               name="event name"
-              value={eventName}
+              value={inputEventName}
               maxLength={20}
-              onChange={handleInputChange}
+              minLength={3}
+              onChange={(event) => setInputEventName(event.target.value)}
               required
-              aria-describedby="helper-text-explanation"
+              onInvalid={(e) => {
+                const target = e.target as HTMLInputElement;
+                if (target.value.length === 0) {
+                  target.setCustomValidity("Must provide a name");
+                } else if (target.value.length > 0 && target.value.length < 3) {
+                  target.setCustomValidity(`Name too short`);
+                } else {
+                  target.setCustomValidity("");
+                }
+              }}
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
             ></input>
             <p
@@ -160,7 +164,7 @@ export default function Home() {
                     as="h3"
                     className="text-xl font-medium leading-6 text-gray-900"
                   >
-                    Save the link for future access
+                    Event created! Please save the link.
                   </Dialog.Title>
                   <div className="mt-2">
                     {/* <p className="text-sm text-gray-500">
@@ -169,21 +173,15 @@ export default function Home() {
                     </p> */}
                   </div>
                   <Dialog.Description className="py-4 pb-4 text-sm text-gray-500">
-                    <>
-                      <p>Well done! Your event has been created.</p>
-                      <br></br>
-                      <p>
-                        Make sure to keep the provided link for easy access to
-                        the event in the future.
-                      </p>
-                    </>
+                    Make sure to keep the provided link for easy access to the
+                    event in the future.
                   </Dialog.Description>
 
                   <div className="flex items-center justify-between w-full mt-4">
                     <button
                       onClick={copyToClipboard}
                       type="button"
-                      className="inline-flex justify-center px-4 py-2 text-sm font-medium text-green-900 bg-green-100 border border-transparent rounded-md hover:bg-green-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-green-500 focus-visible:ring-offset-2"
+                      className="inline-flex justify-center px-4 py-2 text-sm font-medium text-green-900 bg-green-100 border border-transparent rounded-md hover:bg-green-200 focus:outline-none focus-visible:ring-2 "
                     >
                       Copy link
                     </button>
@@ -191,9 +189,9 @@ export default function Home() {
                     <Link href={`/event/${eventId}`}>
                       <button
                         type="button"
-                        className="py-2.5 px-5 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
+                        className="inline-flex justify-center px-4 py-2 text-sm font-medium bg-transparent border rounded-md border-grey-800 text-grey-900 hover:bg-gray-100 focus:outline-none focus-visible:ring-2"
                       >
-                        Go to dashboard
+                        Continue
                       </button>
                     </Link>
                   </div>

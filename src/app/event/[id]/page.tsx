@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 type Params = {
   params: {
@@ -11,31 +11,41 @@ type Params = {
 export default function EventIdPage({ params: { id } }: Params) {
   const [eventName, setEventName] = useState<any>("");
 
-  const handleSubmit = async () => {
-    const response = await fetch(`/api/event/${id}`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ eventId: id }),
-    });
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(`/api/event/${id}`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ eventId: id }),
+        });
 
-    const responseBody = await response.json();
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        const result = await response.json();
+        setEventName(result.name);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchData();
 
-    setEventName(responseBody.name);
-    console.log(responseBody);
-  };
+    return () => {
+      // Cleanup function to cancel any pending requests or perform other cleanup
+    };
+  }, []);
 
   return (
-    <div className="flex flex-col items-center justify-center w-100% h-screen gap-3">
-      <h4 className="">The event id is: {id}</h4>
-      <button
-        className="w-32 px-4 py-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700"
-        onClick={handleSubmit}
-      >
-        Get name
-      </button>
-      {eventName && <h4 className="">The event name is: {eventName}</h4>}
-    </div>
+    <>
+      <div className="flex justify-center">
+        {eventName && <h4 className="">The event name is: {eventName}</h4>}
+      </div>
+      <div className="flex flex-col items-center justify-center w-100% h-screen gap-3">
+        <h4 className="">Welcome!</h4>
+      </div>
+    </>
   );
 }
