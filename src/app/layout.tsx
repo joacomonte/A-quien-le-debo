@@ -14,7 +14,6 @@ export const viewport: Viewport = {
   initialScale: 1,
   maximumScale: 1,
   userScalable: false,
-  viewportFit: "contain",
 };
 
 export default function RootLayout({
@@ -25,7 +24,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${inter.className} flex flex-col items-center justify-center w-screen h-[100svh] pb-16`}
+        className={`${inter.className} flex flex-col items-center w-screen h-[100svh] `}
       >
         {children}
       </body>

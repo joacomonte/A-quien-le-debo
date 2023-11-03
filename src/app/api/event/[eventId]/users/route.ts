@@ -26,13 +26,9 @@ export async function POST(req: Request, params: any) {
   try {
     const events = await getEventsCollection();
 
-    const {
-      params: { eventId },
-    } = params;
+    const parsedId = { _id: new ObjectId(params.eventId) };
 
-    const query = { _id: new ObjectId(eventId) };
-
-    const event = await events.findOne(query);
+    const event = await events.findOne(parsedId);
 
     if (event) {
       const users = {
@@ -41,7 +37,7 @@ export async function POST(req: Request, params: any) {
 
       event.users = users;
 
-      const updateResult = await events.updateOne(query, { $set: event });
+      const updateResult = await events.updateOne(parsedId, { $set: event });
 
       console.log("Update Result:", updateResult);
 

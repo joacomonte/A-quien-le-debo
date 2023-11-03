@@ -24,13 +24,9 @@ export async function POST(req: Request, params: any) {
 
   const events = await getEventsCollection();
 
-  const {
-    params: { eventId },
-  } = params;
+  const parsedId = { _id: new ObjectId(params.eventId) };
 
-  const query = { _id: new ObjectId(eventId) };
-
-  const event = await events.findOne(query);
+  const event = await events.findOne(parsedId);
 
   console.log("this event", event);
 
