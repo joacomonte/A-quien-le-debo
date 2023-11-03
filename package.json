@@ -14,6 +14,7 @@
     "next": "14.0.1",
     "react": "^18",
     "react-dom": "^18",
+    "react-icons": "^4.11.0",
     "sonner": "^1.1.0"
   },
   "devDependencies": {

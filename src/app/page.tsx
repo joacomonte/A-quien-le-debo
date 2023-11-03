@@ -5,6 +5,8 @@ import { Toaster, toast } from "sonner";
 import Link from "next/link";
 import { Fragment, SetStateAction, useState } from "react";
 
+import { FcMindMap } from "react-icons/fc";
+
 export default function Home() {
   const [inputEventName, setInputEventName] = useState<any>("");
   const [response, setResponse] = useState<string>("");
@@ -56,47 +58,84 @@ export default function Home() {
   }
 
   return (
-    <main className="flex flex-col items-center justify-between min-h-screen p-24">
-      {!response && (
-        <div className="flex flex-col">
-          <h2 className="text-2xl ">New event</h2>
+    <div className="w-screen h-full max-w-[400px]">
+      <header className="flex items-center justify-start w-full h-12 gap-3 px-4 text-left bg-slate-100">
+        <FcMindMap size={30} />{" "}
+        <h2 className="font-semibold"> A quien le debo?</h2>
+      </header>
+      <main className="flex flex-col items-start justify-between w-full h-full px-6">
+        <h1 className="flex items-start self-start pt-8 text-3xl">New event</h1>
+        {!response && (
           <form
             onSubmit={handleSubmit}
-            className="flex flex-col items-start py-10 w-72"
+            className="flex flex-col justify-between w-full"
           >
-            <label
-              htmlFor="helper-text"
-              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-            >
-              Event Name
-            </label>
-            <input
-              type="text"
-              id="inputField"
-              name="event name"
-              value={inputEventName}
-              maxLength={20}
-              minLength={3}
-              onChange={(event) => setInputEventName(event.target.value)}
-              required
-              onInvalid={(e) => {
-                const target = e.target as HTMLInputElement;
-                if (target.value.length === 0) {
-                  target.setCustomValidity("Must provide a name");
-                } else if (target.value.length > 0 && target.value.length < 3) {
-                  target.setCustomValidity(`Name too short`);
-                } else {
-                  target.setCustomValidity("");
-                }
-              }}
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-            ></input>
-            <p
-              id="helper-text-explanation"
-              className="pb-4 mt-2 text-sm text-gray-500 dark:text-gray-400"
-            >
-              15 characters maximum .
-            </p>
+            <div className="flex flex-col w-full gap-4">
+              <div className="w-full">
+                <label
+                  htmlFor="helper-text"
+                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                >
+                  Event Name
+                </label>
+                <input
+                  type="text"
+                  id="inputField"
+                  name="event name"
+                  value={inputEventName}
+                  maxLength={20}
+                  minLength={3}
+                  onChange={(event) => setInputEventName(event.target.value)}
+                  required
+                  onInvalid={(e) => {
+                    const target = e.target as HTMLInputElement;
+                    if (target.value.length === 0) {
+                      target.setCustomValidity("Must provide a name");
+                    } else if (
+                      target.value.length > 0 &&
+                      target.value.length < 3
+                    ) {
+                      target.setCustomValidity(`Name too short`);
+                    } else {
+                      target.setCustomValidity("");
+                    }
+                  }}
+                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                ></input>
+                <label
+                  id="helper-text-explanation"
+                  className="text-xs text-gray-500 text dark:text-gray-400"
+                >
+                  15 characters maximum .
+                </label>
+              </div>
+              <div className="w-full">
+                <label
+                  htmlFor="helper-text"
+                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                >
+                  Your nickname
+                </label>
+                <input
+                  type="text"
+                  id="inputField"
+                  // name="event name"
+                  // value={inputEventName}
+                  maxLength={20}
+                  // onChange={(event) => setInputEventName(event.target.value)}
+                  required
+                  onInvalid={(e) => {
+                    const target = e.target as HTMLInputElement;
+                    if (target.value.length === 0) {
+                      target.setCustomValidity("Must provide a name");
+                    } else {
+                      target.setCustomValidity("");
+                    }
+                  }}
+                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                ></input>
+              </div>
+            </div>
             {!isLoading ? (
               <button
                 type="submit"
@@ -131,77 +170,77 @@ export default function Home() {
               </button>
             )}
           </form>
-        </div>
-      )}
+        )}
 
-      <Transition appear show={isOpen} as={Fragment}>
-        <Dialog as="div" className="relative z-10" onClose={() => {}}>
-          <Transition.Child
-            as={Fragment}
-            enter="ease-out duration-300"
-            enterFrom="opacity-0"
-            enterTo="opacity-100"
-            leave="ease-in duration-200"
-            leaveFrom="opacity-100"
-            leaveTo="opacity-0"
-          >
-            <div className="fixed inset-0 bg-black/25" />
-          </Transition.Child>
+        <Transition appear show={isOpen} as={Fragment}>
+          <Dialog as="div" className="relative z-10" onClose={() => {}}>
+            <Transition.Child
+              as={Fragment}
+              enter="ease-out duration-300"
+              enterFrom="opacity-0"
+              enterTo="opacity-100"
+              leave="ease-in duration-200"
+              leaveFrom="opacity-100"
+              leaveTo="opacity-0"
+            >
+              <div className="fixed inset-0 bg-black/25" />
+            </Transition.Child>
 
-          <div className="fixed inset-0 overflow-y-auto">
-            <div className="flex items-center justify-center min-h-full p-4 text-center">
-              <Transition.Child
-                as={Fragment}
-                enter="ease-out duration-300"
-                enterFrom="opacity-0 scale-95"
-                enterTo="opacity-100 scale-100"
-                leave="ease-in duration-200"
-                leaveFrom="opacity-100 scale-100"
-                leaveTo="opacity-0 scale-95"
-              >
-                <Dialog.Panel className="w-full max-w-md p-6 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-2xl">
-                  <Dialog.Title
-                    as="h3"
-                    className="text-xl font-medium leading-6 text-gray-900"
-                  >
-                    Event created! Please save the link.
-                  </Dialog.Title>
-                  <div className="mt-2">
-                    {/* <p className="text-sm text-gray-500">
+            <div className="fixed inset-0 overflow-y-auto">
+              <div className="flex items-center justify-center min-h-full p-4 text-center">
+                <Transition.Child
+                  as={Fragment}
+                  enter="ease-out duration-300"
+                  enterFrom="opacity-0 scale-95"
+                  enterTo="opacity-100 scale-100"
+                  leave="ease-in duration-200"
+                  leaveFrom="opacity-100 scale-100"
+                  leaveTo="opacity-0 scale-95"
+                >
+                  <Dialog.Panel className="w-full max-w-md p-6 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-2xl">
+                    <Dialog.Title
+                      as="h3"
+                      className="text-xl font-medium leading-6 text-gray-900"
+                    >
+                      Event created! Please save the link.
+                    </Dialog.Title>
+                    <div className="mt-2">
+                      {/* <p className="text-sm text-gray-500">
                       The ID of <b className="text-blue-600 ">{response}</b> is:{" "}
                       {eventId}
                     </p> */}
-                  </div>
-                  <Dialog.Description className="py-4 pb-4 text-sm text-gray-500">
-                    Make sure to keep the provided link for easy access to the
-                    event in the future.
-                  </Dialog.Description>
+                    </div>
+                    <Dialog.Description className="py-4 pb-4 text-sm text-gray-500">
+                      Make sure to keep the provided link for easy access to the
+                      event in the future.
+                    </Dialog.Description>
 
-                  <div className="flex items-center justify-between w-full mt-4">
-                    <button
-                      onClick={copyToClipboard}
-                      type="button"
-                      className="inline-flex justify-center px-4 py-2 text-sm font-medium text-green-900 bg-green-100 border border-transparent rounded-md hover:bg-green-200 focus:outline-none focus-visible:ring-2 "
-                    >
-                      Copy link
-                    </button>
-
-                    <Link href={`/event/${eventId}`}>
+                    <div className="flex items-center justify-between w-full mt-4">
                       <button
+                        onClick={copyToClipboard}
                         type="button"
-                        className="inline-flex justify-center px-4 py-2 text-sm font-medium bg-transparent border rounded-md border-grey-800 text-grey-900 hover:bg-gray-100 focus:outline-none focus-visible:ring-2"
+                        className="inline-flex justify-center px-4 py-2 text-sm font-medium text-green-900 bg-green-100 border border-transparent rounded-md hover:bg-green-200 focus:outline-none focus-visible:ring-2 "
                       >
-                        Continue
+                        Copy link
                       </button>
-                    </Link>
-                  </div>
-                </Dialog.Panel>
-              </Transition.Child>
+
+                      <Link href={`/event/${eventId}`}>
+                        <button
+                          type="button"
+                          className="inline-flex justify-center px-4 py-2 text-sm font-medium bg-transparent border rounded-md border-grey-800 text-grey-900 hover:bg-gray-100 focus:outline-none focus-visible:ring-2"
+                        >
+                          Continue
+                        </button>
+                      </Link>
+                    </div>
+                  </Dialog.Panel>
+                </Transition.Child>
+              </div>
             </div>
-          </div>
-        </Dialog>
-      </Transition>
-      <Toaster richColors />
-    </main>
+          </Dialog>
+        </Transition>
+        <Toaster richColors />
+      </main>
+    </div>
   );
 }

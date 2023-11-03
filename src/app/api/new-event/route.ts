@@ -3,7 +3,7 @@ const {
   isMongoConnected,
   getEventsCollection,
   run,
-} = require("../../lib/db");
+} = require("@/app/lib/db");
 
 run().catch((error: any) => console.error("Error occurred: ", error));
 
