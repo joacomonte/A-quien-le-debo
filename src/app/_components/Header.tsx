@@ -1,20 +1,30 @@
-export default async function Header({ id }: any) {
-  const response = await fetch(`/api/event/${id}`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ eventId: id }),
-  });
+import { FcMindMap } from "react-icons/fc";
+import Navbar from "@/app/_components/Navbar";
 
+type Params = {
+  params: {
+    eventId: string;
+  };
+};
+export default async function Header({ id }: any) {
+  const response = await fetch(
+    `http://localhost:3000/api/event/${id}`,
+
+    {
+      cache: "no-store",
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
   const result = await response.json();
-  const eventName = result.name;
+  console.log(result);
 
   return (
-    <div className="flex justify-center">
-      {eventName && <h4 className="">The event name is: {eventName}</h4>}
-    </div>
+    <header className="relative flex items-center max-w-[500px] justify-start w-full h-12 gap-3 px-4 text-left bg-slate-100">
+      <FcMindMap size={30} />{" "}
+      {result.name && <h2 className="font-semibold"> {result.name}</h2>}
+    </header>
   );
 }
-
-Header.refetchInterval = null;

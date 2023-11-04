@@ -17,18 +17,17 @@ export async function GET() {
 }
 
 export async function POST(req: Request, params: any) {
-  console.log("my params: ", params);
   if (!(await isMongoConnected())) {
     return new Response("MongoDB is not connected!");
   }
 
   const events = await getEventsCollection();
 
-  const parsedId = { _id: new ObjectId(params.eventId) };
+  const { eventId } = params.params;
+
+  const parsedId = { _id: new ObjectId(eventId) };
 
   const event = await events.findOne(parsedId);
-
-  console.log("this event", event);
 
   return new Response(JSON.stringify(event));
 }
