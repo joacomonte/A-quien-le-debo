@@ -9,6 +9,7 @@ import { FcMindMap } from "react-icons/fc";
 
 export default function Home() {
   const [inputEventName, setInputEventName] = useState<any>("");
+  const [inputUserName, setInputUserName] = useState<any>("");
   const [response, setResponse] = useState<string>("");
   const [eventId, setEventId] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -30,7 +31,10 @@ export default function Home() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ eventName: inputEventName }),
+        body: JSON.stringify({
+          eventName: inputEventName,
+          userName: inputUserName,
+        }),
       });
 
       const responseBody = await response.json();
@@ -122,10 +126,10 @@ export default function Home() {
                   <input
                     type="text"
                     id="inputField"
-                    // name="event name"
-                    // value={inputEventName}
+                    name="User name"
+                    value={inputUserName}
                     maxLength={20}
-                    // onChange={(event) => setInputEventName(event.target.value)}
+                    onChange={(input) => setInputUserName(input.target.value)}
                     required
                     onInvalid={(e) => {
                       const target = e.target as HTMLInputElement;

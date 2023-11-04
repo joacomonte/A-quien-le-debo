@@ -1,3 +1,5 @@
+import { ObjectId } from "mongodb";
+
 const {
   closeDB,
   isMongoConnected,
@@ -24,6 +26,11 @@ export async function POST(req: Request) {
     const newEvent = {
       name: body.eventName,
       date: new Date(),
+      users: [
+        { userId: new ObjectId(), userName: body.userName },
+        { userId: new ObjectId(), userName: "teti" },
+        { userId: new ObjectId(), userName: "monte" },
+      ],
     };
 
     const dbResponse = await events.insertOne(newEvent);
