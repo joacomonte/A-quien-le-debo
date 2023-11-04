@@ -12,8 +12,6 @@ type LayoutProps = {
 export default async function Layout({ children, params }: LayoutProps) {
   const eventId = params.eventId;
 
-  console.log("this evennnnt", eventId);
-
   return (
     <>
       <Header id={eventId} />

@@ -25,41 +25,30 @@ export async function POST(req: Request, params: any) {
 
   try {
     const events = await getEventsCollection();
-
     const { eventId } = params.params;
 
     const parsedId = { _id: new ObjectId(eventId) };
 
     const event = await events.findOne(parsedId);
 
-    if (event) {
-      const users = {
-        user1: "teti",
-      };
+    const allUsers = event.users;
 
-      event.users = users;
+    await closeDB();
 
-      const updateResult = await events.updateOne(parsedId, { $set: event });
-
-      console.log("Update Result:", updateResult);
-
-      if (updateResult?.matchedCount > 0)
-        return new Response(
-          JSON.stringify({
-            status: "error",
-            msg: "User already exists",
-          })
-        );
-    }
-  } catch {
-    console.log("Database request error");
+    return new Response(
+      JSON.stringify({
+        data: { users: allUsers },
+        status: "ok",
+        msg: "response with only the users names",
+      })
+    );
+  } catch (err) {
+    console.log("Database request error:", err);
     return new Response(
       JSON.stringify({
         status: "error",
         msg: "Database request error",
       })
     );
-  } finally {
-    await closeDB();
   }
 }

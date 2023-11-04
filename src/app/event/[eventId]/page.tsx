@@ -29,34 +29,24 @@ export default async function EventIdPage({ params: { eventId } }: Params) {
   console.log(result);
 
   return (
-    <>
-      <div className=" w-screen h-full max-w-[500px] max-h-[700px] pb-6">
-        <main className="flex flex-col items-start w-full h-full px-6">
-          <h1 className="flex items-start self-start pt-8 text-3xl pb-14">
-            Summary
-          </h1>
-          <div className="flex flex-col justify-between w-full h-full">
-            <div className="flex flex-col gap-6">
-              <div>
-                <h2 className="text-lg ">Monte</h2>
-                <p className="text-sm text-gray-500">Spent $4000 in Vacio</p>
-              </div>
-              <div>
-                <h2 className="text-lg ">Teti</h2>
-                <p className="text-sm text-gray-500">Spent $700 in Cervecita</p>
-              </div>
+    <div className=" w-screen h-full max-w-[500px] max-h-[700px] pb-6">
+      <main className="flex flex-col items-start w-full h-full px-6">
+        <h1 className="flex items-start self-start pt-8 text-3xl pb-14">
+          Summary
+        </h1>
+        <div className="flex flex-col justify-between w-full h-full">
+          <div className="flex flex-col gap-6">
+            <div>
+              <h2 className="text-lg ">Monte</h2>
+              <p className="text-sm text-gray-500">Spent $4000 in Vacio</p>
             </div>
-
-            {/* <Link href={`/event/${eventId}/users`}>
-              <button className="w-full px-4 py-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700">
-              Add participants
-              </button>
-            </Link> */}
+            <div>
+              <h2 className="text-lg ">Teti</h2>
+              <p className="text-sm text-gray-500">Spent $700 in Cervecita</p>
+            </div>
           </div>
-        </main>
-      </div>
-
-      {/* <Navbar /> */}
-    </>
+        </div>
+      </main>
+    </div>
   );
 }
