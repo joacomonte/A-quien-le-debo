@@ -9,10 +9,18 @@ const {
 
 run().catch((error: any) => console.error("Error occurred: ", error));
 
+// function delay(ms: number | undefined) {
+//   return new Promise((resolve) => setTimeout(resolve, ms));
+// }
+// await delay(5000);
+
 export async function GET() {
   const data = {
     name: "john",
   };
+  if (!(await isMongoConnected())) {
+    return new Response("MongoDB is not connected!");
+  }
   return new Response(JSON.stringify(data));
 }
 
@@ -25,6 +33,7 @@ export async function POST(req: Request, params: any) {
 
   try {
     const events = await getEventsCollection();
+
     const { eventId } = params.params;
 
     const parsedId = { _id: new ObjectId(eventId) };
@@ -32,8 +41,6 @@ export async function POST(req: Request, params: any) {
     const event = await events.findOne(parsedId);
 
     const allUsers = event.users;
-
-    await closeDB();
 
     return new Response(
       JSON.stringify({
@@ -46,9 +53,12 @@ export async function POST(req: Request, params: any) {
     console.log("Database request error:", err);
     return new Response(
       JSON.stringify({
+        data: {},
         status: "error",
         msg: "Database request error",
       })
     );
+  } finally {
+    await closeDB();
   }
 }

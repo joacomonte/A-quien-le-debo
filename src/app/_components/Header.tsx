@@ -19,7 +19,6 @@ export default async function Header({ id }: any) {
     }
   );
   const result = await response.json();
-  console.log(result);
 
   return (
     <header className="relative flex items-center max-w-[500px] justify-start w-full h-12 gap-3 px-4 text-left bg-slate-100">
