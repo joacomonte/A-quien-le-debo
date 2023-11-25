@@ -58,7 +58,5 @@ export async function POST(req: Request, params: any) {
         msg: "Database request error",
       })
     );
-  } finally {
-    await closeDB();
   }
 }

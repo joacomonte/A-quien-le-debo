@@ -3,7 +3,8 @@
 import { Dialog, Transition } from "@headlessui/react";
 import { Toaster, toast } from "sonner";
 import Link from "next/link";
-import { Fragment, SetStateAction, useState } from "react";
+import { Fragment, useState } from "react";
+import { CopyToClipboard } from "react-copy-to-clipboard";
 
 import { FcMindMap } from "react-icons/fc";
 
@@ -55,11 +56,7 @@ export default function Home() {
     }
   };
 
-  function copyToClipboard(): void {
-    // navigator.clipboard.writeText(eventId);
-    navigator.clipboard.writeText(`http://localhost:3000/event/${eventId}`);
-    toast.success("Link copied!");
-  }
+  const linkToCopy: string = `http://localhost:3000/event/${eventId}`;
 
   return (
     <>
@@ -223,13 +220,21 @@ export default function Home() {
                       </Dialog.Description>
 
                       <div className="flex items-center justify-between w-full mt-4">
-                        <button
-                          onClick={copyToClipboard}
-                          type="button"
-                          className="inline-flex justify-center px-4 py-2 text-sm font-medium text-green-900 bg-green-100 border border-transparent rounded-md hover:bg-green-200 focus:outline-none focus-visible:ring-2 "
+                        <CopyToClipboard
+                          text={linkToCopy}
+                          onCopy={(text: string, bool: boolean) => {
+                            bool
+                              ? toast.success("Link copied!")
+                              : toast.error("Ups!, copy link manually please");
+                          }}
                         >
-                          Copy link
-                        </button>
+                          <button
+                            type="button"
+                            className="inline-flex justify-center px-4 py-2 text-sm font-medium text-green-900 bg-green-100 border border-transparent rounded-md hover:bg-green-200 focus:outline-none focus-visible:ring-2 "
+                          >
+                            Copy link
+                          </button>
+                        </CopyToClipboard>
 
                         <Link href={`/event/${eventId}`}>
                           <button

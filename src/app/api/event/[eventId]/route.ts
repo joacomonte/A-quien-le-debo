@@ -34,7 +34,5 @@ export async function POST(req: Request, params: any) {
     return new NextResponse(JSON.stringify(event));
   } catch {
     console.log("error");
-  } finally {
-    // await closeDB();
   }
 }

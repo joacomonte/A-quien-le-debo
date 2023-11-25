@@ -21,7 +21,7 @@ export default async function Header({ id }: any) {
   const result = await response.json();
 
   return (
-    <header className="relative flex items-center max-w-[500px] justify-start w-full h-12 gap-3 px-4 text-left bg-slate-100">
+    <header className="flex items-center max-w-[500px] justify-start w-full h-full gap-3 px-4 text-left bg-slate-100">
       <FcMindMap size={30} />
       {result?.name && <h2 className="font-semibold"> {result.name}</h2>}
     </header>

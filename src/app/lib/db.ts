@@ -40,7 +40,7 @@ const closeDB = async () => {
 // Create a function to check the MongoDB connection status
 const isMongoConnected = async () => {
   try {
-    await client.connect();
+    // await client.connect();
     await client.db("admin").command({ ping: 1 });
     return true;
   } catch (error) {

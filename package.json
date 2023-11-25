@@ -13,6 +13,7 @@
     "mongodb": "^6.2.0",
     "next": "14.0.1",
     "react": "^18",
+    "react-copy-to-clipboard": "^5.1.0",
     "react-dom": "^18",
     "react-icons": "^4.11.0",
     "sonner": "^1.1.0"
