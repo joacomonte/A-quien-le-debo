@@ -51,7 +51,7 @@ const isMongoConnected = async () => {
 
 const getEventsCollection = async () => {
   try {
-    await connectDB();
+    // await connectDB();
     const db = client.db("AQLD");
     const collection = db.collection("events");
     return collection;

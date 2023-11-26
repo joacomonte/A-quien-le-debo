@@ -14,7 +14,7 @@ export default function Navbar() {
     /* {latestPathWord && <p>Current pathname: {latestPathWord}</p>} */
   }
   return (
-    <div className="z-50 w-full h-full max-w-[500px] bg-white border-t border-gray-200 dark:bg-gray-700 dark:border-gray-600">
+    <div className="z-50 w-full h-16 h-max-16 max-w-[500px] bg-white border-t border-gray-200 dark:bg-gray-700 dark:border-gray-600">
       <div className="grid h-full max-w-lg grid-cols-3 mx-auto">
         <Link
           className="inline-flex flex-col items-center justify-center px-5 font-medium hover:bg-gray-50 dark:hover:bg-gray-800 group"

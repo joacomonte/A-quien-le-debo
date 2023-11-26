@@ -9,10 +9,10 @@ type Params = {
 
 export default function Page({ params: { eventId } }: Params) {
   return (
-    <div className=" w-screen h-full max-w-[500px] pb-14 px-4">
-      <main className="flex flex-col items-start w-full h-full pb-4">
-        <h1 className="flex items-start self-start pt-8 text-3xl pb-14">
-          Le debes a todos ñeri
+    <div className=" overflow-auto w-screen max-w-[500px] h-[100vh]">
+      <main className="flex flex-col items-start w-full h-full ">
+        <h1 className="flex items-start font-bold self-start pt-20 pb-4 text-3xl">
+          Proximamente
         </h1>
         {/* <div className="w-full h-full p-4 overflow-y-auto bg-white border border-gray-200 rounded-lg shadow">
           <Suspense
