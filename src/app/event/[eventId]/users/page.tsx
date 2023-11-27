@@ -10,11 +10,11 @@ type Params = {
 export default function Page({ params: { eventId } }: Params) {
   return (
     <div className=" overflow-auto w-screen max-w-[500px] h-[100vh]">
-      <main className="flex flex-col items-start w-full h-full ">
+      <main className="flex flex-col items-start w-full h-full p-4">
         <h1 className="flex items-start font-bold self-start pt-20 pb-4 text-3xl">
           Miembros
         </h1>
-        <div className="w-full px-3 py-1 overflow-y-auto bg-white border border-gray-200 rounded-lg shadow">
+        <div className="w-full px-3 overflow-y-auto bg-white border border-gray-200 rounded-lg shadow">
           <Suspense
             fallback={
               <ul role="list" className="divide-y divide-gray-200 ">

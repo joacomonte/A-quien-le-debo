@@ -10,7 +10,7 @@ type Params = {
 export default function Page({ params: { eventId } }: Params) {
   return (
     <div className=" overflow-auto w-screen max-w-[500px] h-[100vh]">
-      <main className="flex flex-col items-start w-full h-full ">
+      <main className="flex flex-col items-start w-full h-full p-4">
         <h1 className="flex items-start font-bold self-start pt-20 pb-4 text-3xl">
           Proximamente
         </h1>
