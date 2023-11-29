@@ -61,6 +61,10 @@ export default function UserSpendsList({ id }: any) {
           </>
         )}
       </Disclosure>
+      <br></br>
+      <button className="flex w-full justify-center rounded-lg bg-teal-100 px-4 py-4 text-sm  font-medium text-gray-900 hover:bg-gray-200 focus:outline-none focus-visible:ring focus-visible:ring-gray-500/75">
+        Nuevo Gasto
+      </button>
     </>
   );
 }

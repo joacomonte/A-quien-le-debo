@@ -236,7 +236,7 @@ export default function Home() {
                           </button>
                         </CopyToClipboard>
 
-                        <Link href={`/event/${eventId}`}>
+                        <Link href={`/event/${eventId}/spendings`}>
                           <button
                             type="button"
                             className="inline-flex justify-center px-4 py-2 text-sm font-medium bg-transparent border rounded-md border-grey-800 text-grey-900 hover:bg-gray-100 focus:outline-none focus-visible:ring-2"
