@@ -13,7 +13,7 @@ export default function UserSpendsList({ id }: any) {
               <div>
                 <span>Carne: </span>
                 <span className="text-sm font-bold ">$6400</span>
-                <span className="px-2 text-gray-600 text-xs">(Monte)</span>
+                <span className="px-2 text-xs text-gray-600">(Monte)</span>
               </div>
               <ChevronUpIcon
                 className={`${
@@ -21,7 +21,7 @@ export default function UserSpendsList({ id }: any) {
                 } h-5 w-5 text-gray-500`}
               />
             </Disclosure.Button>
-            <Disclosure.Panel className="flex flex-col px-4 py-3 text-sm text-gray-500 gap-3">
+            <Disclosure.Panel className="flex flex-col gap-3 px-4 py-3 text-sm text-gray-500">
               <ul>
                 <li>Tira de cerdo: $4000</li>
               </ul>
@@ -47,7 +47,7 @@ export default function UserSpendsList({ id }: any) {
                 } h-5 w-5 text-gray-500`}
               />
             </Disclosure.Button>
-            <Disclosure.Panel className="flex flex-col px-4 py-3 text-sm text-gray-500 gap-3">
+            <Disclosure.Panel className="flex flex-col gap-3 px-4 py-3 text-sm text-gray-500">
               <ul>
                 <li>Fernet: $4000</li>
               </ul>
@@ -62,9 +62,6 @@ export default function UserSpendsList({ id }: any) {
         )}
       </Disclosure>
       <br></br>
-      <button className="flex w-full justify-center rounded-lg bg-teal-100 px-4 py-4 text-sm  font-medium text-gray-900 hover:bg-gray-200 focus:outline-none focus-visible:ring focus-visible:ring-gray-500/75">
-        Nuevo Gasto
-      </button>
     </>
   );
 }

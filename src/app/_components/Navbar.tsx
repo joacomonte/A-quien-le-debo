@@ -14,15 +14,15 @@ export default function Navbar() {
     /* {latestPathWord && <p>Current pathname: {latestPathWord}</p>} */
   }
   return (
-    <div className="z-50 w-full h-16 h-max-16 max-w-[500px] bg-white border-t border-gray-200 dark:bg-gray-700 dark:border-gray-600">
-      <div className="grid h-full max-w-lg grid-cols-3 mx-auto">
+    <div className="h-max-16 z-10 h-16 w-full max-w-[500px] border-t border-gray-200 bg-white dark:border-gray-600 dark:bg-gray-700">
+      <div className="mx-auto grid h-full max-w-lg grid-cols-3">
         <Link
-          className="inline-flex flex-col items-center justify-center px-5 font-medium hover:bg-gray-50 dark:hover:bg-gray-800 group"
+          className="group inline-flex flex-col items-center justify-center px-5 font-medium hover:bg-gray-50 dark:hover:bg-gray-800"
           href={`/event/${eventId}/spendings`}
         >
           <div>
             <svg
-              className={`mt-1 mb-1 fill-current group-hover:text-blue-500 ${
+              className={`mb-1 mt-1 fill-current group-hover:text-blue-500 ${
                 currentPage === "spendings" ? "text-blue-500" : "text-gray-500"
               }`}
               xmlns="http://www.w3.org/2000/svg"
@@ -34,7 +34,7 @@ export default function Navbar() {
           </div>
 
           <span
-            className={`text-[0.5em] text-gray-500 dark:text-gray-400 group-hover:text-blue-500 ${
+            className={`text-[0.5em] text-gray-500 group-hover:text-blue-500 dark:text-gray-400 ${
               currentPage === "spendings" ? "text-blue-500" : ""
             }`}
           >
@@ -43,12 +43,12 @@ export default function Navbar() {
         </Link>
 
         <Link
-          className="inline-flex flex-col items-center justify-center px-5 font-medium hover:bg-gray-50 dark:hover:bg-gray-800 group"
+          className="group inline-flex flex-col items-center justify-center px-5 font-medium hover:bg-gray-50 dark:hover:bg-gray-800"
           href={`/event/${eventId}/users`}
         >
           <div>
             <svg
-              className={`mt-1 mb-1 fill-current group-hover:text-blue-500 ${
+              className={`mb-1 mt-1 fill-current group-hover:text-blue-500 ${
                 currentPage === "users" ? "text-blue-500" : "text-gray-500"
               }`}
               xmlns="http://www.w3.org/2000/svg"
@@ -69,12 +69,12 @@ export default function Navbar() {
         </Link>
 
         <Link
-          className="inline-flex flex-col items-center justify-center px-5 font-medium hover:bg-gray-50 dark:hover:bg-gray-800 group"
+          className="group inline-flex flex-col items-center justify-center px-5 font-medium hover:bg-gray-50 dark:hover:bg-gray-800"
           href={`/event/${eventId}/pay-to`}
         >
           <div>
             <svg
-              className={`mt-1 mb-1 fill-current group-hover:text-blue-500 ${
+              className={`mb-1 mt-1 fill-current group-hover:text-blue-500 ${
                 currentPage === "pay-to" ? "text-blue-500" : "text-gray-500"
               }`}
               xmlns="http://www.w3.org/2000/svg"
@@ -85,7 +85,7 @@ export default function Navbar() {
             </svg>
           </div>
           <span
-            className={`text-[0.5em] text-gray-500 dark:text-gray-400 group-hover:text-blue-500 ${
+            className={`text-[0.5em] text-gray-500 group-hover:text-blue-500 dark:text-gray-400 ${
               currentPage === "pay-to" ? "text-blue-500" : ""
             }`}
           >
