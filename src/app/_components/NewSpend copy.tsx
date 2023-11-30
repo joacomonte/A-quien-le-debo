@@ -4,12 +4,7 @@ import { Dialog, Transition, Listbox } from "@headlessui/react";
 import { Fragment, useState } from "react";
 import { CheckIcon, ChevronUpDownIcon } from "@heroicons/react/20/solid";
 
-type person = {
-  id: number;
-  name: string;
-};
-
-const people: person[] = [
+const people = [
   { id: 1, name: "Juanchi" },
   { id: 2, name: "Patu" },
   { id: 3, name: "Curcex Re-tarded" },
@@ -19,7 +14,7 @@ const people: person[] = [
 ];
 
 export default function NewSpend() {
-  const [selectedPeople, setSelectedPeople] = useState<person[]>([]);
+  const [selectedPeople, setSelectedPeople] = useState([people[0]]);
   const [isOpen, setIsOpen] = useState(false);
 
   function closeModal() {
@@ -31,12 +26,15 @@ export default function NewSpend() {
   }
 
   const toggleSelectAll = () => {
-    if (selectedPeople.length === 0) {
-      setSelectedPeople([...people]);
-    } else {
+    if (selectedPeople.length > 0) {
       setSelectedPeople([]);
-    }
+    } else setSelectedPeople(people);
+
+    setIsActive(!isActive);
   };
+
+  // State to manage active status
+  const [isActive, setIsActive] = useState(false);
 
   return (
     <>
@@ -98,10 +96,10 @@ export default function NewSpend() {
                         multiple
                       >
                         <div className="relative mt-1">
-                          <Listbox.Button className="relative w-full cursor-default rounded-lg bg-gray-50 py-3 pl-3 pr-10 text-left shadow-md focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white/75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300">
-                            <span className="block truncate">
+                          <Listbox.Button className="relative w-full cursor-default rounded-lg bg-gray-50 py-2 pl-3 pr-10 text-left shadow-md focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white/75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm">
+                            <span className="block h-5 truncate">
                               {selectedPeople.length === 0 ? (
-                                <span className="block truncate text-base text-gray-500">
+                                <span className="block h-5 truncate text-gray-500">
                                   Selecciona a alguien
                                 </span> // Default message when array is empty
                               ) : (
@@ -123,24 +121,17 @@ export default function NewSpend() {
                             leaveFrom="opacity-100"
                             leaveTo="opacity-0"
                           >
-                            <Listbox.Options className="z-60 absolute mt-1 max-h-[250px] w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black/5 focus:outline-none sm:text-sm">
+                            <Listbox.Options className="z-60 absolute mt-1 max-h-[300px] min-h-[200px]  w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black/5 focus:outline-none sm:text-sm">
                               <div
                                 onClick={toggleSelectAll}
-                                className="relative cursor-default select-none py-2 pl-10 pr-4"
+                                className={`relative cursor-default select-none py-2 pl-10 pr-4 ${
+                                  isActive
+                                    ? "bg-green-100 text-green-900"
+                                    : "text-gray-900"
+                                }`}
                               >
-                                {selectedPeople.length === 0
-                                  ? "Select All"
-                                  : "Deselect All"}
-                                {selectedPeople.length === people.length ? (
-                                  <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-amber-600">
-                                    <CheckIcon
-                                      className="h-5 w-5"
-                                      aria-hidden="true"
-                                    />
-                                  </span>
-                                ) : null}
+                                {isActive ? "Select All" : "Deselect All"}
                               </div>
-
                               {people.map((person, personIdx) => (
                                 <Listbox.Option
                                   key={personIdx}
