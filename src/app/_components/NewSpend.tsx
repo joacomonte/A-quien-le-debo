@@ -1,6 +1,6 @@
 "use client";
 
-import { Dialog, Transition, Listbox } from "@headlessui/react";
+import { Dialog, Transition, Listbox, Combobox } from "@headlessui/react";
 import { Fragment, useState } from "react";
 import { CheckIcon, ChevronUpDownIcon } from "@heroicons/react/20/solid";
 
@@ -16,11 +16,25 @@ const people: person[] = [
   { id: 4, name: "Teti" },
   { id: 5, name: "Johnny Blue" },
   { id: 6, name: "Bart" },
+  { id: 7, name: "Tesla" },
+  { id: 8, name: "Ottus" },
 ];
 
 export default function NewSpend() {
   const [selectedPeople, setSelectedPeople] = useState<person[]>([]);
   const [isOpen, setIsOpen] = useState(false);
+
+  const [query, setQuery] = useState("");
+
+  const filteredPeople =
+    query === ""
+      ? people
+      : people.filter((person) =>
+          person.name
+            .toLowerCase()
+            .replace(/\s+/g, "")
+            .includes(query.toLowerCase().replace(/\s+/g, "")),
+        );
 
   function closeModal() {
     setIsOpen(false);
@@ -86,68 +100,81 @@ export default function NewSpend() {
                   </div>
                   <div className="flex flex-col gap-4 py-6">
                     <div className=" w-full">
-                      <label
-                        htmlFor="amount"
-                        className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
-                      >
-                        Entre quienes?
-                      </label>
-                      <Listbox
+                      <div>
+                        <label
+                          htmlFor="amount"
+                          className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+                        >
+                          Entre quienes?
+                        </label>
+                        <div className="flex flex-wrap gap-2">
+                          {selectedPeople.map((p, i) => (
+                            <span
+                              key={i}
+                              className=" whitespace-nowrap rounded-full  bg-gray-100 px-2.5 py-0.5 text-xs font-medium text-gray-800 dark:bg-gray-700 dark:text-gray-300"
+                            >
+                              {p.name}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                      <Combobox
                         value={selectedPeople}
-                        onChange={setSelectedPeople}
+                        onChange={(v) => setSelectedPeople(v)}
                         multiple
                       >
                         <div className="relative mt-1">
-                          <Listbox.Button className="relative w-full cursor-default rounded-lg bg-gray-50 py-3 pl-3 pr-10 text-left shadow-md focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white/75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300">
-                            <span className="block truncate">
-                              {selectedPeople.length === 0 ? (
-                                <span className="block truncate text-base text-gray-500">
-                                  Selecciona a alguien
-                                </span> // Default message when array is empty
-                              ) : (
-                                selectedPeople
-                                  .map((person: any) => person.name)
-                                  .join(", ")
-                              )}
-                            </span>
-                            <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
+                          <div className="relative w-full cursor-default overflow-hidden rounded-lg  text-left shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75 focus-visible:ring-offset-2 focus-visible:ring-offset-teal-300 sm:text-sm">
+                            <Combobox.Input
+                              className="w-full border-none bg-gray-50 py-2 pl-3 pr-10 text-sm leading-5 text-gray-900 focus:outline-none focus:ring-0"
+                              displayValue={(person: any) => person.name}
+                              onChange={(event) => setQuery(event.target.value)}
+                            />
+                            <Combobox.Button className="absolute inset-y-0 right-0 flex items-center pr-2">
                               <ChevronUpDownIcon
                                 className="h-5 w-5 text-gray-400"
                                 aria-hidden="true"
                               />
-                            </span>
-                          </Listbox.Button>
+                            </Combobox.Button>
+                          </div>
                           <Transition
                             as={Fragment}
                             leave="transition ease-in duration-100"
                             leaveFrom="opacity-100"
                             leaveTo="opacity-0"
+                            afterLeave={() => setQuery("")}
                           >
-                            <Listbox.Options className="z-60 absolute mt-1 max-h-[250px] w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black/5 focus:outline-none sm:text-sm">
-                              <div
-                                onClick={toggleSelectAll}
-                                className="relative cursor-default select-none py-2 pl-10 pr-4"
-                              >
-                                {selectedPeople.length === 0
-                                  ? "Select All"
-                                  : "Deselect All"}
-                                {selectedPeople.length === people.length ? (
-                                  <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-amber-600">
-                                    <CheckIcon
-                                      className="h-5 w-5"
-                                      aria-hidden="true"
-                                    />
-                                  </span>
-                                ) : null}
-                              </div>
-
-                              {people.map((person, personIdx) => (
-                                <Listbox.Option
+                            <Combobox.Options className="z-60 absolute mt-1 max-h-[250px] w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black/5 focus:outline-none sm:text-sm">
+                              {query === "" && (
+                                <div
+                                  onClick={toggleSelectAll}
+                                  className="relative cursor-default select-none py-2 pl-10 pr-4"
+                                >
+                                  {selectedPeople.length === 0
+                                    ? "Select All"
+                                    : "Deselect All"}
+                                  {selectedPeople.length === people.length ? (
+                                    <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-green-600">
+                                      <CheckIcon
+                                        className="h-5 w-5 text-green-600"
+                                        aria-hidden="true"
+                                      />
+                                    </span>
+                                  ) : null}
+                                </div>
+                              )}
+                              {filteredPeople.length === 0 && (
+                                <div className="relative cursor-default select-none py-2 pl-10 pr-4">
+                                  Sin coincidencias
+                                </div>
+                              )}
+                              {filteredPeople.map((person, personIdx) => (
+                                <Combobox.Option
                                   key={personIdx}
                                   className={({ active }) =>
                                     `relative cursor-default select-none py-2 pl-10 pr-4 ${
                                       active
-                                        ? "bg-green-100  text-green-900"
+                                        ? "bg-green-50  text-green-900"
                                         : "text-gray-900"
                                     }`
                                   }
@@ -167,19 +194,19 @@ export default function NewSpend() {
                                       {selected ? (
                                         <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-amber-600">
                                           <CheckIcon
-                                            className="h-5 w-5"
+                                            className="h-5 w-5 text-green-600"
                                             aria-hidden="true"
                                           />
                                         </span>
                                       ) : null}
                                     </>
                                   )}
-                                </Listbox.Option>
+                                </Combobox.Option>
                               ))}
-                            </Listbox.Options>
+                            </Combobox.Options>
                           </Transition>
                         </div>
-                      </Listbox>
+                      </Combobox>
                     </div>
                     <div>
                       <label
