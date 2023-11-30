@@ -1,6 +1,6 @@
-import Header from "@/app/_components/Header";
+import Header from "@/app/_globalComponents/Header";
 
-import Navbar from "@/app/_components/Navbar";
+import Navbar from "@/app/_globalComponents/Navbar";
 
 type LayoutProps = {
   children: React.ReactNode;

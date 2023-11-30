@@ -1,9 +1,9 @@
 // "use client";
 
 import { FcMindMap } from "react-icons/fc";
-import Navbar from "@/app/_components/Navbar";
+import Navbar from "@/app/_globalComponents/Navbar";
 import Link from "next/link";
-import Header from "@/app/_components/Header";
+import Header from "@/app/_globalComponents/Header";
 
 // import { useEffect, useState } from "react";
 
@@ -23,18 +23,18 @@ export default async function EventIdPage({ params: { eventId } }: Params) {
       headers: {
         "Content-Type": "application/json",
       },
-    }
+    },
   );
   const result = await response.json();
   console.log(result);
 
   return (
-    <div className=" w-screen h-full max-w-[500px] max-h-[700px] pb-6">
-      <main className="flex flex-col items-start w-full h-full px-6">
-        <h1 className="flex items-start self-start pt-8 text-3xl pb-14">
+    <div className=" h-full max-h-[700px] w-screen max-w-[500px] pb-6">
+      <main className="flex h-full w-full flex-col items-start px-6">
+        <h1 className="flex items-start self-start pb-14 pt-8 text-3xl">
           Summary
         </h1>
-        <div className="flex flex-col justify-between w-full h-full">
+        <div className="flex h-full w-full flex-col justify-between">
           <div className="flex flex-col gap-6">
             <div>
               <h2 className="text-lg ">Monte</h2>

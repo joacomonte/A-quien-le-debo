@@ -1,4 +1,4 @@
-import UserList from "@/app/_components/UsersList";
+import UserList from "@/app/event/[eventId]/users/_components/UsersList";
 import { Suspense } from "react";
 
 type Params = {
@@ -9,9 +9,9 @@ type Params = {
 
 export default function Page({ params: { eventId } }: Params) {
   return (
-    <div className=" overflow-auto w-screen max-w-[500px] h-[100vh]">
-      <main className="flex flex-col items-start w-full h-full p-4">
-        <h1 className="flex items-start font-bold self-start pt-20 pb-4 text-3xl">
+    <div className=" h-[100vh] w-screen max-w-[500px] overflow-auto">
+      <main className="flex h-full w-full flex-col items-start p-4">
+        <h1 className="flex items-start self-start pb-4 pt-20 text-3xl font-bold">
           Proximamente
         </h1>
         {/* <div className="w-full h-full p-4 overflow-y-auto bg-white border border-gray-200 rounded-lg shadow">

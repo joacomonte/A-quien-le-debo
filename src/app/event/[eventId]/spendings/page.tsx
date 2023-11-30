@@ -1,6 +1,6 @@
-import NewSpend from "@/app/_components/NewSpend";
-import UserSpendsList from "@/app/_components/UserSpendsList";
-import UserList from "@/app/_components/UsersList";
+import NewSpend from "@/app/event/[eventId]/spendings/_components/NewSpend";
+import UserSpendsList from "@/app/event/[eventId]/spendings/_components/UserSpendsList";
+import UserList from "@/app/event/[eventId]/users/_components/UsersList";
 import { Suspense } from "react";
 
 type Params = {

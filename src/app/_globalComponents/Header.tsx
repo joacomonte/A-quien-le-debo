@@ -1,5 +1,5 @@
 import { FcMindMap } from "react-icons/fc";
-import Navbar from "@/app/_components/Navbar";
+import Navbar from "@/app/_globalComponents/Navbar";
 
 type Params = {
   params: {
@@ -16,12 +16,12 @@ export default async function Header({ id }: any) {
       headers: {
         "Content-Type": "application/json",
       },
-    }
+    },
   );
   const result = await response.json();
 
   return (
-    <header className="flex items-center max-w-[500px] h-14 h-max-14 justify-start w-full gap-3 px-4 text-left bg-slate-100">
+    <header className="h-max-14 flex h-14 w-full max-w-[500px] items-center justify-start gap-3 bg-slate-100 px-4 text-left">
       <FcMindMap size={30} />
       {result?.name && <h2 className="font-semibold"> {result.name}</h2>}
     </header>
