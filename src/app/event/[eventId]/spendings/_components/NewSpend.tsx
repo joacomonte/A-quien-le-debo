@@ -24,7 +24,7 @@ export default function NewSpend() {
   const [selectedPeople, setSelectedPeople] = useState<person[]>([]);
   const [isOpen, setIsOpen] = useState(false);
 
-  const [whoPaid, setWhoPaid] = useState<person>(people[1]);
+  const [whoPaid, setWhoPaid] = useState<person | null>(null);
 
   const [query, setQuery] = useState("");
 
@@ -109,11 +109,26 @@ export default function NewSpend() {
                         Quien pagó?
                       </label>
                       <div className="w-full">
-                        <Listbox value={whoPaid} onChange={setWhoPaid}>
+                        <Combobox value={whoPaid} onChange={setWhoPaid}>
                           <div className="relative z-30 mt-1">
-                            <Listbox.Button className="relative z-30 w-full cursor-default rounded-lg bg-gray-50 py-2 pl-3 pr-10 text-left shadow-md focus:outline-none focus-visible:border-green-500 focus-visible:ring-2 focus-visible:ring-white/75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm">
+                            <div className="relative w-full cursor-default overflow-hidden rounded-lg  text-left shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75 focus-visible:ring-offset-2 focus-visible:ring-offset-teal-300 sm:text-sm">
+                              <Combobox.Input
+                                className="w-full border-none bg-gray-50 py-2 pl-3 pr-10 text-sm leading-5 text-gray-900 focus:outline-none focus:ring-0"
+                                displayValue={(person: any) => person?.name}
+                                onChange={(event) =>
+                                  setQuery(event.target.value)
+                                }
+                              />
+                              <Combobox.Button className="absolute inset-y-0 right-0 z-20 flex items-center pr-2">
+                                <ChevronUpDownIcon
+                                  className="h-5 w-5 text-gray-400"
+                                  aria-hidden="true"
+                                />
+                              </Combobox.Button>
+                            </div>
+                            {/* <Combobox.Button className="relative z-30 w-full cursor-default rounded-lg bg-gray-50 py-2 pl-3 pr-10 text-left shadow-md focus:outline-none focus-visible:border-green-500 focus-visible:ring-2 focus-visible:ring-white/75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm">
                               <span className="block truncate">
-                                {whoPaid.name}
+                                {whoPaid?.name}
                               </span>
                               <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
                                 <ChevronUpDownIcon
@@ -121,16 +136,16 @@ export default function NewSpend() {
                                   aria-hidden="true"
                                 />
                               </span>
-                            </Listbox.Button>
+                            </Combobox.Button> */}
                             <Transition
                               as={Fragment}
                               leave="transition ease-in duration-100"
                               leaveFrom="opacity-100"
                               leaveTo="opacity-0"
                             >
-                              <Listbox.Options className="absolute z-30 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black/5 focus:outline-none sm:text-sm">
+                              <Combobox.Options className="absolute z-30 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black/5 focus:outline-none sm:text-sm">
                                 {people.map((person, personIdx) => (
-                                  <Listbox.Option
+                                  <Combobox.Option
                                     key={personIdx}
                                     className={({ active }) =>
                                       `relative cursor-default select-none py-2 pl-10 pr-4 ${
@@ -162,12 +177,12 @@ export default function NewSpend() {
                                         ) : null}
                                       </>
                                     )}
-                                  </Listbox.Option>
+                                  </Combobox.Option>
                                 ))}
-                              </Listbox.Options>
+                              </Combobox.Options>
                             </Transition>
                           </div>
-                        </Listbox>
+                        </Combobox>
                       </div>
                     </div>
 
@@ -192,26 +207,31 @@ export default function NewSpend() {
                           ))}
                         </div>
 
-                        <Combobox
+                        <Listbox
                           value={selectedPeople}
                           onChange={(v) => setSelectedPeople(v)}
                           multiple
                         >
                           <div className="relative z-20 mt-1">
                             <div className="relative w-full cursor-default overflow-hidden rounded-lg  text-left shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75 focus-visible:ring-offset-2 focus-visible:ring-offset-teal-300 sm:text-sm">
-                              <Combobox.Input
+                              {/* <Listbox.Input
                                 className="w-full border-none bg-gray-50 py-2 pl-3 pr-10 text-sm leading-5 text-gray-900 focus:outline-none focus:ring-0"
                                 displayValue={(person: any) => person.name}
                                 onChange={(event) =>
                                   setQuery(event.target.value)
                                 }
-                              />
-                              <Combobox.Button className="absolute inset-y-0 right-0 z-20 flex items-center pr-2">
-                                <ChevronUpDownIcon
-                                  className="h-5 w-5 text-gray-400"
-                                  aria-hidden="true"
-                                />
-                              </Combobox.Button>
+                              /> */}
+                              <Listbox.Button className="w-full border-none bg-gray-50 py-2 pl-3 pr-2 text-left text-sm leading-5 text-gray-900 focus:outline-none focus:ring-0">
+                                <span className="block truncate text-gray-500">
+                                  Seleccione de la lista
+                                </span>
+                                <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
+                                  <ChevronUpDownIcon
+                                    className="h-5 w-5 text-gray-400"
+                                    aria-hidden="true"
+                                  />
+                                </span>
+                              </Listbox.Button>
                             </div>
                             <Transition
                               as={Fragment}
@@ -220,7 +240,7 @@ export default function NewSpend() {
                               leaveTo="opacity-0"
                               afterLeave={() => setQuery("")}
                             >
-                              <Combobox.Options className="absolute z-20 mt-1 max-h-[250px] w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black/5 focus:outline-none sm:text-sm">
+                              <Listbox.Options className="absolute z-20 mt-1 max-h-[250px] w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black/5 focus:outline-none sm:text-sm">
                                 {query === "" && (
                                   <div
                                     onClick={toggleSelectAll}
@@ -245,7 +265,7 @@ export default function NewSpend() {
                                   </div>
                                 )}
                                 {filteredPeople.map((person, personIdx) => (
-                                  <Combobox.Option
+                                  <Listbox.Option
                                     key={personIdx}
                                     className={({ active }) =>
                                       `relative cursor-default select-none py-2 pl-10 pr-4 ${
@@ -277,12 +297,12 @@ export default function NewSpend() {
                                         ) : null}
                                       </>
                                     )}
-                                  </Combobox.Option>
+                                  </Listbox.Option>
                                 ))}
-                              </Combobox.Options>
+                              </Listbox.Options>
                             </Transition>
                           </div>
-                        </Combobox>
+                        </Listbox>
                       </div>
                     </div>
                     {/* End Multi select */}
