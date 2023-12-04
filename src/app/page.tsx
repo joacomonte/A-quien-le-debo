@@ -15,7 +15,7 @@ export default function Home() {
   const [eventId, setEventId] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  let [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
 
   const handleSubmit = async (event: { preventDefault: () => void }) => {
     event.preventDefault();
@@ -60,25 +60,25 @@ export default function Home() {
 
   return (
     <>
-      <header className="relative flex items-center max-w-[500px] justify-start w-full h-12 gap-3 px-4 text-left bg-slate-100">
+      <header className="relative flex h-12 w-full max-w-[500px] items-center justify-start gap-3 bg-slate-100 px-4 text-left">
         <FcMindMap size={30} />{" "}
         <h2 className="font-semibold"> A quien le debo?</h2>
       </header>
-      <div className=" w-screen h-full max-w-[500px] max-h-[700px] pb-6">
-        <main className="flex flex-col items-start w-full h-full px-6">
-          <h1 className="flex items-start self-start pt-8 text-3xl pb-14">
+      <div className=" h-full max-h-[700px] w-screen max-w-[500px] pb-6">
+        <main className="flex h-full w-full flex-col items-start px-6">
+          <h1 className="flex items-start self-start pb-14 pt-8 text-3xl">
             New event
           </h1>
           {!response && (
             <form
               onSubmit={handleSubmit}
-              className="flex flex-col justify-between w-full h-full"
+              className="flex h-full w-full flex-col justify-between"
             >
-              <div className="flex flex-col w-full gap-4">
+              <div className="flex w-full flex-col gap-4">
                 <div className="w-full">
                   <label
                     htmlFor="helper-text"
-                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
                   >
                     Event Name
                   </label>
@@ -104,11 +104,11 @@ export default function Home() {
                         target.setCustomValidity("");
                       }
                     }}
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500  dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
                   ></input>
                   <label
                     id="helper-text-explanation"
-                    className="text-xs text-gray-500 text dark:text-gray-400"
+                    className="text text-xs text-gray-500 dark:text-gray-400"
                   >
                     15 characters maximum .
                   </label>
@@ -116,7 +116,7 @@ export default function Home() {
                 <div className="w-full">
                   <label
                     htmlFor="helper-text"
-                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
                   >
                     Your nickname
                   </label>
@@ -136,14 +136,14 @@ export default function Home() {
                         target.setCustomValidity("");
                       }
                     }}
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500  dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
                   ></input>
                 </div>
               </div>
               {!isLoading ? (
                 <button
                   type="submit"
-                  className="w-full px-4 py-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700"
+                  className="w-full rounded bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700"
                 >
                   Create
                 </button>
@@ -151,12 +151,12 @@ export default function Home() {
                 <button
                   disabled
                   type="button"
-                  className=" w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 inline-flex items-center justify-center"
+                  className=" mr-2 inline-flex w-full items-center justify-center rounded-lg bg-blue-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                 >
                   <svg
                     aria-hidden="true"
                     role="status"
-                    className="inline w-4 h-4 mr-3 text-white animate-spin"
+                    className="mr-3 inline h-4 w-4 animate-spin text-white"
                     viewBox="0 0 100 101"
                     fill="none"
                     xmlns="http://www.w3.org/2000/svg"
@@ -191,7 +191,7 @@ export default function Home() {
               </Transition.Child>
 
               <div className="fixed inset-0 overflow-y-auto">
-                <div className="flex items-center justify-center min-h-full p-4 text-center">
+                <div className="flex min-h-full items-center justify-center p-4 text-center">
                   <Transition.Child
                     as={Fragment}
                     enter="ease-out duration-300"
@@ -201,7 +201,7 @@ export default function Home() {
                     leaveFrom="opacity-100 scale-100"
                     leaveTo="opacity-0 scale-95"
                   >
-                    <Dialog.Panel className="w-full max-w-md p-6 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-2xl">
+                    <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
                       <Dialog.Title
                         as="h3"
                         className="text-xl font-medium leading-6 text-gray-900"
@@ -219,7 +219,7 @@ export default function Home() {
                         the event in the future.
                       </Dialog.Description>
 
-                      <div className="flex items-center justify-between w-full mt-4">
+                      <div className="mt-4 flex w-full items-center justify-between">
                         <CopyToClipboard
                           text={linkToCopy}
                           onCopy={(text: string, bool: boolean) => {
@@ -230,7 +230,7 @@ export default function Home() {
                         >
                           <button
                             type="button"
-                            className="inline-flex justify-center px-4 py-2 text-sm font-medium text-green-900 bg-green-100 border border-transparent rounded-md hover:bg-green-200 focus:outline-none focus-visible:ring-2 "
+                            className="inline-flex justify-center rounded-md border border-transparent bg-green-100 px-4 py-2 text-sm font-medium text-green-900 hover:bg-green-200 focus:outline-none focus-visible:ring-2 "
                           >
                             Copy link
                           </button>
@@ -239,7 +239,7 @@ export default function Home() {
                         <Link href={`/event/${eventId}/spendings`}>
                           <button
                             type="button"
-                            className="inline-flex justify-center px-4 py-2 text-sm font-medium bg-transparent border rounded-md border-grey-800 text-grey-900 hover:bg-gray-100 focus:outline-none focus-visible:ring-2"
+                            className="border-grey-800 text-grey-900 inline-flex justify-center rounded-md border bg-transparent px-4 py-2 text-sm font-medium hover:bg-gray-100 focus:outline-none focus-visible:ring-2"
                           >
                             Continue
                           </button>

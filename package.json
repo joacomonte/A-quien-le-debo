@@ -11,6 +11,7 @@
   "dependencies": {
     "@headlessui/react": "^1.7.17",
     "@heroicons/react": "^2.0.18",
+    "@supabase/supabase-js": "^2.39.0",
     "framer-motion": "^10.16.5",
     "heroicons": "^2.0.18",
     "mongodb": "^6.2.0",
