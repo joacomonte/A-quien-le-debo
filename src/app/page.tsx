@@ -40,15 +40,13 @@ export default function Home() {
 
       const responseBody = await response.json();
 
-      if (responseBody.status !== "ok") {
-        alert(responseBody.msg);
-        return;
-      }
+      console.log("hola", responseBody);
+
       setIsOpen(true);
 
-      setResponse(responseBody.eventName);
+      setResponse(responseBody.data.event_name);
 
-      setEventId(responseBody.eventId);
+      setEventId(responseBody.data.eventId);
     } catch (error) {
       console.error("Error:", error);
     } finally {

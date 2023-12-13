@@ -6,28 +6,30 @@ export async function GET() {
 }
 
 export async function POST(req: Request) {
-  // try {
-
   const body = await req.json();
-  console.log(body.eventName);
+  const eventName = body.eventName;
 
-  return new Response(
-    JSON.stringify({
-      eventName: body.eventName,
+  const { data, error } = await supabase
+    .from("Events")
+    .insert([{ event_name: eventName }])
+    .select();
+
+  if (data) {
+    const response: ApiResponse = {
+      data: {
+        eventName: data[0].eventName,
+        eventId: data[0].eventId,
+      },
+      status: "ok",
+      message: "Event created",
+    };
+    return new Response(JSON.stringify(response));
+  } else {
+    const response: ApiResponse = {
+      data: null,
       status: "error",
-      msg: "Database request error",
-    }),
-  );
-
-  // Insert new event into Supabase
-  //   const { data, error } = await supabase
-  //     .from("Events")
-  //     .insert([{ event_name: eventName }]);
-
-  //   if (error) throw error;
-
-  // return res.status(200).json(data);
-  // } catch (error) {
-  //   return res.status(500).json({ error: error.message });
-  // }
+      message: error,
+    };
+    return new Response(JSON.stringify(response));
+  }
 }
