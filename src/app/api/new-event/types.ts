@@ -5,6 +5,8 @@ type ErrorDetails = {
 type EventResponseData = {
   eventName: string;
   eventId: string;
+  memberId: number;
+  memberName: string;
 };
 
 type PostgrestError = {
@@ -14,5 +16,5 @@ type PostgrestError = {
 type ApiResponse = {
   data: EventResponseData | null;
   status: string;
-  message: string | PostgrestError;
+  message: string | PostgrestError | null;
 };
