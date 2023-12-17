@@ -14,7 +14,13 @@ type PostgrestError = {
 };
 
 type ApiResponse = {
-  data: EventResponseData | null;
+  data: EventResponseData;
+  status: string;
+  message: string | PostgrestError | null;
+};
+
+type ApiResponseERROR = {
+  data: null;
   status: string;
   message: string | PostgrestError | null;
 };

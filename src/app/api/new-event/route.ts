@@ -35,7 +35,7 @@ export async function POST(req: Request) {
     };
     return new Response(JSON.stringify(response));
   } else {
-    const response: ApiResponse = {
+    const response: ApiResponseERROR = {
       data: null,
       status: "error",
       message: error,
