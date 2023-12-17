@@ -25,7 +25,7 @@ export default async function EventIdPage({ params: { eventId } }: Params) {
       },
     },
   );
-  const result = await response.json();
+  const result: ApiResponse<responseType> = await response.json();
   console.log(result);
 
   return (
