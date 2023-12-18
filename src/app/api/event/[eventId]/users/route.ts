@@ -14,16 +14,6 @@ run().catch((error: any) => console.error("Error occurred: ", error));
 // }
 // await delay(5000);
 
-export async function GET() {
-  const data = {
-    name: "john",
-  };
-  if (!(await isMongoConnected())) {
-    return new Response("MongoDB is not connected!");
-  }
-  return new Response(JSON.stringify(data));
-}
-
 export async function POST(req: Request, params: any) {
   if (!(await isMongoConnected())) {
     return new Response("MongoDB is not connected!");
@@ -47,7 +37,7 @@ export async function POST(req: Request, params: any) {
         data: { users: allUsers },
         status: "ok",
         msg: "response with only the users names",
-      })
+      }),
     );
   } catch (err) {
     console.log("Database request error:", err);
@@ -56,7 +46,7 @@ export async function POST(req: Request, params: any) {
         data: {},
         status: "error",
         msg: "Database request error",
-      })
+      }),
     );
   }
 }

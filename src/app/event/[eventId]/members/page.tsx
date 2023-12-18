@@ -1,4 +1,4 @@
-import UserList from "@/app/event/[eventId]/users/_components/UsersList";
+import UserList from "@/app/event/[eventId]/members/_components/UsersList";
 import { Suspense } from "react";
 
 type Params = {
@@ -7,7 +7,9 @@ type Params = {
   };
 };
 
-export default function Page({ params: { eventId } }: Params) {
+export default async function Page({ params: { eventId } }: Params) {
+  console.log("entrep");
+
   return (
     <div className=" h-[100vh] w-screen max-w-[500px] overflow-auto">
       <main className="flex h-full w-full flex-col items-start p-4">
@@ -28,7 +30,7 @@ export default function Page({ params: { eventId } }: Params) {
               </ul>
             }
           >
-            <UserList id={eventId} />
+            <UserList eventId={eventId} />
           </Suspense>
         </div>
       </main>

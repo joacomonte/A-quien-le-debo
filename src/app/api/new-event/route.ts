@@ -1,9 +1,8 @@
 import {
-  createEvent,
   createErrorResponse,
-  createMember,
   createSuccessResponse,
 } from "../_helpers/functions";
+import { createEvent, createMember } from "./functions";
 
 export async function GET() {
   return new Response("working");
@@ -25,19 +24,20 @@ export async function POST(req: Request) {
     return createErrorResponse(memberResponse.error);
   }
 
-  const { eventId, memberId, name } = memberResponse.data[0];
+  const { eventId, memberId, memberName } = memberResponse.data[0];
   const { eventName } = eventResponse.data[0];
 
-  const data: responseType = {
+  const data: EventAndMemberResponse = {
     eventName: eventName,
     eventId: eventId,
     memberId: memberId,
-    memberName: name,
+    memberName: memberName,
   };
+  console.log(data);
 
-  return createSuccessResponse<responseType>(
+  return createSuccessResponse<EventAndMemberResponse>(
     data,
-    memberResponse.status,
-    memberResponse.statusText,
+    "ok",
+    "Event and Member created successfuly",
   );
 }

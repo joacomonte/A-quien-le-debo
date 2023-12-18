@@ -1,4 +1,4 @@
-type responseType = {
+type EventAndMemberResponse = {
   eventName: string;
   eventId: string;
   memberId: number;
