@@ -1,7 +1,5 @@
 import NewSpend from "@/app/event/[eventId]/spendings/_components/NewSpend";
 import UserSpendsList from "@/app/event/[eventId]/spendings/_components/UserSpendsList";
-import UserList from "@/app/event/[eventId]/members/_components/UsersList";
-import { Suspense } from "react";
 
 type Params = {
   params: {
@@ -18,12 +16,12 @@ export default function Page({ params: { eventId } }: Params) {
         </h1>
         <div className="w-full">
           <UserSpendsList />
-          <NewSpend />
         </div>
         <div className="flex w-full gap-10 px-2 py-2">
           <h4 className="py-3 text-base font-medium">Total</h4>
           <h4 className="py-3 font-medium ">$9800</h4>
         </div>
+        <NewSpend eventId={eventId} />
       </main>
     </div>
   );

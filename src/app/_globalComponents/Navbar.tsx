@@ -44,12 +44,12 @@ export default function Navbar() {
 
         <Link
           className="group inline-flex flex-col items-center justify-center px-5 font-medium hover:bg-gray-50 dark:hover:bg-gray-800"
-          href={`/event/${eventId}/users`}
+          href={`/event/${eventId}/members`}
         >
           <div>
             <svg
               className={`mb-1 mt-1 fill-current group-hover:text-blue-500 ${
-                currentPage === "users" ? "text-blue-500" : "text-gray-500"
+                currentPage === "members" ? "text-blue-500" : "text-gray-500"
               }`}
               xmlns="http://www.w3.org/2000/svg"
               height="1.4em"

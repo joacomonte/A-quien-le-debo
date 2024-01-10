@@ -1,8 +1,9 @@
 "use client";
 
 import { Dialog, Transition, Listbox, Combobox } from "@headlessui/react";
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { CheckIcon, ChevronUpDownIcon } from "@heroicons/react/20/solid";
+import UserList from "../../members/_components/MembersList";
 
 type person = {
   id: number;
@@ -20,8 +21,28 @@ const people: person[] = [
   { id: 8, name: "Ottus" },
 ];
 
-export default function NewSpend() {
-  const [selectedPeople, setSelectedPeople] = useState<person[]>([]);
+export default function NewSpend({ eventId }: any) {
+  useEffect(() => {
+    async function getAllMembers() {
+      const response = await fetch(`/api/event/${eventId}/members`, {
+        cache: "no-store",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      const responseBody: ApiResponse<Member[]> = await response.json();
+      if (responseBody.status === "ok") {
+        setUsersList(responseBody.data.map((member: Member) => member));
+      }
+    }
+
+    getAllMembers();
+  }, [eventId]); // Dependency array with eventId
+
+  const [usersList, setUsersList] = useState<Member[] | null>(null);
+
+  const [selectedPeople, setSelectedPeople] = useState<Member[]>([]);
+
   const [isOpen, setIsOpen] = useState(false);
 
   const [whoPaid, setWhoPaid] = useState<person | null>(null);
@@ -30,9 +51,9 @@ export default function NewSpend() {
 
   const filteredPeople =
     query === ""
-      ? people
-      : people.filter((person) =>
-          person.name
+      ? usersList
+      : usersList?.filter((person) =>
+          person.memberName
             .toLowerCase()
             .replace(/\s+/g, "")
             .includes(query.toLowerCase().replace(/\s+/g, "")),
@@ -47,8 +68,8 @@ export default function NewSpend() {
   }
 
   const toggleSelectAll = () => {
-    if (selectedPeople.length === 0) {
-      setSelectedPeople([...people]);
+    if (selectedPeople?.length === 0) {
+      setSelectedPeople([...usersList]);
     } else {
       setSelectedPeople([]);
     }
@@ -114,7 +135,9 @@ export default function NewSpend() {
                             <div className="relative w-full cursor-default overflow-hidden rounded-lg  text-left shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75 focus-visible:ring-offset-2 focus-visible:ring-offset-teal-300 sm:text-sm">
                               <Combobox.Input
                                 className="w-full border-none bg-gray-50 py-2 pl-3 pr-10 text-sm leading-5 text-gray-900 focus:outline-none focus:ring-0"
-                                displayValue={(person: any) => person?.name}
+                                displayValue={(person: Member) =>
+                                  person?.memberName
+                                }
                                 onChange={(event) =>
                                   setQuery(event.target.value)
                                 }
@@ -126,17 +149,6 @@ export default function NewSpend() {
                                 />
                               </Combobox.Button>
                             </div>
-                            {/* <Combobox.Button className="relative z-30 w-full cursor-default rounded-lg bg-gray-50 py-2 pl-3 pr-10 text-left shadow-md focus:outline-none focus-visible:border-green-500 focus-visible:ring-2 focus-visible:ring-white/75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm">
-                              <span className="block truncate">
-                                {whoPaid?.name}
-                              </span>
-                              <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
-                                <ChevronUpDownIcon
-                                  className="h-5 w-5 text-gray-400"
-                                  aria-hidden="true"
-                                />
-                              </span>
-                            </Combobox.Button> */}
                             <Transition
                               as={Fragment}
                               leave="transition ease-in duration-100"
@@ -144,9 +156,19 @@ export default function NewSpend() {
                               leaveTo="opacity-0"
                             >
                               <Combobox.Options className="absolute z-30 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black/5 focus:outline-none sm:text-sm">
-                                {filteredPeople.map((person, personIdx) => (
+                                {!usersList && (
+                                  <li className=" relative cursor-default select-none py-2 pl-10 pr-4 text-gray-900">
+                                    Loading...
+                                  </li>
+                                )}
+                                {usersList?.length === 0 && (
+                                  <li className=" relative cursor-default select-none py-2 pl-10 pr-4 text-gray-900">
+                                    No existen miembros
+                                  </li>
+                                )}
+                                {filteredPeople?.map((person, index) => (
                                   <Combobox.Option
-                                    key={personIdx}
+                                    key={index}
                                     className={({ active }) =>
                                       `relative cursor-default select-none py-2 pl-10 pr-4 ${
                                         active
@@ -165,7 +187,7 @@ export default function NewSpend() {
                                               : "font-normal"
                                           }`}
                                         >
-                                          {person.name}
+                                          {person.memberName}
                                         </span>
                                         {selected ? (
                                           <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-green-600">
@@ -202,7 +224,7 @@ export default function NewSpend() {
                               key={i}
                               className=" mb-2 whitespace-nowrap rounded-full bg-gray-100 px-2.5 py-0.5 text-xs font-medium text-gray-800 dark:bg-gray-700 dark:text-gray-300"
                             >
-                              {p.name}
+                              {p.memberName}
                             </span>
                           ))}
                         </div>
@@ -214,13 +236,6 @@ export default function NewSpend() {
                         >
                           <div className="relative z-20 mt-1">
                             <div className="relative w-full cursor-default overflow-hidden rounded-lg  text-left shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75 focus-visible:ring-offset-2 focus-visible:ring-offset-teal-300 sm:text-sm">
-                              {/* <Listbox.Input
-                                className="w-full border-none bg-gray-50 py-2 pl-3 pr-10 text-sm leading-5 text-gray-900 focus:outline-none focus:ring-0"
-                                displayValue={(person: any) => person.name}
-                                onChange={(event) =>
-                                  setQuery(event.target.value)
-                                }
-                              /> */}
                               <Listbox.Button className="w-full border-none bg-gray-50 py-2 pl-3 pr-2 text-left text-sm leading-5 text-gray-900 focus:outline-none focus:ring-0">
                                 <span className="block truncate text-gray-500">
                                   Seleccione de la lista
@@ -259,12 +274,12 @@ export default function NewSpend() {
                                     ) : null}
                                   </div>
                                 )}
-                                {people.length === 0 && (
+                                {usersList?.length === 0 && (
                                   <div className="relative cursor-default select-none py-2 pl-10 pr-4">
                                     Sin coincidencias
                                   </div>
                                 )}
-                                {people.map((person, personIdx) => (
+                                {usersList?.map((person, personIdx) => (
                                   <Listbox.Option
                                     key={personIdx}
                                     className={({ active }) =>
@@ -285,7 +300,7 @@ export default function NewSpend() {
                                               : "font-normal"
                                           }`}
                                         >
-                                          {person.name}
+                                          {person.memberName}
                                         </span>
                                         {selected ? (
                                           <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-green-600">

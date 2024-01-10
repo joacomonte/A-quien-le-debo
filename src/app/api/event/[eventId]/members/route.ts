@@ -16,7 +16,7 @@ export async function GET(request: Request, params: Params) {
   if (allMembersResponse.error) {
     return createErrorResponse(allMembersResponse.error);
   }
-  const data: Members[] = allMembersResponse.data.map((member) => ({
+  const data: Member[] = allMembersResponse.data.map((member) => ({
     memberId: member.memberId,
     memberName: member.memberName,
   }));

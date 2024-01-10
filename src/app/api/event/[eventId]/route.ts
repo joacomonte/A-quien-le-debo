@@ -1,12 +1,6 @@
 import { ObjectId } from "mongodb";
-import { NextResponse } from "next/server";
 
-const {
-  closeDB,
-  isMongoConnected,
-  getEventsCollection,
-  run,
-} = require("@/app/lib/db");
+const { isMongoConnected, getEventsCollection, run } = require("@/app/lib/db");
 
 run().catch((error: any) => console.error("Error occurred: ", error));
 
@@ -31,7 +25,7 @@ export async function POST(req: Request, params: any) {
 
     const event = await events.findOne(parsedId);
 
-    return new NextResponse(JSON.stringify(event));
+    return new Response(JSON.stringify(event));
   } catch {
     console.log("error");
   }

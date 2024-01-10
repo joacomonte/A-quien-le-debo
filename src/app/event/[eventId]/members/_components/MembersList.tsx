@@ -5,12 +5,11 @@ import { MdPersonRemove } from "react-icons/md";
 import { MdOutlineAddCircleOutline } from "react-icons/md";
 import { motion } from "framer-motion";
 
-export default function UserList({ eventId }: any) {
-  const [users, setUsers] = useState([]);
+export default function MembersList({ eventId }: any) {
   const [isEditing, setIsEditing] = useState(false);
   const [newName, setNewName] = useState("");
   const inputRef = useRef<any>();
-  const [usersList, setUsersList] = useState<Members[]>([]);
+  const [membersList, setMemberList] = useState<Member[] | null>(null);
 
   useEffect(() => {
     getAllMembers();
@@ -24,14 +23,26 @@ export default function UserList({ eventId }: any) {
         "Content-Type": "application/json",
       },
     });
-    const responseBody: ApiResponse<Members[]> = await response.json();
+    const responseBody: ApiResponse<Member[]> = await response.json();
     if (responseBody.status === "ok") {
-      setUsersList(responseBody.data.map((member: Members) => member));
+      setMemberList(responseBody.data);
     }
   }
 
+  // TODO relplace with useOptimistic hook
+  // Creates the member locally with a temp name 'adding+name' the gets the data from the db and updates
   async function addMember(name: string) {
-    const response = await fetch(`/api/event/${eventId}/members`, {
+    if (membersList) {
+      setMemberList([
+        ...membersList,
+        {
+          memberId: 0,
+          memberName: `adding ${name}`,
+        },
+      ]);
+    }
+
+    await fetch(`/api/event/${eventId}/members`, {
       cache: "no-store",
       method: "POST",
       headers: {
@@ -44,7 +55,16 @@ export default function UserList({ eventId }: any) {
     getAllMembers();
   }
 
+  // TODO relplace with useOptimistic hook
+  // Creates the member locally with a temp name 'deleting+name' the gets the data from the db and updates
   async function removeMember(memberId: number) {
+    const updatedList: any = membersList?.map((user) =>
+      user.memberId === memberId
+        ? { ...user, memberName: "Deleting..." }
+        : user,
+    );
+    setMemberList(updatedList);
+
     const response = await fetch(`/api/event/${eventId}/members`, {
       cache: "no-store",
       method: "DELETE",
@@ -89,29 +109,29 @@ export default function UserList({ eventId }: any) {
 
   return (
     <>
-      {usersList.length > 0 ? (
+      {/* loading or null state */}
+      {!membersList && <p className="px-2 py-5 ">Cargando...</p>}
+
+      {/* if membersList has data */}
+      {membersList && (
         <ul role="list" className="divide-y divide-gray-200 ">
-          {usersList.map((user: Members, index) => (
-            <motion.li
-              key={index}
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-              className="px-2 py-4 "
-            >
-              <div className="flex items-center space-x-4 rtl:space-x-reverse">
-                <p className=" truncate text-base font-medium text-gray-900 ">
-                  {user.memberName}
-                </p>
-                <FaUserEdit className="cursor-pointer fill-slate-500" />
-                <MdPersonRemove
-                  onClick={() => removeMember(user.memberId)}
-                  className="cursor-pointer fill-red-500"
-                />
-                {/* <div className="inline-flex items-center text-base font-semibold text-gray-900 "></div> */}
-              </div>
-            </motion.li>
+          {/* If memberList empty */}
+          {!membersList.length && (
+            <p className="px-2 py-5">
+              No members found. Please add new members.
+            </p>
+          )}
+
+          {/* If memberList has members */}
+          {membersList.map((member) => (
+            <MemberItem
+              key={member.memberId}
+              member={member}
+              removeMember={removeMember}
+            />
           ))}
+
+          {/*  this is the add new member li */}
           <li
             className="px-2 py-5 "
             onClick={!isEditing ? handleEdit : undefined}
@@ -154,38 +174,36 @@ export default function UserList({ eventId }: any) {
             </div>
           </li>
         </ul>
-      ) : (
-        <p>No users found.</p>
       )}
     </>
   );
 }
 
-{
-  /* <div className="flex items-center space-x-4">
-  <p className="text-sm font-medium text-gray-900 truncate ">
-    {user.userName}
-  </p>
-  <p className="text-sm text-gray-500 truncate ">edit</p>
-</div> */
+interface MemberItemProps {
+  member: Member;
+  removeMember: (memberId: number) => void; // Adjust the type of memberId if necessary
 }
 
-// export default async function UserList({ id }: any) {
-//   async function fetchData(id: any) {
-//     const response = await fetch(
-//       `http://192.168.0.128:3000/api/event/${id}/users`,
-//       {
-//         cache: "no-store",
-//         method: "POST",
-//         headers: {
-//           "Content-Type": "application/json",
-//         },
-//       }
-//     );
-
-//     const result = await response.json();
-
-//     if (result.status === "ok") return result.data.users;
-//   }
-
-//   const users = await fetchData(id);
+// Define the MemberItem component
+const MemberItem: React.FC<MemberItemProps> = ({ member, removeMember }) => {
+  return (
+    <motion.li
+      key={member.memberId} // It's better to use a unique id than index for key
+      initial={{ opacity: 0, y: -20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+      className="px-2 py-4"
+    >
+      <div className="flex items-center space-x-4 rtl:space-x-reverse">
+        <p className="truncate text-base font-medium text-gray-900">
+          {member.memberName}
+        </p>
+        <FaUserEdit className="cursor-pointer fill-slate-500" />
+        <MdPersonRemove
+          onClick={() => removeMember(member.memberId)}
+          className="cursor-pointer fill-red-500"
+        />
+      </div>
+    </motion.li>
+  );
+};

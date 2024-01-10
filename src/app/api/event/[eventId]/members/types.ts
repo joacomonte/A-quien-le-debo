@@ -1,4 +1,4 @@
-type Members = {
+type Member = {
   memberName: string;
   memberId: number;
 };

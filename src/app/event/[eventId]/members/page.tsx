@@ -1,4 +1,4 @@
-import UserList from "@/app/event/[eventId]/members/_components/UsersList";
+import UserList from "@/app/event/[eventId]/members/_components/MembersList";
 import { Suspense } from "react";
 
 type Params = {
