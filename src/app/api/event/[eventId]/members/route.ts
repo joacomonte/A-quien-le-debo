@@ -27,9 +27,9 @@ export async function POST(req: Request, params: Params) {
   const { memberName } = await req.json();
   const { eventId } = params.params;
   const addMemberResponse = await addMember(eventId, memberName);
-  console.log(memberName);
-  console.log(eventId);
-  console.log(addMemberResponse);
+  console.log("member", memberName);
+  console.log("eventid", eventId);
+  console.log("response", addMemberResponse);
 
   return createSuccessResponse(addMemberResponse, "ok", "ok");
 }

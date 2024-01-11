@@ -1,19 +1,16 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
-import { SetStateAction, useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { FaUserEdit } from "react-icons/fa";
 import { MdPersonRemove } from "react-icons/md";
-import { MdOutlineAddCircleOutline } from "react-icons/md";
 import { motion } from "framer-motion";
+import AddMemberItem from "./AddMemberItem";
 
 export default function MembersList({ eventId }: any) {
-  const [isEditing, setIsEditing] = useState(false);
-  const [newName, setNewName] = useState("");
-  const inputRef = useRef<any>();
   const [membersList, setMemberList] = useState<Member[] | null>(null);
 
   useEffect(() => {
     getAllMembers();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   async function getAllMembers() {
@@ -27,32 +24,6 @@ export default function MembersList({ eventId }: any) {
     if (responseBody.status === "ok") {
       setMemberList(responseBody.data);
     }
-  }
-
-  // TODO relplace with useOptimistic hook
-  // Creates the member locally with a temp name 'adding+name' the gets the data from the db and updates
-  async function addMember(name: string) {
-    if (membersList) {
-      setMemberList([
-        ...membersList,
-        {
-          memberId: 0,
-          memberName: `adding ${name}`,
-        },
-      ]);
-    }
-
-    await fetch(`/api/event/${eventId}/members`, {
-      cache: "no-store",
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        memberName: name,
-      }),
-    });
-    getAllMembers();
   }
 
   // TODO relplace with useOptimistic hook
@@ -79,34 +50,6 @@ export default function MembersList({ eventId }: any) {
     getAllMembers();
   }
 
-  const handleEdit = () => {
-    setIsEditing(true);
-  };
-
-  const handleChange = (e: { target: { value: SetStateAction<string> } }) => {
-    setNewName(e.target.value);
-  };
-
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === "Enter") {
-      handleSubmit(e);
-    }
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    e.stopPropagation;
-    // setUsersList((prevUsersList) => [...prevUsersList, newName]);
-    setNewName("");
-    inputRef.current.focus();
-    addMember(newName);
-  };
-
-  const cancelSubmit = () => {
-    setIsEditing(false);
-    setNewName("");
-  };
-
   return (
     <>
       {/* loading or null state */}
@@ -132,46 +75,8 @@ export default function MembersList({ eventId }: any) {
           ))}
 
           {/*  this is the add new member li */}
-          <li
-            className="px-2 py-5 "
-            onClick={!isEditing ? handleEdit : undefined}
-          >
-            <div className="flex items-center space-x-1 rtl:space-x-reverse">
-              {isEditing ? (
-                <>
-                  <input
-                    value={newName}
-                    ref={inputRef}
-                    onChange={handleChange}
-                    onBlur={cancelSubmit}
-                    onKeyDown={handleKeyDown}
-                    autoFocus
-                    className="w-full truncate border-none py-2 text-sm font-medium text-gray-500 outline-none"
-                  />
-                  {newName.length > 2 ? (
-                    <button
-                      onMouseDown={handleSubmit}
-                      type="submit"
-                      className="whitespace-nowrap rounded-lg bg-green-700 px-5 py-2 text-center text-sm font-medium text-white hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300"
-                    >
-                      Add
-                    </button>
-                  ) : (
-                    <button
-                      disabled
-                      className="whitespace-nowrap rounded-lg bg-gray-100 px-3 py-2 text-center text-xs font-medium text-gray-800"
-                    >
-                      Too short
-                    </button>
-                  )}
-                </>
-              ) : (
-                <MdOutlineAddCircleOutline
-                  className="cursor-pointer fill-green-500"
-                  size={22}
-                />
-              )}
-            </div>
+          <li className="px-2 py-5 ">
+            <AddMemberItem eventId={eventId} onListUpdate={getAllMembers} />
           </li>
         </ul>
       )}
