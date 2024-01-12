@@ -1,7 +1,7 @@
 import {
   createErrorResponse,
   createSuccessResponse,
-} from "../_helpers/functions";
+} from "../_utils/functions";
 import { createEvent, createMember } from "./functions";
 
 export async function GET() {
@@ -37,7 +37,6 @@ export async function POST(req: Request) {
 
   return createSuccessResponse<EventAndMemberResponse>(
     data,
-    "ok",
     "Event and Member created successfuly",
   );
 }

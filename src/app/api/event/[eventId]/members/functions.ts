@@ -5,9 +5,27 @@ export async function getAllMembers(eventId: string) {
 }
 
 export async function addMember(eventId: string, memberName: string) {
-  return await supabase
-    .from("Members")
-    .insert({ eventId: eventId, memberName: memberName });
+  if (eventId === undefined || memberName === undefined)
+    return { error: "eventId and memberName are required" };
+
+  try {
+    // Checks duplicates
+    const existingMember = await supabase
+      .from("Members")
+      .select("*")
+      .eq("eventId", eventId)
+      .eq("memberName", memberName)
+      .single();
+
+    if (existingMember?.data !== null) {
+      return { error: "Duplicated" };
+    }
+
+    return await supabase.from("Members").insert({ eventId, memberName });
+  } catch (error) {
+    console.error("Error on database operation:", error);
+    return { error: "Error on database operation" };
+  }
 }
 
 export async function removeMember(eventId: string, memberId: number) {

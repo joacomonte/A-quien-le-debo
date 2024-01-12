@@ -81,12 +81,15 @@ export default function AddMemberItem({
           memberName: name,
         }),
       });
+      const resJSON = await response.json();
 
-      if (response.statusText === "OK") {
+      if (resJSON.status === "Duplicated") {
+        toast.warning(`Member ${name} already exists`);
+      } else if (resJSON.status === "OK") {
         onListUpdate();
         setNewName("");
       } else {
-        toast.warning("Eror adding member, try again!");
+        toast.error(resJSON.message);
       }
     } catch (error) {
       toast.error("Server failed :(... try later please");

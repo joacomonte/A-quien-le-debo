@@ -1,6 +1,6 @@
 type ApiResponse<DataType> = {
   data: DataType;
-  status: "ok";
+  status: string;
   message: string;
 };
 

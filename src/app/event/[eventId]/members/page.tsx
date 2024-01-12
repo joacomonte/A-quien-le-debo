@@ -17,10 +17,10 @@ export default async function Page({ params: { eventId } }: Params) {
           Miembros
         </h1>
         <div className="w-full overflow-y-auto rounded-lg border border-gray-200 bg-white px-3 shadow">
-          <Suspense
+          {/* <Suspense
             fallback={
               <ul role="list" className="divide-y divide-gray-200 ">
-                <li className="py-3 ">
+                <li className="px-2 py-5">
                   <div className="flex items-center space-x-4">
                     <p className="truncate text-sm font-medium text-gray-900 ">
                       Loading...
@@ -29,9 +29,9 @@ export default async function Page({ params: { eventId } }: Params) {
                 </li>
               </ul>
             }
-          >
-            <UserList eventId={eventId} />
-          </Suspense>
+          > */}
+          <UserList eventId={eventId} />
+          {/* </Suspense> */}
         </div>
       </main>
     </div>

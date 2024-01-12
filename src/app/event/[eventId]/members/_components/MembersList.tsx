@@ -21,7 +21,7 @@ export default function MembersList({ eventId }: any) {
       },
     });
     const responseBody: ApiResponse<Member[]> = await response.json();
-    if (responseBody.status === "ok") {
+    if (responseBody.message === "OK") {
       setMemberList(responseBody.data);
     }
   }

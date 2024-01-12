@@ -13,7 +13,7 @@ export default function UserSpendsList({ id }: any) {
               <div>
                 <span>Carne: </span>
                 <span className="text-sm font-bold ">$6400</span>
-                <span className="px-2 text-xs text-gray-600">(Monte)</span>
+                <span className="px-2 text-xs text-gray-600">(Paid Monte)</span>
               </div>
               <ChevronUpIcon
                 className={`${
@@ -43,7 +43,7 @@ export default function UserSpendsList({ id }: any) {
               <div>
                 <span>Carne: </span>
                 <span className="text-sm font-bold ">$6400</span>
-                <span className="px-2 text-xs text-gray-600">(Monte)</span>
+                <span className="px-2 text-xs text-gray-600">(Paid Monte)</span>
               </div>
               <ChevronUpIcon
                 className={`${
@@ -73,7 +73,7 @@ export default function UserSpendsList({ id }: any) {
               <div>
                 <span>Carne: </span>
                 <span className="text-sm font-bold ">$6400</span>
-                <span className="px-2 text-xs text-gray-600">(Monte)</span>
+                <span className="px-2 text-xs text-gray-600">(Paid Monte)</span>
               </div>
               <ChevronUpIcon
                 className={`${

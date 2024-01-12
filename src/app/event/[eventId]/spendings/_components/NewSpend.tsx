@@ -3,25 +3,27 @@
 import { Dialog, Transition, Listbox, Combobox } from "@headlessui/react";
 import { Fragment, useEffect, useState } from "react";
 import { CheckIcon, ChevronUpDownIcon } from "@heroicons/react/20/solid";
-import UserList from "../../members/_components/MembersList";
 
-type person = {
-  id: number;
-  name: string;
+type Person = {
+  memberId: number;
+  memberName: string;
 };
 
-const people: person[] = [
-  { id: 1, name: "Juanchi" },
-  { id: 2, name: "Patu" },
-  { id: 3, name: "Curcex Re-tarded" },
-  { id: 4, name: "Teti" },
-  { id: 5, name: "Johnny green" },
-  { id: 6, name: "Bart" },
-  { id: 7, name: "Tesla" },
-  { id: 8, name: "Ottus" },
-];
-
 export default function NewSpend({ eventId }: any) {
+  const [usersList, setUsersList] = useState<Member[] | null>(null);
+
+  const [selectedPeople, setSelectedPeople] = useState<Member[]>([]);
+
+  const [isOpen, setIsOpen] = useState(false);
+
+  const [whoPaid, setWhoPaid] = useState<Person | null>(null);
+
+  const [notes, setNotes] = useState<string>("");
+
+  const [amount, setAmount] = useState<number>();
+
+  const [query, setQuery] = useState("");
+
   useEffect(() => {
     async function getAllMembers() {
       const response = await fetch(`/api/event/${eventId}/members`, {
@@ -31,7 +33,8 @@ export default function NewSpend({ eventId }: any) {
         },
       });
       const responseBody: ApiResponse<Member[]> = await response.json();
-      if (responseBody.status === "ok") {
+
+      if (responseBody.message === "OK") {
         setUsersList(responseBody.data.map((member: Member) => member));
       }
     }
@@ -39,15 +42,25 @@ export default function NewSpend({ eventId }: any) {
     getAllMembers();
   }, [eventId]); // Dependency array with eventId
 
-  const [usersList, setUsersList] = useState<Member[] | null>(null);
+  async function submitSpend() {
+    console.log(whoPaid, notes, amount, selectedPeople);
 
-  const [selectedPeople, setSelectedPeople] = useState<Member[]>([]);
-
-  const [isOpen, setIsOpen] = useState(false);
-
-  const [whoPaid, setWhoPaid] = useState<person | null>(null);
-
-  const [query, setQuery] = useState("");
+    const response = await fetch(`/api/event/${eventId}/spendings`, {
+      cache: "no-store",
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        spenderId: whoPaid?.memberId,
+        title: notes,
+        amount: amount,
+        notes: notes,
+      }),
+    });
+    const responseBody = await response.json();
+    console.log(responseBody);
+  }
 
   const filteredPeople =
     query === ""
@@ -59,6 +72,14 @@ export default function NewSpend({ eventId }: any) {
             .includes(query.toLowerCase().replace(/\s+/g, "")),
         );
 
+  const toggleSelectAll = () => {
+    if (selectedPeople?.length === 0 && usersList) {
+      setSelectedPeople([...usersList]);
+    } else {
+      setSelectedPeople([]);
+    }
+  };
+
   function closeModal() {
     setIsOpen(false);
   }
@@ -67,13 +88,13 @@ export default function NewSpend({ eventId }: any) {
     setIsOpen(true);
   }
 
-  const toggleSelectAll = () => {
-    if (selectedPeople?.length === 0) {
-      setSelectedPeople([...usersList]);
-    } else {
-      setSelectedPeople([]);
+  function inputAmount(e: any) {
+    const input = e.target.value;
+    // Validate input to allow only numbers and one decimal point
+    if (/^\d*\.?\d*$/.test(input)) {
+      setAmount(input);
     }
-  };
+  }
 
   return (
     <>
@@ -86,7 +107,7 @@ export default function NewSpend({ eventId }: any) {
       </button>
 
       <Transition appear show={isOpen} as={Fragment}>
-        <Dialog as="div" className="relative z-30 " onClose={closeModal}>
+        <Dialog as="div" static className="relative z-30 " onClose={() => null}>
           <Transition.Child
             as={Fragment}
             enter="ease-out duration-300"
@@ -112,28 +133,25 @@ export default function NewSpend({ eventId }: any) {
                 <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
                   <Dialog.Title
                     as="h3"
-                    className="text-lg font-medium leading-6 text-gray-900"
+                    className="text-xl font-medium leading-6 text-gray-900"
                   >
-                    Nuevo gasto
+                    Add new spending
                   </Dialog.Title>
-                  <div className="pt-2">
-                    <p className="text-sm text-gray-500">
-                      Podrás editarlo mas adelante
-                    </p>
-                  </div>
-                  <div className="flex flex-col gap-4 py-6">
+                  <div className="pt-4"></div>
+                  <div className="flex flex-col gap-6 py-6">
                     <div>
                       <label
                         htmlFor="whoPaid"
-                        className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+                        className="mb-1 block text-sm font-medium text-gray-900 dark:text-white"
                       >
-                        Quien pagó?
+                        Who paid?
                       </label>
                       <div className="w-full">
                         <Combobox value={whoPaid} onChange={setWhoPaid}>
                           <div className="relative z-30 mt-1">
                             <div className="relative w-full cursor-default overflow-hidden rounded-lg  text-left shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75 focus-visible:ring-offset-2 focus-visible:ring-offset-teal-300 sm:text-sm">
                               <Combobox.Input
+                                placeholder="Search by name"
                                 className="w-full border-none bg-gray-50 py-2 pl-3 pr-10 text-sm leading-5 text-gray-900 focus:outline-none focus:ring-0"
                                 displayValue={(person: Member) =>
                                   person?.memberName
@@ -161,7 +179,8 @@ export default function NewSpend({ eventId }: any) {
                                     Loading...
                                   </li>
                                 )}
-                                {usersList?.length === 0 && (
+                                {(usersList?.length === 0 ||
+                                  filteredPeople?.length === 0) && (
                                   <li className=" relative cursor-default select-none py-2 pl-10 pr-4 text-gray-900">
                                     No existen miembros
                                   </li>
@@ -172,7 +191,7 @@ export default function NewSpend({ eventId }: any) {
                                     className={({ active }) =>
                                       `relative cursor-default select-none py-2 pl-10 pr-4 ${
                                         active
-                                          ? "bg-green-100 text-green-900"
+                                          ? "bg-green-50 text-green-900"
                                           : "text-gray-900"
                                       }`
                                     }
@@ -213,16 +232,16 @@ export default function NewSpend({ eventId }: any) {
                       <div>
                         <label
                           htmlFor="amount"
-                          className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+                          className="mb-1 block text-sm font-medium text-gray-900 dark:text-white"
                         >
-                          Entre quienes?
+                          Who should pay for this?
                         </label>
 
                         <div className="no-scrollbar flex w-full gap-2 overflow-x-auto [&::-webkit-scrollbar]:hidden">
                           {selectedPeople.map((p, i) => (
                             <span
                               key={i}
-                              className=" mb-2 whitespace-nowrap rounded-full bg-gray-100 px-2.5 py-0.5 text-xs font-medium text-gray-800 dark:bg-gray-700 dark:text-gray-300"
+                              className=" my-1 whitespace-nowrap rounded-full bg-gray-100 px-2.5 py-0.5 text-xs font-medium text-gray-800 dark:bg-gray-700 dark:text-gray-300"
                             >
                               {p.memberName}
                             </span>
@@ -237,8 +256,8 @@ export default function NewSpend({ eventId }: any) {
                           <div className="relative z-20 mt-1">
                             <div className="relative w-full cursor-default overflow-hidden rounded-lg  text-left shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75 focus-visible:ring-offset-2 focus-visible:ring-offset-teal-300 sm:text-sm">
                               <Listbox.Button className="w-full border-none bg-gray-50 py-2 pl-3 pr-2 text-left text-sm leading-5 text-gray-900 focus:outline-none focus:ring-0">
-                                <span className="block truncate text-gray-500">
-                                  Seleccione de la lista
+                                <span className="block truncate text-gray-400">
+                                  Select from the list
                                 </span>
                                 <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
                                   <ChevronUpDownIcon
@@ -264,7 +283,8 @@ export default function NewSpend({ eventId }: any) {
                                     {selectedPeople.length === 0
                                       ? "Select All"
                                       : "Deselect All"}
-                                    {selectedPeople.length === people.length ? (
+                                    {selectedPeople.length ===
+                                    usersList?.length ? (
                                       <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-green-600">
                                         <CheckIcon
                                           className="h-5 w-5 text-green-600"
@@ -324,40 +344,71 @@ export default function NewSpend({ eventId }: any) {
                     <div>
                       <label
                         htmlFor="first_name"
-                        className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+                        className="mb-1 block text-sm font-medium text-gray-900 dark:text-white"
                       >
-                        Titulo
+                        Spending title
                       </label>
                       <input
                         type="text"
                         id="first_name"
                         className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-green-500 focus:outline-none focus:ring-green-500 "
-                        placeholder="John"
+                        placeholder="Drinks"
                         required
                       ></input>
                     </div>
                     <div>
                       <label
                         htmlFor="amount"
-                        className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+                        className="text-sm font-medium text-gray-900 dark:text-white"
                       >
-                        Monto
+                        Amount{" "}
+                        <p className=" inline-block align-baseline text-xs text-gray-400">
+                          (Decimals with . )
+                        </p>
                       </label>
                       <input
-                        type="number"
+                        type="text"
                         id="amount"
-                        className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-green-500 focus:outline-none focus:ring-green-500 "
-                        placeholder="400"
+                        value={amount}
+                        onChange={inputAmount}
+                        className="mt-1 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-green-500 focus:outline-none focus:ring-green-500 "
+                        placeholder="100.50"
                         required
                       ></input>
                     </div>
+                    <div>
+                      <label
+                        htmlFor="notes"
+                        className="mb-1 block text-sm font-medium text-gray-900 dark:text-white"
+                      >
+                        Notes{" "}
+                        <p className=" inline-block align-baseline text-xs text-gray-400">
+                          (Optional)
+                        </p>
+                      </label>
+                      <textarea
+                        value={notes}
+                        onChange={(e) => setNotes(e.target.value)}
+                        id="notes"
+                        className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-green-500 focus:outline-none focus:ring-green-500 "
+                        placeholder="Fernet: $40"
+                        required
+                      ></textarea>
+                    </div>
                   </div>
 
-                  <div className="flex w-full items-end justify-end pt-4">
+                  <div className="flex w-full items-end justify-end gap-6 pt-4">
+                    <button
+                      type="button"
+                      className="flex justify-end rounded-md border border-transparent bg-gray-50 px-4 py-2 text-sm font-medium text-gray-900 outline-none hover:bg-gray-100 focus:outline-none focus-visible:ring-2 "
+                      onClick={closeModal}
+                    >
+                      Cancelar
+                    </button>
                     <button
                       type="button"
                       className="flex justify-end rounded-md border border-transparent bg-green-100 px-4 py-2 text-sm font-medium text-green-900 outline-none hover:bg-green-200 focus:outline-none focus-visible:ring-2 "
-                      onClick={closeModal}
+                      onClick={submitSpend}
                     >
                       Guardar
                     </button>
