@@ -10,13 +10,15 @@ type Person = {
 };
 
 export default function NewSpend({ eventId }: any) {
-  const [usersList, setUsersList] = useState<Member[] | null>(null);
+  const [allMembers, setAllMembers] = useState<Member[] | null>(null);
 
-  const [selectedPeople, setSelectedPeople] = useState<Member[]>([]);
+  const [consumers, setConsumers] = useState<Member[]>([]);
 
   const [isOpen, setIsOpen] = useState(false);
 
   const [whoPaid, setWhoPaid] = useState<Person | null>(null);
+
+  const [title, setTitle] = useState<string>("");
 
   const [notes, setNotes] = useState<string>("");
 
@@ -35,7 +37,7 @@ export default function NewSpend({ eventId }: any) {
       const responseBody: ApiResponse<Member[]> = await response.json();
 
       if (responseBody.message === "OK") {
-        setUsersList(responseBody.data.map((member: Member) => member));
+        setAllMembers(responseBody.data.map((member: Member) => member));
       }
     }
 
@@ -43,7 +45,7 @@ export default function NewSpend({ eventId }: any) {
   }, [eventId]); // Dependency array with eventId
 
   async function submitSpend() {
-    console.log(whoPaid, notes, amount, selectedPeople);
+    console.log(whoPaid, notes, amount, consumers);
 
     const response = await fetch(`/api/event/${eventId}/spendings`, {
       cache: "no-store",
@@ -53,7 +55,8 @@ export default function NewSpend({ eventId }: any) {
       },
       body: JSON.stringify({
         spenderId: whoPaid?.memberId,
-        title: notes,
+        consumers: consumers.map((consumer) => consumer.memberId),
+        title: title,
         amount: amount,
         notes: notes,
       }),
@@ -64,8 +67,8 @@ export default function NewSpend({ eventId }: any) {
 
   const filteredPeople =
     query === ""
-      ? usersList
-      : usersList?.filter((person) =>
+      ? allMembers
+      : allMembers?.filter((person) =>
           person.memberName
             .toLowerCase()
             .replace(/\s+/g, "")
@@ -73,10 +76,10 @@ export default function NewSpend({ eventId }: any) {
         );
 
   const toggleSelectAll = () => {
-    if (selectedPeople?.length === 0 && usersList) {
-      setSelectedPeople([...usersList]);
+    if (consumers?.length === 0 && allMembers) {
+      setConsumers([...allMembers]);
     } else {
-      setSelectedPeople([]);
+      setConsumers([]);
     }
   };
 
@@ -174,12 +177,12 @@ export default function NewSpend({ eventId }: any) {
                               leaveTo="opacity-0"
                             >
                               <Combobox.Options className="absolute z-30 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black/5 focus:outline-none sm:text-sm">
-                                {!usersList && (
+                                {!allMembers && (
                                   <li className=" relative cursor-default select-none py-2 pl-10 pr-4 text-gray-900">
                                     Loading...
                                   </li>
                                 )}
-                                {(usersList?.length === 0 ||
+                                {(allMembers?.length === 0 ||
                                   filteredPeople?.length === 0) && (
                                   <li className=" relative cursor-default select-none py-2 pl-10 pr-4 text-gray-900">
                                     No existen miembros
@@ -238,7 +241,7 @@ export default function NewSpend({ eventId }: any) {
                         </label>
 
                         <div className="no-scrollbar flex w-full gap-2 overflow-x-auto [&::-webkit-scrollbar]:hidden">
-                          {selectedPeople.map((p, i) => (
+                          {consumers.map((p, i) => (
                             <span
                               key={i}
                               className=" my-1 whitespace-nowrap rounded-full bg-gray-100 px-2.5 py-0.5 text-xs font-medium text-gray-800 dark:bg-gray-700 dark:text-gray-300"
@@ -249,8 +252,8 @@ export default function NewSpend({ eventId }: any) {
                         </div>
 
                         <Listbox
-                          value={selectedPeople}
-                          onChange={(v) => setSelectedPeople(v)}
+                          value={consumers}
+                          onChange={(v) => setConsumers(v)}
                           multiple
                         >
                           <div className="relative z-20 mt-1">
@@ -280,11 +283,10 @@ export default function NewSpend({ eventId }: any) {
                                     onClick={toggleSelectAll}
                                     className="relative cursor-default select-none py-2 pl-10 pr-4 font-medium hover:bg-green-50"
                                   >
-                                    {selectedPeople.length === 0
+                                    {consumers.length === 0
                                       ? "Select All"
                                       : "Deselect All"}
-                                    {selectedPeople.length ===
-                                    usersList?.length ? (
+                                    {consumers.length === allMembers?.length ? (
                                       <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-green-600">
                                         <CheckIcon
                                           className="h-5 w-5 text-green-600"
@@ -294,12 +296,12 @@ export default function NewSpend({ eventId }: any) {
                                     ) : null}
                                   </div>
                                 )}
-                                {usersList?.length === 0 && (
+                                {allMembers?.length === 0 && (
                                   <div className="relative cursor-default select-none py-2 pl-10 pr-4">
                                     Sin coincidencias
                                   </div>
                                 )}
-                                {usersList?.map((person, personIdx) => (
+                                {allMembers?.map((person, personIdx) => (
                                   <Listbox.Option
                                     key={personIdx}
                                     className={({ active }) =>
@@ -349,6 +351,8 @@ export default function NewSpend({ eventId }: any) {
                         Spending title
                       </label>
                       <input
+                        value={title}
+                        onChange={(e) => setTitle(e.target.value)}
                         type="text"
                         id="first_name"
                         className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-green-500 focus:outline-none focus:ring-green-500 "

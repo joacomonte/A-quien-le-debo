@@ -22,6 +22,6 @@ export function validateMemberName(memberName: string) {
   return null; // Indicates a valid request
 }
 
-export function notEmptyInput(value: any) {
+export function isEmptyInput(value: any) {
   return !value || value === "";
 }

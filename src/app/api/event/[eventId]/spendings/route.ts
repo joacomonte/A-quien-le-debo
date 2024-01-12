@@ -2,8 +2,8 @@ import {
   createErrorResponse,
   createSuccessResponse,
 } from "@/app/api/_utils/functions";
-import { addSpending } from "./functions";
-import { notEmptyInput } from "@/app/api/_utils/validations";
+import { addSpending, linkSpendingToConsumers } from "./functions";
+import { isEmptyInput } from "@/app/api/_utils/validations";
 
 type Params = {
   params: {
@@ -14,13 +14,11 @@ type Params = {
 export async function POST(req: Request, params: Params) {
   const { eventId } = params.params;
 
-  const { spenderId, title, amount, notes } = await req.json();
+  const { spenderId, consumers, title, amount, notes } = await req.json();
 
-  if (
-    notEmptyInput(spenderId) ||
-    notEmptyInput(title) ||
-    notEmptyInput(amount)
-  ) {
+  console.log("que llega: ", spenderId, consumers, title, amount, notes);
+
+  if (isEmptyInput(spenderId) || isEmptyInput(title) || isEmptyInput(amount)) {
     console.log(spenderId, title, amount);
     return createErrorResponse("Some required fields are missing");
   }
@@ -33,12 +31,16 @@ export async function POST(req: Request, params: Params) {
       amount,
       notes,
     );
-    console.log(addSpendingResponse);
 
-    return createSuccessResponse(
-      addSpendingResponse,
-      addSpendingResponse.statusText,
-    );
+    if (!addSpendingResponse.error) {
+      const spendId = addSpendingResponse.data[0].spendId;
+      try {
+        const linkResponse = await linkSpendingToConsumers(spendId, consumers);
+        return createSuccessResponse(linkResponse, "ok");
+      } catch {
+        console.log("error");
+      }
+    }
   } catch (error) {
     console.error("An error occurred:", error);
     return createErrorResponse(error);
