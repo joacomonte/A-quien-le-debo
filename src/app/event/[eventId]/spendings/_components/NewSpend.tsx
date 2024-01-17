@@ -22,7 +22,7 @@ export default function NewSpend({ eventId }: any) {
 
   const [notes, setNotes] = useState<string>("");
 
-  const [amount, setAmount] = useState<number>();
+  const [amount, setAmount] = useState<string>("");
 
   const [query, setQuery] = useState("");
 
@@ -104,9 +104,9 @@ export default function NewSpend({ eventId }: any) {
       <button
         type="button"
         onClick={openModal}
-        className=" flex w-full justify-center rounded-lg border  border-transparent bg-green-100 px-4 py-4  text-left text-sm font-medium text-green-900 hover:bg-green-200 focus:outline-none focus-visible:ring-2 "
+        className=" flex w-full justify-center rounded-xl border  border-transparent bg-green-100 px-4 py-4  text-left text-sm font-medium text-green-900 hover:bg-green-200 focus:outline-none focus-visible:ring-2 "
       >
-        Nuevo gasto
+        New spend
       </button>
 
       <Transition appear show={isOpen} as={Fragment}>

@@ -100,7 +100,7 @@ const MemberItem: React.FC<MemberItemProps> = ({ member, removeMember }) => {
       className="px-2 py-4"
     >
       <div className="flex items-center space-x-4 rtl:space-x-reverse">
-        <p className="truncate text-base font-medium text-gray-900">
+        <p className="truncate text-base font-thin text-gray-800">
           {member.memberName}
         </p>
         <FaUserEdit className="cursor-pointer fill-slate-500" />

@@ -3,13 +3,13 @@
 import { Combobox, Transition } from "@headlessui/react";
 import { ChevronUpDownIcon, CheckIcon } from "@heroicons/react/20/solid";
 import { Fragment, useState } from "react";
-import { TPerson } from "../_globalTypes/types";
+import { Person } from "../_globalTypes/types";
 
 interface SelectSearchUserProps {
-  onWhoPaidChange: (whoPaid: TPerson) => void;
+  onWhoPaidChange: (whoPaid: Person) => void;
 }
 
-const people: TPerson[] = [
+const people: Person[] = [
   { id: 1, name: "Juanchi" },
   { id: 2, name: "Patu" },
   { id: 3, name: "Curcex Re-tarded" },
@@ -23,9 +23,9 @@ const people: TPerson[] = [
 export default function SelectSearchUser({
   onWhoPaidChange,
 }: SelectSearchUserProps) {
-  const [whoPaid, setWhoPaid] = useState<TPerson>(null);
+  const [whoPaid, setWhoPaid] = useState<Person>(null);
 
-  const handleWhoPaidChange = (newWhoPaid: TPerson) => {
+  const handleWhoPaidChange = (newWhoPaid: Person) => {
     setWhoPaid(newWhoPaid);
     onWhoPaidChange(newWhoPaid); // Emit to parent
   };

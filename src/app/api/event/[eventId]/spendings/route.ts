@@ -2,7 +2,11 @@ import {
   createErrorResponse,
   createSuccessResponse,
 } from "@/app/api/_utils/functions";
-import { addSpending, linkSpendingToConsumers } from "./functions";
+import {
+  addSpending,
+  getSpendings,
+  linkSpendingToConsumers,
+} from "./functions";
 import { isEmptyInput } from "@/app/api/_utils/validations";
 
 type Params = {
@@ -11,15 +15,30 @@ type Params = {
   };
 };
 
+export async function GET(req: Request, params: Params) {
+  const { eventId } = params.params;
+
+  try {
+    const allSpendingsResponse = await getSpendings(eventId);
+
+    if (allSpendingsResponse.error)
+      return createErrorResponse(allSpendingsResponse.error);
+
+    return createSuccessResponse(
+      allSpendingsResponse,
+      "all spendings related to event",
+    );
+  } catch (error) {
+    return createErrorResponse(error);
+  }
+}
+
 export async function POST(req: Request, params: Params) {
   const { eventId } = params.params;
 
   const { spenderId, consumers, title, amount, notes } = await req.json();
 
-  console.log("que llega: ", spenderId, consumers, title, amount, notes);
-
   if (isEmptyInput(spenderId) || isEmptyInput(title) || isEmptyInput(amount)) {
-    console.log(spenderId, title, amount);
     return createErrorResponse("Some required fields are missing");
   }
 
@@ -32,14 +51,25 @@ export async function POST(req: Request, params: Params) {
       notes,
     );
 
-    if (!addSpendingResponse.error) {
-      const spendId = addSpendingResponse.data[0].spendId;
-      try {
-        const linkResponse = await linkSpendingToConsumers(spendId, consumers);
-        return createSuccessResponse(linkResponse, "ok");
-      } catch {
-        console.log("error");
-      }
+    if (addSpendingResponse.error)
+      return createErrorResponse(addSpendingResponse.error);
+
+    if (consumers.length === 0)
+      return createSuccessResponse(
+        addSpendingResponse,
+        "Spending added without consumers",
+      );
+
+    const spendId = addSpendingResponse.data[0].spendId;
+
+    try {
+      const linkResponse = await linkSpendingToConsumers(spendId, consumers);
+      return createSuccessResponse(
+        linkResponse,
+        "Spending added linked with consumers",
+      );
+    } catch {
+      console.log("error");
     }
   } catch (error) {
     console.error("An error occurred:", error);

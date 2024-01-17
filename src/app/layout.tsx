@@ -1,8 +1,17 @@
 import type { Metadata, Viewport } from "next";
-import { Inter } from "next/font/google";
+import { Inter, Poppins, IBM_Plex_Mono } from "next/font/google";
 import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
+
+const poppins = Poppins({
+  weight: "500",
+  subsets: ["latin"],
+});
+const IBM = IBM_Plex_Mono({
+  weight: "500",
+  subsets: ["latin"],
+});
 
 export const metadata: Metadata = {
   title: "Create Next Ape",
@@ -24,7 +33,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${inter.className} flex flex-col items-center w-screen h-[100svh] `}
+        className={`${poppins.className} flex h-[100svh] w-screen flex-col items-center `}
       >
         {children}
       </body>

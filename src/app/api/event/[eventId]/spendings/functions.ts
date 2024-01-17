@@ -52,3 +52,17 @@ export async function linkSpendingToConsumers(
     console.error("Error adding spending:", error);
   }
 }
+
+export async function getSpendings(eventId: string) {
+  try {
+    const res = await supabase
+      .from("Spendings")
+      .select()
+      .eq("eventId", eventId);
+
+    return res;
+  } catch (error) {
+    console.error("Error getting spendings:", error);
+    throw error;
+  }
+}

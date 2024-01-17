@@ -1,15 +1,15 @@
 "use client";
 import SelectSearchUser from "@/app/_globalComponents/SelectSearchUser";
-import { TPerson } from "@/app/_globalTypes/types";
+import { Person } from "@/app/_globalTypes/types";
 import { supabase } from "@/app/lib/supabaseClient";
 import { Dialog, Transition } from "@headlessui/react";
 import { Fragment, useEffect, useState } from "react";
 
 export default function PayTo() {
   const [isOpen, setIsOpen] = useState(true);
-  const [selectedPerson, setSelectedPerson] = useState<TPerson>(null);
+  const [selectedPerson, setSelectedPerson] = useState<Person>(null);
 
-  const handleWhoPaidChange = (person: TPerson | null) => {
+  const handleWhoPaidChange = (person: Person | null) => {
     setSelectedPerson(person);
     console.log(person);
   };

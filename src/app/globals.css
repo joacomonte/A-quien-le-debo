@@ -20,3 +20,7 @@ html, body{
 input{
   color: black;
 }
+
+*{
+  -webkit-tap-highlight-color: transparent;
+}
