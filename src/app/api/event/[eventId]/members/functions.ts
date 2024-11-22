@@ -35,3 +35,24 @@ export async function removeMember(eventId: string, memberId: number) {
     .eq("eventId", `${eventId}`)
     .eq("memberId", `${memberId}`);
 }
+
+export async function getMemberName(eventId: string, memberId: number) {
+  try {
+    const { data, error } = await supabase
+      .from("Members")
+      .select("memberName")
+      .eq("eventId", eventId)
+      .eq("memberId", memberId)
+      .single();
+
+    if (error) {
+      console.error("Error fetching member name:", error);
+      return { error: "Error fetching member name" };
+    }
+
+    return { memberName: data?.memberName || null };
+  } catch (error) {
+    console.error("Error on database operation:", error);
+    return { error: "Error on database operation" };
+  }
+}

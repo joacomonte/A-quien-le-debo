@@ -10,7 +10,7 @@ type LayoutProps = {
 };
 
 export default async function Layout({ children, params }: LayoutProps) {
-  const eventId = params.eventId;
+  const { eventId } = await params;
 
   return (
     <>

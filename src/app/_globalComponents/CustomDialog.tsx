@@ -1,4 +1,4 @@
-import { Dialog, Transition } from "@headlessui/react";
+import { Description, Dialog, DialogPanel, DialogTitle, Transition, TransitionChild } from "@headlessui/react";
 import Link from "next/link";
 import { FC, Fragment, useState } from "react";
 import CopyToClipboard from "react-copy-to-clipboard";
@@ -18,7 +18,7 @@ export const CustomDialog: FC<CustomDialogProps> = ({
   return (
     <Transition appear show={isOpen} as={Fragment}>
       <Dialog as="div" className="relative z-10" onClose={() => {}}>
-        <Transition.Child
+        <TransitionChild
           as={Fragment}
           enter="ease-out duration-300"
           enterFrom="opacity-0"
@@ -28,11 +28,11 @@ export const CustomDialog: FC<CustomDialogProps> = ({
           leaveTo="opacity-0"
         >
           <div className="fixed inset-0 bg-black/25" />
-        </Transition.Child>
+        </TransitionChild>
 
         <div className="fixed inset-0 overflow-y-auto">
           <div className="flex min-h-full items-center justify-center p-4 text-center">
-            <Transition.Child
+            <TransitionChild
               as={Fragment}
               enter="ease-out duration-300"
               enterFrom="opacity-0 scale-95"
@@ -41,23 +41,23 @@ export const CustomDialog: FC<CustomDialogProps> = ({
               leaveFrom="opacity-100 scale-100"
               leaveTo="opacity-0 scale-95"
             >
-              <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
-                <Dialog.Title
+              <DialogPanel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
+                <DialogTitle
                   as="h3"
                   className="text-xl font-medium leading-6 text-gray-900"
                 >
                   Event created! Please save the link.
-                </Dialog.Title>
+                </DialogTitle>
                 <div className="mt-2">
                   {/* <p className="text-sm text-gray-500">
                   The ID of <b className="text-blue-600 ">{response}</b> is:{" "}
                   {eventId}
                 </p> */}
                 </div>
-                <Dialog.Description className="py-4 pb-4 text-sm text-gray-500">
+                <Description className="py-4 pb-4 text-sm text-gray-500">
                   Make sure to keep the provided link for easy access to the
                   event in the future.
-                </Dialog.Description>
+                </Description>
 
                 <div className="mt-4 flex w-full items-center justify-between">
                   <CopyToClipboard
@@ -76,7 +76,7 @@ export const CustomDialog: FC<CustomDialogProps> = ({
                     </button>
                   </CopyToClipboard>
 
-                  <Link href={`/event/${eventIdProp}/spendings`}>
+                  <Link href={`/event/${eventIdProp}/members`}>
                     <button
                       type="button"
                       className="border-grey-800 text-grey-900 inline-flex justify-center rounded-md border bg-transparent px-4 py-2 text-sm font-medium hover:bg-gray-100 focus:outline-none focus-visible:ring-2"
@@ -85,8 +85,8 @@ export const CustomDialog: FC<CustomDialogProps> = ({
                     </button>
                   </Link>
                 </div>
-              </Dialog.Panel>
-            </Transition.Child>
+              </DialogPanel>
+            </TransitionChild>
           </div>
         </div>
       </Dialog>

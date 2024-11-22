@@ -1,3 +1,31 @@
 {
-    "plugins": ["prettier-plugin-tailwindcss"]
-  }
+  "printWidth": 400,
+  "singleQuote": true,
+  "bracketSpacing": true,
+  "tabWidth": 2,
+  "useTabs": false,
+  "overrides": [
+    {
+      "files": "*.module.ts",
+      "options": {
+        "printWidth": 100,
+        "trailingComma": "all",
+        "parser": "typescript",
+        "singleAttributePerLine": false,
+        "arrowParens": "always",
+        "bracketSameLine": false
+      }
+    },
+    {
+      "files": ["*.html", "*.component.html"],
+      "options": {
+        "printWidth": 400,
+        "parser": "angular",
+        "singleAttributePerLine": true,
+        "bracketSameLine": true,
+        "htmlWhitespaceSensitivity": "strict"
+      }
+    }
+  ]
+}
+
