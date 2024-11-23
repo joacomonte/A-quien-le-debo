@@ -27,7 +27,8 @@ async function getAllSpendings(eventId: string) {
   }
 }
 
-export default async function Page({ params: { eventId } }: Params) {
+export default async function Page({ params }: Params) {
+  const { eventId } = await params;
   const { data } = await getAllSpendings(eventId);
   const spendings = data?.data || [];
 

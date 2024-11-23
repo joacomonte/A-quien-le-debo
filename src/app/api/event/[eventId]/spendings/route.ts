@@ -16,7 +16,7 @@ type Params = {
 };
 
 export async function GET(req: Request, params: Params) {
-  const { eventId } = params.params;
+  const { eventId } = await params.params;
 
   try {
     const allSpendingsResponse = await getSpendings(eventId);

@@ -7,34 +7,36 @@ type PageProps = {
   };
 };
 
-async function fetchEventData(eventId: string) {
-  try {
-    const response = await fetch(`http://localhost:3000/api/event/${eventId}/members`, {
-      cache: 'no-store',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
+// async function fetchEventData(eventId: string) {
+//   try {
+//     const response = await fetch(`http://localhost:3000/api/event/${eventId}/members`, {
+//       cache: 'no-store',
+//       headers: {
+//         'Content-Type': 'application/json',
+//       },
+//     });
 
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
+//     if (!response.ok) {
+//       throw new Error(`HTTP error! status: ${response.status}`);
+//     }
 
-    const responseBody = await response.json();
-    return responseBody;
-  } catch (error) {
-    console.error('Error fetching event data:', error);
-    throw error;
-  }
-}
+//     const responseBody = await response.json();
+//     return responseBody;
+//   } catch (error) {
+//     console.error('Error fetching event data:', error);
+//     throw error;
+//   }
+// }
 
 export default async function PayTo({ params }: PageProps) {
   const { eventId } = await params;
-  const eventData = await fetchEventData(eventId);
+  // const eventData = await fetchEventData(eventId);
 
   return (
-    <div>
-      <p>{eventId}</p>
+    <div className="flex flex-col  justify-start">
+      <br></br>
+      <h1 className="text-4xl font-bold">WHO ARE YOU???</h1>
+      <br></br>
       <BalanceCalculation eventId={eventId}/>
     </div>
   );
