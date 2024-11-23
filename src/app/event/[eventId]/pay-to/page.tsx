@@ -1,46 +1,75 @@
-"use client";
-import SelectSearchUser from "@/app/_globalComponents/SelectSearchUser";
-import { Person } from "@/app/_globalTypes/types";
-import { supabase } from "@/app/lib/supabaseClient";
-import { Dialog, Transition } from "@headlessui/react";
-import { Fragment, useEffect, useState } from "react";
+import BalanceCalculation from "./_components/BalanceCalculation";
 
-export default function PayTo() {
-  const [isOpen, setIsOpen] = useState(true);
-  const [selectedPerson, setSelectedPerson] = useState<Person>(null);
 
-  const handleWhoPaidChange = (person: Person | null) => {
-    setSelectedPerson(person);
-    console.log(person);
+type PageProps = {
+  params: {
+    eventId: string;
   };
+};
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const { data, error } = await supabase.from("Events").select("*");
+async function fetchEventData(eventId: string) {
+  try {
+    const response = await fetch(`http://localhost:3000/api/event/${eventId}/members`, {
+      cache: 'no-store',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
 
-      if (error) console.error(error);
-      else console.log(data);
-    };
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
 
-    fetchData();
-  }, []);
+    const responseBody = await response.json();
+    return responseBody;
+  } catch (error) {
+    console.error('Error fetching event data:', error);
+    throw error;
+  }
+}
+
+export default async function PayTo({ params }: PageProps) {
+  const { eventId } = await params;
+  const eventData = await fetchEventData(eventId);
 
   return (
-    <div className=" h-[100vh] w-screen max-w-[500px] overflow-auto">
-      <main className="flex h-full w-full flex-col  items-start p-4">
-        <h1 className="flex items-start self-start pb-8 pt-14 text-3xl font-bold">
-          Gastos del evento
-        </h1>
-        <div>
-          <label
-            htmlFor="amount"
-            className="mb-2 block pl-2 text-sm font-medium text-gray-900 dark:text-white"
-          >
-            Quien sos?
-          </label>
-          <div className="w-56">
-            <SelectSearchUser onWhoPaidChange={handleWhoPaidChange} />
-          </div>
+    <div>
+      <p>{eventId}</p>
+      <BalanceCalculation eventId={eventId}/>
+    </div>
+  );
+}
+
+
+//   return (
+//     <div>hola</div>
+//     <div className=" h-[100vh] w-screen max-w-[500px] overflow-auto">
+//       <main className="flex h-full w-full flex-col  items-start p-4">
+//         <h1 className="flex items-start self-start pb-8 pt-14 text-3xl font-bold">
+//           Gastos del evento
+//         </h1>
+//         <div>
+//           <label
+//             htmlFor="amount"
+//             className="mb-2 block pl-2 text-sm font-medium text-gray-900 dark:text-white"
+//           >
+//             Quien sos?
+//           </label>
+//           <div className="w-56">
+//             <SelectSearchUser onWhoPaidChange={handleWhoPaidChange} />
+//           </div>
+
+//         </div>
+//         <div className="flex w-full px-2 py-4">
+//           {selectedPerson && <p> Si sos {selectedPerson.name} debes $3600 </p>}
+//         </div>
+//       </main>
+//     </div>
+//   );
+// }
+
+
+
           {/* <Transition appear show={isOpen} as={Fragment}>
             <Dialog as="div" className="relative z-10" onClose={() => {}}>
               <Transition.Child
@@ -96,11 +125,3 @@ export default function PayTo() {
               </div>
             </Dialog>
           </Transition> */}
-        </div>
-        <div className="flex w-full px-2 py-4">
-          {selectedPerson && <p> Si sos {selectedPerson.name} debes $3600 </p>}
-        </div>
-      </main>
-    </div>
-  );
-}

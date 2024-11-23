@@ -30,7 +30,6 @@ export default function UserSpendsList({ title, notes, amount, whoPaid, eventId 
             throw new Error(`HTTP error ${res.status}`);
           }
           const data = await res.json();
-          console.log('resssss', data);
 
           setWhoPaidName(data.data);
         } catch (error) {

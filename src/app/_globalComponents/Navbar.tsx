@@ -8,7 +8,6 @@ export default function Navbar() {
   const paths = pathname.split("/");
   const eventId = paths[2] ? paths[2] : null; // Check if the index exists
   const currentPage = paths[3] ? paths[3] : null; // Check if the index exists
-  console.log(currentPage);
 
   {
     /* {latestPathWord && <p>Current pathname: {latestPathWord}</p>} */

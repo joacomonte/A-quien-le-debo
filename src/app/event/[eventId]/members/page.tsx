@@ -1,14 +1,14 @@
 import UserList from "@/app/event/[eventId]/members/_components/MembersList";
 import { Suspense } from "react";
 
-type Params = {
+type PageProps = {
   params: {
     eventId: string;
   };
 };
 
-export default async function Page({ params: { eventId } }: Params) {
-  console.log("entrep");
+export default async function Page({ params }: PageProps) {
+  const { eventId } = await params;
 
   return (
     <div className=" h-[100vh] w-screen max-w-[500px] overflow-auto">

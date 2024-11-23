@@ -32,8 +32,6 @@ export default function Home() {
       });
       const responseBody: ApiResponse<EventAndMemberResponse> =
         await response.json();
-
-      console.log(responseBody);
       toast.success("Event created successfully");
       setIsDialogOpen(true);
       setEventId(responseBody.data.eventId);

@@ -9,8 +9,6 @@ type Params = {
 };
 
 async function getAllSpendings(eventId: string) {
-  console.log('entre');
-
   try {
     const response = await fetch(`http://localhost:3000/api/event/${eventId}/spendings`, {
       cache: 'no-store',
@@ -20,18 +18,21 @@ async function getAllSpendings(eventId: string) {
     });
 
     const responseBody = await response.json();
-    console.log('res', responseBody);
+
 
     return responseBody;
   } catch (error) {
     console.error('Error fetching spendings:', error);
-    throw error; // You can handle the error according to your needs
+    throw error;
   }
 }
 
 export default async function Page({ params: { eventId } }: Params) {
   const { data } = await getAllSpendings(eventId);
   const spendings = data?.data || [];
+
+
+  const totalAmount = spendings.reduce((total: any, spending: any) => total + spending.amount, 0);
 
   // Server Action for revalidation
   async function revalidateData() {
@@ -55,6 +56,7 @@ export default async function Page({ params: { eventId } }: Params) {
               eventId={eventId}
             />
           ))}
+          <div className="pl-2 pt-2">Total: {totalAmount}</div>
         </div>
         <NewSpend eventId={eventId} onDataChange={revalidateData} />
       </main>

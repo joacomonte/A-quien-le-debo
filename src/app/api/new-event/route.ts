@@ -33,7 +33,6 @@ export async function POST(req: Request) {
     memberId: memberId,
     memberName: memberName,
   };
-  console.log(data);
 
   return createSuccessResponse<EventAndMemberResponse>(
     data,

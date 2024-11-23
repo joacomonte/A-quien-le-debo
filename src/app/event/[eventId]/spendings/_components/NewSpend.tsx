@@ -69,12 +69,22 @@ export default function NewSpend({ eventId, onDataChange: triggerParentUpdate }:
       }),
     });
     const responseBody = await response.json();
-    console.log('res', responseBody);
+
     // Check if the response status is 201 (Created)
     if (responseBody.data.status === 201) {
+        // Clear input fields and state variables
+      setConsumers([]);
+      setWhoPaid(null);
+      setTitle('');
+      setNotes('');
+      setAmount('');
+      setQuery('');
+      setSubmitButtonLoading(false)
+
       closeModal();
       toast.success('Spending added successfully!');
       triggerParentUpdate()
+
     } else {
       toast.error('Failed to add spending. Please try again.');
     }

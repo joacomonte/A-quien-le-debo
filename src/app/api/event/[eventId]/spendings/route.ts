@@ -26,7 +26,7 @@ export async function GET(req: Request, params: Params) {
 
     return createSuccessResponse(
       allSpendingsResponse,
-      "all spendings related to event",
+      "Returned all spendings from this event",
     );
   } catch (error) {
     return createErrorResponse(error);

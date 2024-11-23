@@ -12,7 +12,7 @@ type Params = {
 };
 
 export async function GET(request: Request, params: Params) {
-  const { eventId } = params.params;
+  const { eventId } = await params.params;
   const allMembersResponse = await getAllMembers(eventId);
 
   if (allMembersResponse.error)
@@ -27,8 +27,8 @@ export async function GET(request: Request, params: Params) {
 }
 
 export async function POST(req: Request, params: Params) {
-  const { memberName } = await req.json();
   const { eventId } = params.params;
+  const { memberName } = await req.json();
 
   const validationError = validateMemberName(memberName);
 
@@ -41,8 +41,6 @@ export async function POST(req: Request, params: Params) {
     if (addMemberResponse?.error) {
       return createErrorResponse(addMemberResponse.error);
     }
-
-    console.log("what happened", addMemberResponse);
 
     return createSuccessResponse(addMemberResponse, "OK");
   } catch (error) {

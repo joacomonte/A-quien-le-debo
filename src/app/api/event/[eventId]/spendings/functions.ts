@@ -18,7 +18,6 @@ export async function addSpending(
         notes: notes,
       })
       .select();
-    console.log("res de add spending", res);
 
     return res;
   } catch (error) {
@@ -37,15 +36,12 @@ export async function linkSpendingToConsumers(
     memberId: parseInt(memberId),
   }));
 
-  console.log("array", spendConsumersData);
-
   // Use upsert to insert multiple rows
   try {
     // Assuming the table name is "spendConsumers"
     const res = await supabase
       .from("spendConsumers")
       .upsert(spendConsumersData);
-    console.log("link", res);
 
     return res;
   } catch (error) {
