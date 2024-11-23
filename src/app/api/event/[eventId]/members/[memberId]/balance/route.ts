@@ -13,7 +13,7 @@ export async function GET(request: Request, { params }: { params: Promise<{ even
 
   const getMemberBalanceResponse = await getMemberBalance(eventId, memberId);
 
-  return new Response(JSON.stringify(createSuccessResponse(getMemberBalanceResponse, 'OK')), { status: 200, headers: { 'Content-Type': 'application/json' } });
+  return createSuccessResponse(getMemberBalanceResponse, 'OK');
 }
 
 // export async function GET(request: Request, params: Params) {

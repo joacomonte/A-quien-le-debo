@@ -4,7 +4,6 @@ import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrig
 
 import { useEffect, useState } from 'react';
 
-
 type Member = {
   memberName: string;
   memberId: number;
@@ -25,7 +24,7 @@ export default function BalanceCalculation(eventId: any) {
       if (memberIdSelected) {
         try {
           const response = await fetch(`/api/event/${eventId.eventId}/members/${memberIdSelected}/balance`, {
-            method: 'POST',
+            method: 'GET',
             headers: {
               'Content-Type': 'application/json',
             },
@@ -35,7 +34,6 @@ export default function BalanceCalculation(eventId: any) {
           if (responseBody.message === 'OK') {
             setBalance(responseBody.data);
           }
-          
         } catch (error) {
           console.error('Error fetching member data:', error);
         }
@@ -62,7 +60,7 @@ export default function BalanceCalculation(eventId: any) {
   }, [eventId]);
 
   return (
-    <div className='max-w-[500px]'>
+    <>
       <Select onValueChange={handleMemberSelect}>
         <SelectTrigger className="w-[280px]">
           <SelectValue placeholder="Selecciona una persona" />
@@ -76,12 +74,7 @@ export default function BalanceCalculation(eventId: any) {
         </SelectContent>
       </Select>
       <br></br>
-
-      {balance ? 
-        <h1>Tu balance es: {balance}</h1> 
-        :
-        <h1>Para saber tu balance primero selecciona quien sos, idiota.</h1>
-      }
-    </div>
+      {balance ? <h1>Tu balance es: {balance}</h1> : <h1>Tu balance es: Selecciona una persona</h1>}
+    </>
   );
 }
