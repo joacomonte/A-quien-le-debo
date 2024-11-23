@@ -14,6 +14,7 @@ export default function BalanceCalculation(eventId: any) {
   const [memberIdSelected, setMemberIdSelected] = useState<string | null>(null);
   const [allMembers, setAllMembers] = useState<Member[] | null>(null);
   const [balance, setBalance] = useState<number | null>(null);
+  const [balanceLoading, setBalanceLoading] = useState<boolean>(false);
 
   const handleMemberSelect = (value: any) => {
     setMemberIdSelected(value);
@@ -22,6 +23,7 @@ export default function BalanceCalculation(eventId: any) {
   useEffect(() => {
     const getMemberbalance = async () => {
       if (memberIdSelected) {
+        setBalanceLoading(true);
         try {
           const response = await fetch(`/api/event/${eventId.eventId}/members/${memberIdSelected}/balance`, {
             method: 'GET',
@@ -37,6 +39,7 @@ export default function BalanceCalculation(eventId: any) {
         } catch (error) {
           console.error('Error fetching member data:', error);
         }
+        setBalanceLoading(false);
       }
     };
     getMemberbalance();
@@ -74,7 +77,7 @@ export default function BalanceCalculation(eventId: any) {
         </SelectContent>
       </Select>
       <br></br>
-      {balance ? <h1>Tu balance es: {balance}</h1> : <h1>Tu balance es: Selecciona una persona</h1>}
+      {balanceLoading ? <h1>Cargando balance...</h1> : balance !== null ? <h1>Tu balance es: {balance}</h1> : <h1>Tu balance es: Selecciona una persona</h1>}{' '}
     </>
   );
 }
