@@ -44,7 +44,7 @@ export default function Home() {
   return (
     <>
       <header className="relative flex h-12 w-full max-w-[500px] items-center justify-start gap-3 bg-slate-100 px-4 text-left">
-        <FcMindMap size={30} /> <h2 className="font-semibold"> A quien le debo?</h2>
+        <FcMindMap size={30} /> <h2 className="font-medium">Paga diosito</h2>
       </header>
       <div className=" h-full max-h-[700px] w-screen max-w-[500px] pb-6">
         <main className="flex h-full w-full flex-col items-start px-6">

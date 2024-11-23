@@ -46,7 +46,7 @@ export const CustomDialog: FC<CustomDialogProps> = ({
                   as="h3"
                   className="text-xl font-medium leading-6 text-gray-900"
                 >
-                  Event created! Please save the link.
+                  Evento creado! Por favor guardá el link.
                 </DialogTitle>
                 <div className="mt-2">
                   {/* <p className="text-sm text-gray-500">
@@ -55,8 +55,7 @@ export const CustomDialog: FC<CustomDialogProps> = ({
                 </p> */}
                 </div>
                 <Description className="py-4 pb-4 text-sm text-gray-500">
-                  Make sure to keep the provided link for easy access to the
-                  event in the future.
+                  Guardá el link para poder volver a entrar al evento mas tarde.
                 </Description>
 
                 <div className="mt-4 flex w-full items-center justify-between">
