@@ -14,6 +14,7 @@ export default function BalanceCalculation(eventId: any) {
   // const [memberId, setMemberId] = useState('1398');
   const [memberIdSelected, setMemberIdSelected] = useState<string | null>(null);
   const [allMembers, setAllMembers] = useState<Member[] | null>(null);
+  const [balance, setBalance] = useState<number | null>(null);
 
   const handleMemberSelect = (value: any) => {
     setMemberIdSelected(value);
@@ -29,9 +30,12 @@ export default function BalanceCalculation(eventId: any) {
               'Content-Type': 'application/json',
             },
           });
-          const data = await response.json();
-          // Handle the fetched data
-          console.log(data);
+          const responseBody = await response.json();
+
+          if (responseBody.message === 'OK') {
+            setBalance(responseBody.data);
+          }
+          
         } catch (error) {
           console.error('Error fetching member data:', error);
         }
@@ -58,7 +62,7 @@ export default function BalanceCalculation(eventId: any) {
   }, [eventId]);
 
   return (
-    <div>
+    <div className='max-w-[500px]'>
       <Select onValueChange={handleMemberSelect}>
         <SelectTrigger className="w-[280px]">
           <SelectValue placeholder="Selecciona una persona" />
@@ -71,6 +75,13 @@ export default function BalanceCalculation(eventId: any) {
           ))}
         </SelectContent>
       </Select>
+      <br></br>
+
+      {balance ? 
+        <h1>Tu balance es: {balance}</h1> 
+        :
+        <h1>Para saber tu balance primero selecciona quien sos, idiota.</h1>
+      }
     </div>
   );
 }
