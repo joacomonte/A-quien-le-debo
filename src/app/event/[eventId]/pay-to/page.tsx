@@ -2,35 +2,12 @@ import BalanceCalculation from "./_components/BalanceCalculation";
 
 
 type PageProps = {
-  params: {
-    eventId: string;
-  };
+  params: Promise<{ eventId: string }>
 };
 
-// async function fetchEventData(eventId: string) {
-//   try {
-//     const response = await fetch(`http://localhost:3000/api/event/${eventId}/members`, {
-//       cache: 'no-store',
-//       headers: {
-//         'Content-Type': 'application/json',
-//       },
-//     });
-
-//     if (!response.ok) {
-//       throw new Error(`HTTP error! status: ${response.status}`);
-//     }
-
-//     const responseBody = await response.json();
-//     return responseBody;
-//   } catch (error) {
-//     console.error('Error fetching event data:', error);
-//     throw error;
-//   }
-// }
-
 export default async function PayTo({ params }: PageProps) {
+
   const { eventId } = await params;
-  // const eventData = await fetchEventData(eventId);
 
   return (
     <div className="flex flex-col  justify-start">

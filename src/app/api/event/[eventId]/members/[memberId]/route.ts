@@ -1,6 +1,5 @@
-import { createErrorResponse, createSuccessResponse } from "@/app/api/_utils/functions";
-import { getMemberName } from "../functions";
-
+import { createErrorResponse, createSuccessResponse } from '@/app/api/_utils/functions';
+import { getMemberName } from '../functions';
 
 type Params = {
   params: {
@@ -9,18 +8,15 @@ type Params = {
   };
 };
 
-
-export async function GET(request: Request, params: Params) {
-  const { eventId, memberId } = await params.params;
+export async function GET(request: Request, { params }: { params: Promise<{ eventId: string; memberId: string }> }) {
+  const { eventId, memberId } = await params;
 
   if (memberId) {
     const { memberName, error } = await getMemberName(eventId, parseInt(memberId));
     if (error) {
       return createErrorResponse(error);
     }
-    return createSuccessResponse(memberName, "OK");
+    return createSuccessResponse(memberName, 'OK');
   }
-  return createErrorResponse("memberId is required");
+  return createErrorResponse('memberId is required');
 }
-
-

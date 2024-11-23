@@ -15,8 +15,8 @@ type Params = {
   };
 };
 
-export async function GET(req: Request, params: Params) {
-  const { eventId } = await params.params;
+export async function GET(request: Request, { params }: { params: Promise<{ eventId: string }> }) {
+  const { eventId } = await params;
 
   try {
     const allSpendingsResponse = await getSpendings(eventId);
@@ -33,10 +33,10 @@ export async function GET(req: Request, params: Params) {
   }
 }
 
-export async function POST(req: Request, params: Params) {
-  const { eventId } = params.params;
+export async function POST(request: Request, { params }: { params: Promise<{ eventId: string }> }) {
+  const { eventId } = await params;
 
-  const { spenderId, consumers, title, amount, notes } = await req.json();
+  const { spenderId, consumers, title, amount, notes } = await request.json();
 
   if (isEmptyInput(spenderId) || isEmptyInput(title) || isEmptyInput(amount)) {
     return createErrorResponse("Some required fields are missing");

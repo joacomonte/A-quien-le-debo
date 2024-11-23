@@ -2,10 +2,8 @@ import NewSpend from '@/app/event/[eventId]/spendings/_components/NewSpend';
 import UserSpendsList from '@/app/event/[eventId]/spendings/_components/UserSpendsList';
 import { revalidatePath } from 'next/cache';
 
-type Params = {
-  params: {
-    eventId: string;
-  };
+type PageProps = {
+  params: Promise<{ eventId: string }>
 };
 
 async function getAllSpendings(eventId: string) {
@@ -27,11 +25,12 @@ async function getAllSpendings(eventId: string) {
   }
 }
 
-export default async function Page({ params }: Params) {
+
+
+export default async function Page({ params }: PageProps) {
   const { eventId } = await params;
   const { data } = await getAllSpendings(eventId);
   const spendings = data?.data || [];
-
 
   const totalAmount = spendings.reduce((total: any, spending: any) => total + spending.amount, 0);
 

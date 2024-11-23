@@ -2,12 +2,11 @@ import UserList from "@/app/event/[eventId]/members/_components/MembersList";
 import { Suspense } from "react";
 
 type PageProps = {
-  params: {
-    eventId: string;
-  };
+  params: Promise<{ eventId: string }>
 };
 
 export default async function Page({ params }: PageProps) {
+  
   const { eventId } = await params;
 
   return (

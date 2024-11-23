@@ -7,8 +7,9 @@ type Params = {
   };
 };
 
-export async function GET(request: Request, params: Params) {
-  const { eventId } = await params.params
+export async function GET(request: Request, { params }: { params: Promise<{ eventId: string }> }) {
+  const { eventId } = await params;
+
 
   const { data, error } = await supabase
     .from('Events')
@@ -22,23 +23,3 @@ export async function GET(request: Request, params: Params) {
   
   return createSuccessResponse(data.eventName, "OK");
 }
-
-// export async function POST(req: Request, params: any) {
-//   try {
-//     if (!(await isMongoConnected())) {
-//       return new Response("MongoDB is not connected!");
-//     }
-
-//     const events = await getEventsCollection();
-
-//     const { eventId } = params.params;
-
-//     const parsedId = { _id: new ObjectId(eventId) };
-
-//     const event = await events.findOne(parsedId);
-
-//     return new Response(JSON.stringify(event));
-//   } catch {
-//     console.log("error");
-//   }
-// }

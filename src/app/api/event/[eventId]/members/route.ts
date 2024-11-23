@@ -11,8 +11,8 @@ type Params = {
   };
 };
 
-export async function GET(request: Request, params: Params) {
-  const { eventId } = await params.params;
+export async function GET(request: Request, { params }: { params: Promise<{ eventId: string }> }) {
+  const { eventId } = await params;
   const allMembersResponse = await getAllMembers(eventId);
 
   if (allMembersResponse.error)
@@ -26,9 +26,9 @@ export async function GET(request: Request, params: Params) {
   return createSuccessResponse(data, "OK");
 }
 
-export async function POST(req: Request, params: Params) {
-  const { eventId } = params.params;
-  const { memberName } = await req.json();
+export async function POST(request: Request, { params }: { params: Promise<{ eventId: string }> }) {
+  const { eventId } = await params;
+  const { memberName } = await request.json();
 
   const validationError = validateMemberName(memberName);
 
@@ -49,9 +49,9 @@ export async function POST(req: Request, params: Params) {
   }
 }
 
-export async function DELETE(req: Request, params: Params) {
-  const { memberId } = await req.json();
-  const { eventId } = params.params;
+export async function DELETE(request: Request, { params }: { params: Promise<{ eventId: string }> }) {
+  const { eventId } = await params;
+  const { memberId } = await request.json();
   const deleteMemberResponse = await removeMember(eventId, memberId);
 
   return createSuccessResponse(

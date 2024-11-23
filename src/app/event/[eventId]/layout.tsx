@@ -4,9 +4,7 @@ import Navbar from '@/app/_globalComponents/Navbar';
 
 type LayoutProps = {
   children: React.ReactNode;
-  params: {
-    eventId: string;
-  };
+  params: Promise<{ eventId: string }>; // Update to reflect that params is a Promise
 };
 
 async function getEventName(eventId: string) {
@@ -31,7 +29,10 @@ async function getEventName(eventId: string) {
 }
 
 export default async function Layout({ children, params }: LayoutProps) {
+  // Await params to extract eventId
   const { eventId } = await params;
+
+  // Fetch event name or any data you need asynchronously
   const eventName = (await getEventName(eventId)).data;
 
   return (
