@@ -13,7 +13,7 @@ export const CustomDialog: FC<CustomDialogProps> = ({
   isOpen,
   eventIdProp,
 }) => {
-  const linkToCopy: string = `http://localhost:3000/event/${eventIdProp}/spendings`;
+  const linkToCopy: string = `${process.env.BASE_URL}/event/${eventIdProp}/spendings`;
 
   return (
     <Transition appear show={isOpen} as={Fragment}>

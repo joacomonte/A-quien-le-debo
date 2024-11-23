@@ -8,13 +8,14 @@ type PageProps = {
 
 async function getAllSpendings(eventId: string) {
   try {
-    const response = await fetch(`http://localhost:3000/api/event/${eventId}/spendings`, {
+    const response = await fetch(`${process.env.BASE_URL}/api/event/${eventId}/spendings`, {
       cache: 'no-store',
       headers: {
         'Content-Type': 'application/json',
       },
     });
 
+    
     const responseBody = await response.json();
 
 
