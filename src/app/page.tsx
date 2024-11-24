@@ -1,6 +1,5 @@
 'use client';
 
-import { Toaster, toast } from 'sonner';
 import { useState } from 'react';
 import { FcMindMap } from 'react-icons/fc';
 import { CustomDialog } from './_globalComponents/CustomDialog';
@@ -31,7 +30,6 @@ export default function Home() {
         }),
       });
       const responseBody: ApiResponse<EventAndMemberResponse> = await response.json();
-      toast.success('Event created successfully');
       setIsDialogOpen(true);
       setEventId(responseBody.data.eventId);
     } catch (error) {
@@ -44,16 +42,16 @@ export default function Home() {
   return (
     <>
       <header className="relative flex h-12 w-full max-w-[500px] items-center justify-start gap-3 bg-slate-100 px-4 text-left">
-        <FcMindMap size={30} /> <h2 className="font-medium">Paga diosito</h2>
+        <FcMindMap size={30} /> <h2 className="font-medium">Paga Diosito</h2>
       </header>
       <div className=" h-full max-h-[700px] w-screen max-w-[500px] pb-6">
         <main className="flex h-full w-full flex-col items-start px-6">
-          <h1 className="flex items-start self-start pb-14 pt-8 text-3xl">New event</h1>
+          <h1 className="flex items-start self-start pb-14 pt-8 text-3xl">Nuevo Evento</h1>
           <form onSubmit={handleSubmit} className="flex h-full w-full flex-col justify-between">
             <div className="flex w-full flex-col gap-4">
               <div className="w-full">
                 <label htmlFor="helper-text" className="mb-2 block text-sm font-medium text-gray-900 dark:text-white">
-                  Event Name
+                  Nombre del evento
                 </label>
                 <input
                   type="text"
@@ -77,12 +75,12 @@ export default function Home() {
                   className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500  dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
                 ></input>
                 <label id="helper-text-explanation" className="text text-xs text-gray-500 dark:text-gray-400">
-                  15 characters maximum .
+                  15 caracteres máximo. .
                 </label>
               </div>
               <div className="w-full">
                 <label htmlFor="helper-text" className="mb-2 block text-sm font-medium text-gray-900 dark:text-white">
-                  Your nickname
+                  Tu apodo
                 </label>
                 <input
                   type="text"
@@ -106,7 +104,7 @@ export default function Home() {
             </div>
             {!isLoading ? (
               <button type="submit" className="w-full rounded bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700">
-                Create
+                Crear evento
               </button>
             ) : (
               <button disabled type="button" className=" mr-2 inline-flex w-full items-center justify-center rounded-lg bg-blue-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
@@ -120,12 +118,11 @@ export default function Home() {
                     fill="currentColor"
                   />
                 </svg>
-                Loading...
+                Cargando...
               </button>
             )}
           </form>
           <CustomDialog isOpen={isDialogOpen} eventIdProp={eventId} />
-          <Toaster richColors />
         </main>
       </div>
     </>

@@ -138,7 +138,7 @@ export default function AddMemberItem({
           size={22}
         />
       )}
-      <Toaster richColors />
+      <Toaster richColors position="top-center" />
     </div>
   );
 }

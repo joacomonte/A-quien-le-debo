@@ -1,13 +1,6 @@
 import { createSuccessResponse } from '@/app/api/_utils/functions';
 import { getMemberBalance } from './functions';
 
-// type Params = {
-//   params: {
-//     eventId: string;
-//     memberId: string;
-//   };
-// };
-
 export async function GET(request: Request, { params }: { params: Promise<{ eventId: string; memberId: string }> }) {
   const { eventId, memberId } = await params;
 
@@ -16,11 +9,3 @@ export async function GET(request: Request, { params }: { params: Promise<{ even
   return createSuccessResponse(getMemberBalanceResponse, 'OK');
 }
 
-// export async function GET(request: Request, params: Params) {
-//   const { eventId, memberId } = await params.params;
-
-//   const getMemberBalanceResponse = await getMemberBalance(eventId, memberId) ;
-
-//   return createSuccessResponse({getMemberBalanceResponse}, "OK");
-
-// }

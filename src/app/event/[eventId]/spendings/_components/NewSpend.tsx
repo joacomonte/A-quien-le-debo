@@ -119,7 +119,7 @@ export default function NewSpend({ eventId, onDataChange: triggerParentUpdate }:
   return (
     <>
       <button type="button" onClick={openModal} className=" flex w-full justify-center rounded-xl border  border-transparent bg-green-100 px-4 py-4  text-left text-sm font-medium text-green-900 hover:bg-green-200 focus:outline-none focus-visible:ring-2 ">
-        New spend
+        Agregar gasto
       </button>
 
       <Transition appear show={isOpen} as={Fragment}>
@@ -132,19 +132,19 @@ export default function NewSpend({ eventId, onDataChange: triggerParentUpdate }:
               <TransitionChild as={Fragment} enter="ease-out duration-300" enterFrom="opacity-0 scale-95" enterTo="opacity-100 scale-100" leave="ease-in duration-200" leaveFrom="opacity-100 scale-100" leaveTo="opacity-0 scale-95">
                 <DialogPanel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
                   <DialogTitle as="h3" className="text-xl font-medium leading-6 text-gray-900">
-                    Add new spending
+                    Detalles del nuevo gasto
                   </DialogTitle>
                   <div className="pt-4"></div>
                   <div className="flex flex-col gap-6 py-6">
                     <div>
                       <label htmlFor="whoPaid" className="mb-1 block text-sm font-medium text-gray-900 dark:text-white">
-                        Who paid?
+                        Quien pagó?
                       </label>
                       <div className="w-full">
                         <Combobox value={whoPaid} onChange={setWhoPaid}>
                           <div className="relative z-30 mt-1">
                             <div className="relative w-full cursor-default overflow-hidden rounded-lg  text-left shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75 focus-visible:ring-offset-2 focus-visible:ring-offset-teal-300 sm:text-sm">
-                              <ComboboxInput placeholder="Search by name" className="w-full border-none bg-gray-50 py-2 pl-3 pr-10 text-sm leading-5 text-gray-900 focus:outline-none focus:ring-0" displayValue={(person: Member) => person?.memberName} onChange={(event) => setQuery(event.target.value)} />
+                              <ComboboxInput placeholder="Buscar por nombre" className="w-full border-none bg-gray-50 py-2 pl-3 pr-10 text-sm leading-5 text-gray-900 focus:outline-none focus:ring-0" displayValue={(person: Member) => person?.memberName} onChange={(event) => setQuery(event.target.value)} />
                               <ComboboxButton className="absolute inset-y-0 right-0 z-20 flex items-center pr-2">
                                 <ChevronUpDownIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
                               </ComboboxButton>
@@ -178,12 +178,12 @@ export default function NewSpend({ eventId, onDataChange: triggerParentUpdate }:
                     <div className=" w-full">
                       <div>
                         <label htmlFor="amount" className="mb-1 block text-sm font-medium text-gray-900 dark:text-white">
-                          Who should pay for this?
+                          Entre quienes se divide?
                         </label>
 
                         <div className="no-scrollbar flex w-full gap-2 overflow-x-auto [&::-webkit-scrollbar]:hidden">
                           {consumers.map((p, i) => (
-                            <span key={i} className=" my-1 whitespace-nowrap rounded-full bg-gray-100 px-2.5 py-0.5 text-xs font-medium text-gray-800 dark:bg-gray-700 dark:text-gray-300">
+                            <span key={i} className=" my-1 whitespace-nowrap rounded-full bg-green-100 text-green-700 px-2.5 py-0.5 text-xs font-medium dark:bg-gray-700 dark:text-gray-300">
                               {p.memberName}
                             </span>
                           ))}
@@ -193,7 +193,7 @@ export default function NewSpend({ eventId, onDataChange: triggerParentUpdate }:
                           <div className="relative z-20 mt-1">
                             <div className="relative w-full cursor-default overflow-hidden rounded-lg  text-left shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75 focus-visible:ring-offset-2 focus-visible:ring-offset-teal-300 sm:text-sm">
                               <ListboxButton className="w-full border-none bg-gray-50 py-2 pl-3 pr-2 text-left text-sm leading-5 text-gray-900 focus:outline-none focus:ring-0">
-                                <span className="block truncate text-gray-400">Select from the list</span>
+                                <span className="block truncate text-gray-400">Seleccionar de la lista</span>
                                 <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
                                   <ChevronUpDownIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
                                 </span>
@@ -203,7 +203,7 @@ export default function NewSpend({ eventId, onDataChange: triggerParentUpdate }:
                               <ListboxOptions className="absolute z-20 mt-1 max-h-[250px] w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black/5 focus:outline-none sm:text-sm">
                                 {query === '' && (
                                   <div onClick={toggleSelectAll} className="relative cursor-default select-none py-2 pl-10 pr-4 font-medium hover:bg-green-50">
-                                    {consumers.length === 0 ? 'Select All' : 'Deselect All'}
+                                    {consumers.length === 0 ? 'Seleccionar todos' : 'Deseleccionar todos'}
                                     {consumers.length === allMembers?.length ? (
                                       <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-green-600">
                                         <CheckIcon className="h-5 w-5 text-green-600" aria-hidden="true" />
@@ -235,19 +235,19 @@ export default function NewSpend({ eventId, onDataChange: triggerParentUpdate }:
                     {/* End Multi select */}
                     <div>
                       <label htmlFor="first_name" className="mb-1 block text-sm font-medium text-gray-900 dark:text-white">
-                        Spending title
+                        Titulo del gasto
                       </label>
-                      <input value={title} onChange={(e) => setTitle(e.target.value)} type="text" id="first_name" className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-green-500 focus:outline-none focus:ring-green-500 " placeholder="Drinks" required></input>
+                      <input value={title} onChange={(e) => setTitle(e.target.value)} type="text" id="first_name" className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-green-500 focus:outline-none focus:ring-green-500 " placeholder="Bebidas" required></input>
                     </div>
                     <div>
                       <label htmlFor="amount" className="text-sm font-medium text-gray-900 dark:text-white">
-                        Amount <p className=" inline-block align-baseline text-xs text-gray-400">(Decimals with . )</p>
+                        Cuanto salio? <p className=" inline-block align-baseline text-xs text-gray-400">(Decimals with . )</p>
                       </label>
                       <input type="text" id="amount" value={amount} onChange={inputAmount} className="mt-1 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-green-500 focus:outline-none focus:ring-green-500 " placeholder="100.50" required></input>
                     </div>
                     <div>
                       <label htmlFor="notes" className="mb-1 block text-sm font-medium text-gray-900 dark:text-white">
-                        Notes <p className=" inline-block align-baseline text-xs text-gray-400">(Optional)</p>
+                        Notas <p className=" inline-block align-baseline text-xs text-gray-400">(Optional)</p>
                       </label>
                       <textarea value={notes} onChange={(e) => setNotes(e.target.value)} id="notes" className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-green-500 focus:outline-none focus:ring-green-500 " placeholder="Fernet: $40" required></textarea>
                     </div>
@@ -258,7 +258,7 @@ export default function NewSpend({ eventId, onDataChange: triggerParentUpdate }:
                       Cancelar
                     </button>
                     <button type="button" className={`flex justify-end rounded-md border border-transparent px-4 py-2 text-sm font-medium outline-none focus:outline-none focus-visible:ring-2 ${submitButtonLoading ? 'bg-green-200 text-green-600 cursor-not-allowed' : 'bg-green-100 text-green-900 hover:bg-green-200'}`} onClick={submitSpend} disabled={submitButtonLoading}>
-                      {submitButtonLoading ? 'Loading...' : 'Guardar'}
+                      {submitButtonLoading ? 'Cargando...' : 'Guardar'}
                     </button>
                   </div>
                 </DialogPanel>
@@ -267,7 +267,7 @@ export default function NewSpend({ eventId, onDataChange: triggerParentUpdate }:
           </div>
         </Dialog>
       </Transition>
-      <Toaster richColors />
+      <Toaster richColors position="top-center" />
     </>
   );
 }

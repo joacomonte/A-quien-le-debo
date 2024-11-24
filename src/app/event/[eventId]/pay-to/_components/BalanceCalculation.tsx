@@ -10,7 +10,6 @@ type Member = {
 };
 
 export default function BalanceCalculation(eventId: any) {
-  // const [memberId, setMemberId] = useState('1398');
   const [memberIdSelected, setMemberIdSelected] = useState<string | null>(null);
   const [allMembers, setAllMembers] = useState<Member[] | null>(null);
   const [balance, setBalance] = useState<number | null>(null);
