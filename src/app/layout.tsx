@@ -8,7 +8,7 @@ const poppins = Poppins({
   weight: "500",
   subsets: ["latin"],
 });
-const IBM = IBM_Plex_Mono({
+const ibm = IBM_Plex_Mono({
   weight: "500",
   subsets: ["latin"],
 });

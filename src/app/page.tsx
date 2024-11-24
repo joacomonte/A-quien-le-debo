@@ -1,5 +1,6 @@
 'use client';
 
+import { ibm } from '@/app/fonts'
 import { useState } from 'react';
 import { FcMindMap } from 'react-icons/fc';
 import { CustomDialog } from './_globalComponents/CustomDialog';
@@ -103,9 +104,12 @@ export default function Home() {
               </div>
             </div>
             {!isLoading ? (
-              <button type="submit" className="w-full rounded bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700">
-                Crear evento
-              </button>
+              <button
+              type="submit"
+              className={`w-full rounded-xl bg-blue-500 px-4 py-4 text-white cursor-pointer hover:bg-blue-700 shadow-lg`}
+            >
+              Crear evento
+            </button>
             ) : (
               <button disabled type="button" className=" mr-2 inline-flex w-full items-center justify-center rounded-lg bg-blue-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                 <svg aria-hidden="true" role="status" className="mr-3 inline h-4 w-4 animate-spin text-white" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">

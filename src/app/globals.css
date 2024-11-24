@@ -95,3 +95,7 @@ input{
   }
   
 }
+
+.ibm {
+  font-family: var(--font-ibm);
+}
