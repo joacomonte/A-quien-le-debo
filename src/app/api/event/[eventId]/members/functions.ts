@@ -56,3 +56,33 @@ export async function getMemberName(eventId: string, memberId: number) {
     return { error: "Error on database operation" };
   }
 }
+
+export async function updateMemberName(eventId: string, memberId: number, newName: string) {
+  // Validate new name
+  if (!newName || newName.trim().length === 0) {
+    return { error: "Member name cannot be empty" };
+  }
+
+  if (newName.length > 15) {
+    return { error: "Member name cannot be longer than 15 characters" };
+  }
+
+  try {
+    const { data, error } = await supabase
+      .from("Members")
+      .update({ memberName: newName })
+      .eq("eventId", eventId)
+      .eq("memberId", memberId)
+      .single();
+
+    if (error) {
+      console.error("Error updating member name:", error);
+      return { error: "Error updating member name" };
+    }
+
+    return { success: true };
+  } catch (error) {
+    console.error("Error on database operation:", error);
+    return { error: "Error on database operation" };
+  }
+}
