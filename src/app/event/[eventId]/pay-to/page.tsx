@@ -52,10 +52,10 @@ export default async function PayTo({ params }: PageProps) {
 
   return (
     <div className=" h-[100vh] w-full overflow-auto">
-      <main className="flex h-full w-full flex-col items-start px-4">
-      <h1 className="flex items-start self-start pb-6 pt-12 text-2xl">
+      <main className="flex h-full w-full flex-col items-start p-4">
+        <h1 className="flex items-start self-start pb-8 pt-14 text-2xl font-medium">
           Balance</h1>
-        <div className="h-full w-[90vw] overflow-y-auto pb-[90px]">
+        <div className="h-full w-full px-2 overflow-y-auto pb-[90px]">
           {sortedData.map((item) => (
             <div key={item.name} className="flex items-center mb-3 space-x-4 ">
               <div className="w-1/3 text-sm font-medium truncate">{item.name}</div>
