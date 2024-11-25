@@ -48,7 +48,7 @@ export default function MembersList({ eventId }: any) {
   }
 
   return (
-    <>
+    <div className='w-full pb-[90px]'>
       {/* loading or null state */}
       {!membersList && <p className="px-2 py-5 ">Cargando...</p>}
 
@@ -69,7 +69,7 @@ export default function MembersList({ eventId }: any) {
           </li>
         </ul>
       )}
-    </>
+    </div>
   );
 }
 
@@ -87,9 +87,18 @@ const MemberItem: React.FC<MemberItemProps> = ({ member, removeMember }) => {
 
         <Popover>
           <PopoverTrigger asChild>
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="black" className="size-6">
-              <path fill-rule="black" d="M4.5 12a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0Zm6 0a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0Zm6 0a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0Z" clip-rule="evenodd" />
-            </svg>
+            <div className="h-5 w-5 text-gray-400">
+              <svg className='fill-current' viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                <g id="SVGRepo_iconCarrier">
+                  {' '}
+                  <path d="M5 10C6.10457 10 7 10.8954 7 12C7 13.1046 6.10457 14 5 14C3.89543 14 3 13.1046 3 12C3 10.8954 3.89543 10 5 10Z" fill="#inherit"></path>
+                  <path d="M12 10C13.1046 10 14 10.8954 14 12C14 13.1046 13.1046 14 12 14C10.8954 14 10 13.1046 10 12C10 10.8954 10.8954 10 12 10Z" fill="#inherit"></path>{' '}
+                  <path d="M21 12C21 10.8954 20.1046 10 19 10C17.8954 10 17 10.8954 17 12C17 13.1046 17.8954 14 19 14C20.1046 14 21 13.1046 21 12Z" fill="#inherit"></path>{' '}
+                </g>
+              </svg>{' '}
+            </div>
           </PopoverTrigger>
           <PopoverContent className="w-80">
             <div className="grid gap-4">
@@ -98,11 +107,11 @@ const MemberItem: React.FC<MemberItemProps> = ({ member, removeMember }) => {
                 <input id="width" className="col-span-2 h-10 pl-2 w-full outline-none border border-gray-300 rounded-md" />
                 <button className={` text-sm rounded-md bg-green-100 px-3  text-green-700 font-light cursor-pointer`}>
                   <svg fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" className="size-5">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" />
+                    <path strokeLinecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" />
                   </svg>
                 </button>
               </div>
-                <button className={`w-full text-sm rounded-md mt-2 bg-red-100 font-thin px-2 py-2 text-red-500 cursor-pointer`}>Eliminar de la lista</button>
+              <button className={`w-full text-sm rounded-md mt-2 bg-red-100 px-2 py-2 text-red-500 cursor-pointer`}>Eliminar de la lista</button>
             </div>
           </PopoverContent>
         </Popover>

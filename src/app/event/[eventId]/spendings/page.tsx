@@ -43,9 +43,10 @@ export default async function Page({ params }: PageProps) {
 
   return (
     <div className=" h-[100vh] w-full overflow-auto">
-      <main className="flex h-full w-full flex-col  items-start p-4">
-        <h1 className="flex items-start self-start pb-8 pt-14 text-3xl font-bold">Resumen de gastos</h1>
-        <div className="w-full flex flex-col gap-2 py-3">
+      <main className="flex h-full w-full flex-col items-start px-4 pb-[90px]">
+      <h1 className="flex items-start self-start pb-6 pt-12 text-2xl">
+          Resumen de gastos</h1>
+        <div className="w-full flex flex-col gap-2 py-3 ">
           {/* Render all spendings using map */}
           {spendings.map((spending: any) => (
             <UserSpendsList
