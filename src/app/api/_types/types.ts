@@ -13,3 +13,6 @@ type ApiResponseERROR = {
 type PostgrestError = {
   message: string;
 };
+
+
+type ParamsType<T extends string> = Promise<{ [key in T]: string }>;

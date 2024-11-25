@@ -1,14 +1,7 @@
 import { createErrorResponse, createSuccessResponse } from '@/app/api/_utils/functions';
 import { getMemberName, updateMemberName } from '../functions';
 
-type Params = {
-  params: {
-    eventId: string;
-    memberId: string;
-  };
-};
-
-export async function GET(request: Request, { params }: { params: Promise<{ eventId: string; memberId: string }> }) {
+export async function GET(request: Request, { params }: { params: ParamsType<'eventId' | 'memberId'> }) {
   const { eventId, memberId } = await params;
 
   if (memberId) {
@@ -21,8 +14,8 @@ export async function GET(request: Request, { params }: { params: Promise<{ even
   return createErrorResponse('memberId is required');
 }
 
-export async function PUT(request: Request, { params }: Params) {
-  const { eventId, memberId } = params;
+export async function PUT(request: Request, { params }: { params: Promise<{ eventId: string; memberId: string }> }) {
+  const { eventId, memberId } = await params;
 
   // Get the new member name from the request body
   const { newName } = await request.json();
