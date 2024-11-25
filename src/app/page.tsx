@@ -42,10 +42,10 @@ export default function Home() {
 
   return (
     <>
-      <header className="relative flex h-12 w-full max-w-[500px] items-center justify-start gap-3 bg-slate-100 px-4 text-left">
+      <header className="relative flex h-12 w-full items-center justify-start gap-3 bg-slate-100 px-4 text-left">
         <FcMindMap size={30} /> <h2 className="font-medium">Paga Diosito</h2>
       </header>
-      <div className=" h-full max-h-[700px] w-screen max-w-[500px] pb-6">
+      <div className=" h-full w-full pb-6">
         <main className="flex h-full w-full flex-col items-start px-6">
           <h1 className="flex items-start self-start pb-14 pt-8 text-3xl">Nuevo Evento</h1>
           <form onSubmit={handleSubmit} className="flex h-full w-full flex-col justify-between">

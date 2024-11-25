@@ -10,7 +10,7 @@ export default async function PayTo({ params }: PageProps) {
   const { eventId } = await params;
 
   return (
-    <div className=" h-[100vh] w-screen max-w-[500px] overflow-auto">
+    <div className=" h-[100vh] w-full overflow-auto">
       <main className="flex h-full w-full flex-col  items-start p-4">
         <h1 className="flex items-start self-start pb-8 pt-14 text-3xl font-bold">Resumen de gastos</h1>
       <BalanceCalculation eventId={eventId}/>

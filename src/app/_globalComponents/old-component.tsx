@@ -1,6 +1,6 @@
 "use client";
 
-import { Dialog, Transition, Listbox } from "@headlessui/react";
+import { Dialog, Transition, Listbox, TransitionChild, ListboxButton, ListboxOptions } from "@headlessui/react";
 import { Fragment, useState } from "react";
 import { CheckIcon, ChevronUpDownIcon } from "@heroicons/react/20/solid";
 
@@ -48,7 +48,7 @@ export default function NewSpend() {
 
       <Transition appear show={isOpen} as={Fragment}>
         <Dialog as="div" className="relative z-30 " onClose={closeModal}>
-          <Transition.Child
+          <TransitionChild
             as={Fragment}
             enter="ease-out duration-300"
             enterFrom="opacity-0"
@@ -58,10 +58,10 @@ export default function NewSpend() {
             leaveTo="opacity-0"
           >
             <div className="fixed inset-0 bg-black/25" />
-          </Transition.Child>
+          </TransitionChild>
           <div className="fixed inset-0 overflow-y-auto">
             <div className="flex min-h-full items-center justify-center p-4 text-center">
-              <Transition.Child
+              <TransitionChild
                 as={Fragment}
                 enter="ease-out duration-300"
                 enterFrom="opacity-0 scale-95"
@@ -96,7 +96,7 @@ export default function NewSpend() {
                         multiple
                       >
                         <div className="relative mt-1">
-                          <Listbox.Button className="relative w-full cursor-default rounded-lg bg-gray-50 py-2 pl-3 pr-10 text-left shadow-md focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white/75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm">
+                          <ListboxButton className="relative w-full cursor-default rounded-lg bg-gray-50 py-2 pl-3 pr-10 text-left shadow-md focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white/75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm">
                             <span className="block h-5 truncate">
                               {selectedPeople.length === 0 ? (
                                 <span className="block h-5 truncate text-gray-500">
@@ -114,14 +114,14 @@ export default function NewSpend() {
                                 aria-hidden="true"
                               />
                             </span>
-                          </Listbox.Button>
+                          </ListboxButton>
                           <Transition
                             as={Fragment}
                             leave="transition ease-in duration-100"
                             leaveFrom="opacity-100"
                             leaveTo="opacity-0"
                           >
-                            <Listbox.Options className="z-60 absolute mt-1 max-h-[300px] min-h-[200px]  w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black/5 focus:outline-none sm:text-sm">
+                            <ListboxOptions className="z-60 absolute mt-1 max-h-[300px] min-h-[200px]  w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black/5 focus:outline-none sm:text-sm">
                               <div
                                 onClick={toggleSelectAll}
                                 className={`relative cursor-default select-none py-2 pl-10 pr-4 ${
@@ -167,7 +167,7 @@ export default function NewSpend() {
                                   )}
                                 </Listbox.Option>
                               ))}
-                            </Listbox.Options>
+                            </ListboxOptions>
                           </Transition>
                         </div>
                       </Listbox>
@@ -214,7 +214,7 @@ export default function NewSpend() {
                     </button>
                   </div>
                 </Dialog.Panel>
-              </Transition.Child>
+              </TransitionChild>
             </div>
           </div>
         </Dialog>
