@@ -2,15 +2,9 @@ import type { Metadata, Viewport } from 'next';
 import { Inter, Poppins, IBM_Plex_Mono } from 'next/font/google';
 import './globals.css';
 
-const inter = Inter({ subsets: ['latin'] });
-
-const poppins = Poppins({
-  weight: '500',
+const inter = Inter({
   subsets: ['latin'],
-});
-const ibm = IBM_Plex_Mono({
-  weight: '500',
-  subsets: ['latin'],
+  weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'],
 });
 
 export const metadata: Metadata = {
@@ -28,7 +22,7 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body className={`${poppins.className} flex h-[100svh] w-full max-w-[500px] mx-auto flex-col items-center `}>{children}</body>
+      <body className={`${inter.className}  `}>{children}</body>
     </html>
   );
 }

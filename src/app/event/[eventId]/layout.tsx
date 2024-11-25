@@ -36,10 +36,10 @@ export default async function Layout({ children, params }: LayoutProps) {
   const eventName = (await getEventName(eventId)).data;
 
   return (
-    <>
+    <div className='flex h-[100svh] w-full max-w-[500px] mx-auto flex-col items-center'>
       <Header eventName={eventName} />
       {children}
       <Navbar />
-    </>
+    </div>
   );
 }

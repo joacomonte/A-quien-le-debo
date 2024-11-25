@@ -7,8 +7,8 @@ export async function GET(request: Request, { params }: { params: Promise<{ even
   const getMemberBalanceResponse = await getMemberBalance(eventId, memberId);
 
   const membersBalance = await getEventMembersBalance(eventId);
+  
   console.log('new balance', membersBalance);
-  // Output: [{ name: 'John Doe', balance: 5500 }, { name: 'Jane Smith', balance: -3200 }, ...]
 
   return createSuccessResponse(getMemberBalanceResponse, 'OK');
 }

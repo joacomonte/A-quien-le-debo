@@ -12,7 +12,7 @@ export default async function Page({ params }: PageProps) {
   return (
     <div className=" h-[100vh] w-full overflow-auto">
       <main className="flex h-full w-full flex-col items-start p-4">
-        <h1 className="flex items-start self-start pb-6 pt-8 text-4xl font-thin">
+        <h1 className="flex items-start self-start pb-6 pt-8 text-4xl font-regular">
           Miembros
         </h1>
         <div className="w-full overflow-y-auto rounded-lg border border-gray-200 bg-white px-3 shadow">

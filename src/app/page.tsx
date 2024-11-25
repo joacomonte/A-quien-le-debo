@@ -42,10 +42,9 @@ export default function Home() {
   };
 
   return (
-    <>
+    <div className='flex h-[100svh] w-full max-w-[500px] mx-auto flex-col items-center'>
       <header className="relative flex h-12 w-full items-center justify-start gap-3 bg-slate-100 text-left">
       <Image src="/diosito.png" alt="Event Created Icon" width={18} height={40} />
-
       <h2 className="font-medium">Paga Diosito</h2>
       </header>
       <div className=" h-full w-full pb-6">
@@ -132,6 +131,6 @@ export default function Home() {
           <CustomDialog isOpen={isDialogOpen} eventIdProp={eventId} />
         </main>
       </div>
-    </>
+    </div>
   );
 }
