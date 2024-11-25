@@ -4,6 +4,7 @@ import { ibm } from '@/app/fonts'
 import { useState } from 'react';
 import { FcMindMap } from 'react-icons/fc';
 import { CustomDialog } from './_globalComponents/CustomDialog';
+import Image from 'next/image';
 
 export default function Home() {
   const [inputEventName, setInputEventName] = useState<any>('');
@@ -42,8 +43,10 @@ export default function Home() {
 
   return (
     <>
-      <header className="relative flex h-12 w-full items-center justify-start gap-3 bg-slate-100 px-4 text-left">
-        <FcMindMap size={30} /> <h2 className="font-medium">Paga Diosito</h2>
+      <header className="relative flex h-12 w-full items-center justify-start gap-3 bg-slate-100 text-left">
+      <Image src="/diosito.png" alt="Event Created Icon" width={18} height={40} />
+
+      <h2 className="font-medium">Paga Diosito</h2>
       </header>
       <div className=" h-full w-full pb-6">
         <main className="flex h-full w-full flex-col items-start px-6">
