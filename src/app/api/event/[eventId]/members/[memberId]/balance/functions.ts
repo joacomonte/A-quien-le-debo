@@ -1,5 +1,37 @@
 import { supabase } from '@/app/lib/supabaseClient';
 
+
+export async function getEventMembersBalance(eventId: string) {
+  try {
+    // Fetch all members for the given eventId
+    const { data: members, error: membersError } = await supabase
+      .from("Members")
+      .select("memberId, memberName")
+      .eq("eventId", eventId);
+
+    if (membersError) {
+      throw new Error(`Error fetching members: ${membersError.message}`);
+    }
+
+    const membersBalance = await Promise.all(
+      members.map(async (member) => {
+        const { memberId, memberName } = member;
+        const balance = await getMemberBalance(eventId, memberId);
+        return { name: memberName, balance };
+      })
+    );
+
+    return membersBalance;
+  } catch (error) {
+    console.error('Error calculating members balance:', error);
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : 'Unknown error occurred',
+    };
+  }
+}
+
+
 export async function getMemberBalance(eventId: string, memberId: string) {
   let memberSpent: number = 0;
 
