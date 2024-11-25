@@ -119,7 +119,7 @@ export default function AddMemberItem({
               type="submit"
               className="whitespace-nowrap rounded-lg bg-green-300 px-5 py-2 text-center text-sm font-medium text-gray-700 hover:bg-green-400 focus:outline-none focus:ring-4 focus:ring-green-400"
             >
-              Add
+              Agregar
             </button>
           ) : (
             <motion.button
@@ -128,7 +128,7 @@ export default function AddMemberItem({
               whileTap={{ scale: 0.9 }}
               className="whitespace-nowrap rounded-lg bg-gray-100 px-3 py-2 text-center text-xs font-medium text-gray-800"
             >
-              Too short
+              Pocos caracteres
             </motion.button>
           )}
         </>
