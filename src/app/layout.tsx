@@ -1,12 +1,13 @@
 import type { Metadata, Viewport } from 'next';
-import { Inter, Poppins, IBM_Plex_Mono, Manrope } from 'next/font/google';
+import { Inter } from 'next/font/google';
 import './globals.css';
 
 
-export const manrope = Manrope({
-  subsets: ["latin"],
-  weight: ["200", "300", "400", "500", "600", "700", "800"]
-});
+// export const manrope = Manrope({
+//   subsets: ["latin"],
+//   weight: ["200", "300", "400", "500", "600", "700", "800"],
+//   fallback: ['Inter']
+// });
 
 const inter = Inter({
   subsets: ['latin'],
@@ -28,7 +29,7 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body className={`${manrope.className}  `}>{children}</body>
+      <body className={`${inter.className}  `}>{children}</body>
     </html>
   );
 }
