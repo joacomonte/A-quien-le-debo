@@ -89,8 +89,8 @@ const MemberItem: React.FC<MemberItemProps> = ({ member, removeMember }) => {
           <PopoverTrigger asChild>
             <div className="h-5 w-5 text-gray-400">
               <svg className='fill-current' viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
+                <g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g>
                 <g id="SVGRepo_iconCarrier">
                   {' '}
                   <path d="M5 10C6.10457 10 7 10.8954 7 12C7 13.1046 6.10457 14 5 14C3.89543 14 3 13.1046 3 12C3 10.8954 3.89543 10 5 10Z" fill="#inherit"></path>
@@ -106,8 +106,8 @@ const MemberItem: React.FC<MemberItemProps> = ({ member, removeMember }) => {
               <div className="flex gap-2">
                 <input id="width" className="col-span-2 h-10 pl-2 w-full outline-none border border-gray-300 rounded-md" />
                 <button className={` text-sm rounded-md bg-green-100 px-3  text-green-700 font-light cursor-pointer`}>
-                  <svg fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" className="size-5">
-                    <path strokeLinecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" />
+                  <svg fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" className="size-5">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 12.75 6 6 9-13.5" />
                   </svg>
                 </button>
               </div>

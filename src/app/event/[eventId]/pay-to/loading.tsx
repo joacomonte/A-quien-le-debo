@@ -1,14 +1,14 @@
 const Loading: React.FC = () => {
 
   const gifs = [
-    "/loading1.webp",
-    "/loading2.webp",
-    "/loading3.webp",
-    "/loading4.webp",
-    "/loading5.webp",
-    "/loading6.webp",
-    "/loading7.webp",
-    "/loading8.webp"
+    "/calculating1.webp",
+    "/calculating2.webp",
+    "/calculating3.webp",
+    "/calculating4.webp",
+    // "/calculating5.webp",
+    // "/calculating6.webp",
+    // "/calculating7.webp",
+    // "/calculating8.webp"
   ];
 
   const randomGif = gifs[Math.floor(Math.random() * gifs.length)];
