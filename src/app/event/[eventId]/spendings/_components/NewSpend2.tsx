@@ -54,7 +54,7 @@ export default function NewSpend2({
 
   const [isOpen, setIsOpen] = useState(false);
 
-  const [whoPaid, setWhoPaid] = useState<Person | null | undefined>();
+  const [whoPaid, setWhoPaid] = useState<Person | null | undefined>(null);
 
   const [title, setTitle] = useState<string>('');
 
