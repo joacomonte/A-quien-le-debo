@@ -217,7 +217,7 @@ export default function NewSpend2({
             />
           </div>
 
-          <Select value={whoPaid} onValueChange={(value) => setWhoPaid(value) }>
+          <Select value={whoPaid || null} onValueChange={(value) => setWhoPaid(value) }>
             <SelectTrigger className='w-fit border-none'>
               <span>
                 {whoPaid ? (
