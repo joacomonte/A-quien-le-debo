@@ -66,8 +66,6 @@ export default function NewSpend2({
 
   const [submitButtonLoading, setSubmitButtonLoading] = useState(false);
 
-  const [open, setOpen] = useState(false);
-  const [value, setValue] = useState<any>(null);
 
   useEffect(() => {
     async function getAllMembers() {
@@ -219,7 +217,7 @@ export default function NewSpend2({
             />
           </div>
 
-          <Select value={whoPaid} onValueChange={setWhoPaid}>
+          <Select value={whoPaid} onValueChange={(value) => setWhoPaid(value) }>
             <SelectTrigger className='w-fit border-none'>
               <span>
                 {whoPaid ? (
