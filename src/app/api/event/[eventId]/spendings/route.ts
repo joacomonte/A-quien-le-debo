@@ -69,8 +69,8 @@ export async function POST(request: Request, { params }: { params: Promise<{ eve
         linkResponse,
         "Spending added linked with consumers",
       );
-    } catch {
-      console.log("error");
+    } catch (error) {
+      throw error
     }
   } catch (error) {
     console.error("An error occurred:", error);

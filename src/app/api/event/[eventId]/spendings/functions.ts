@@ -30,14 +30,14 @@ export async function linkSpendingToConsumers(
   spendId: string,
   membersId: string[],
 ) {
-  // Prepare the data to be inserted
-  const spendConsumersData = membersId.map((memberId) => ({
-    spendId: parseInt(spendId),
-    memberId: parseInt(memberId),
-  }));
-
+  
   // Use upsert to insert multiple rows
   try {
+    // Prepare the data to be inserted
+    const spendConsumersData = membersId.map((memberId) => ({
+      spendId: parseInt(spendId),
+      memberId: parseInt(memberId),
+    }));
     // Assuming the table name is "spendConsumers"
     const res = await supabase
       .from("spendConsumers")
@@ -46,6 +46,7 @@ export async function linkSpendingToConsumers(
     return res;
   } catch (error) {
     console.error("Error adding spending:", error);
+    throw error;
   }
 }
 
