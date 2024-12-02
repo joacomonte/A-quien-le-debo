@@ -34,7 +34,7 @@ export default function MembersList({ eventId }: any) {
     setMemberList(updatedList);
 
     const response = await fetch(`/api/event/${eventId}/members`, {
-      cache: 'no-store',
+      // cache: 'no-store',
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',

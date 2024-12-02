@@ -1,8 +1,8 @@
 'use client';
 
-import { Disclosure, DisclosureButton, DisclosurePanel, Transition } from '@headlessui/react';
-import { ChevronUpIcon } from '@heroicons/react/20/solid';
-import { useSearchParams } from 'next/navigation';
+import { Transition } from '@headlessui/react';
+import { ChevronUpIcon, EllipsisHorizontalIcon } from '@heroicons/react/20/solid';
+
 import { useEffect, useState } from 'react';
 
 type spendProps = {
@@ -14,7 +14,7 @@ type spendProps = {
   eventId: any;
 };
 
-export default function UserSpendsList({ title, notes, amount, whoPaid, eventId }: spendProps) {
+export default function UserSpendsItem({ title, notes, amount, whoPaid, eventId }: spendProps) {
   const [whoPaidName, setWhoPaidName] = useState<string | null>(null);
 
   const [isOpen, setIsOpen] = useState(false);
@@ -43,7 +43,7 @@ export default function UserSpendsList({ title, notes, amount, whoPaid, eventId 
 
   return (
     <div className="w-full rounded-lg bg-gray-100 text-left text-sm font-medium text-gray-900">
-      <div className="flex justify-between px-4 py-4 hover:bg-gray-200 cursor-pointer rounded-lg focus:outline-none focus-visible:ring focus-visible:ring-gray-500/75" onClick={toggleOpen}>
+      <div className="flex justify-between p-5 hover:bg-gray-200 cursor-pointer rounded-lg focus:outline-none focus-visible:ring focus-visible:ring-gray-500/75" onClick={toggleOpen}>
         <div>
           <span>{title}: </span>
           <span className="font-bold">${amount}</span>
@@ -52,7 +52,10 @@ export default function UserSpendsList({ title, notes, amount, whoPaid, eventId 
         <ChevronUpIcon className={`h-5 w-5 text-gray-500 ${isOpen ? 'rotate-180 transform' : ''}`} />
       </div>
       <Transition show={isOpen} enter="transition duration-300 ease-out" enterFrom="transform scale-95 opacity-0" enterTo="transform scale-100 opacity-100" leave="transition duration-300 ease-out" leaveFrom="transform scale-100 opacity-100" leaveTo="transform scale-95 opacity-0">
-        <div className="flex flex-col gap-3 px-4 py-3 text-sm text-gray-500">{notes ? <ul>{notes}</ul> : <p>Sin notas</p>}</div>
+        <div className="flex justify-between gap-3 px-4 py-3 text-sm text-gray-500">
+          {notes ? <p>{notes}</p> : <p>Sin notas</p>}
+          <EllipsisHorizontalIcon className={'h-5 w-5 mr-1'} />
+        </div>
       </Transition>
     </div>
   );

@@ -119,7 +119,7 @@ export default function NewSpend({ eventId, onDataChange: triggerParentUpdate }:
   return (
     <>
       <button type="button" onClick={openModal} className=" flex w-full justify-center rounded-xl border  border-transparent bg-green-100 px-4 py-4  text-left text-sm font-medium text-green-900 hover:bg-green-200 focus:outline-none focus-visible:ring-2 ">
-        Agregar gasto
+        Nuevo gasto
       </button>
 
       <Transition appear show={isOpen} as={Fragment}>

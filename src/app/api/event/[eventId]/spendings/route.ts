@@ -24,9 +24,10 @@ export async function GET(request: Request, { params }: { params: Promise<{ even
     if (allSpendingsResponse.error)
       return createErrorResponse(allSpendingsResponse.error);
 
+    console.log('res', allSpendingsResponse?.data);
+    
     return createSuccessResponse(
-      allSpendingsResponse,
-      "Returned all spendings from this event",
+      allSpendingsResponse?.data
     );
   } catch (error) {
     return createErrorResponse(error);

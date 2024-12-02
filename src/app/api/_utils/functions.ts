@@ -9,12 +9,12 @@ export function createErrorResponse(error: any) {
 
 export function createSuccessResponse<DataType>(
   data: DataType,
-  message: string,
+  message?: string
 ): Response {
   const response: ApiResponse<DataType> = {
     data: data,
     status: "OK",
-    message: message,
+    message: message || "", // Provide an empty string as default
   };
   return new Response(JSON.stringify(response));
 }

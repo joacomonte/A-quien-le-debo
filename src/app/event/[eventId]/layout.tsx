@@ -10,7 +10,7 @@ type LayoutProps = {
 async function getEventName(eventId: string) {
   try {
     const response = await fetch(`${process.env.BASE_URL}/api/event/${eventId}`, {
-      cache: 'no-store',
+      cache: 'force-cache',
       headers: {
         'Content-Type': 'application/json',
       },
