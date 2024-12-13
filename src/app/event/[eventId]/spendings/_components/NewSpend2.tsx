@@ -10,11 +10,6 @@ import {
 } from '@/components/ui/drawer';
 import { Handle } from 'vaul';
 import {
-  Combobox,
-  ComboboxButton,
-  ComboboxInput,
-  ComboboxOption,
-  ComboboxOptions,
   Listbox,
   ListboxButton,
   ListboxOption,
@@ -25,19 +20,20 @@ import ChevronUpDownIcon from '@heroicons/react/20/solid/ChevronUpDownIcon';
 import CheckIcon from '@heroicons/react/20/solid/CheckIcon';
 
 import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
-
-type Person = {
-  memberId: number;
-  memberName: string;
-};
+  useFloating,
+  autoUpdate,
+  offset,
+  flip,
+  shift,
+  useDismiss,
+  useRole,
+  useClick,
+  useInteractions,
+  FloatingFocusManager,
+  useId,
+  FloatingPortal,
+  size,
+} from '@floating-ui/react';
 
 type NewSpendProps = {
   eventId: string;
@@ -54,7 +50,9 @@ export default function NewSpend2({
 
   const [isOpen, setIsOpen] = useState(false);
 
-  const [whoPaid, setWhoPaid] = useState<Person | null | undefined>(null);
+  const [isOpenWhoPaid, setIsOpenWhoPaid] = useState(false);
+
+  const [whoPaid, setWhoPaid] = useState<Member | null>(null);
 
   const [title, setTitle] = useState<string>('');
 
@@ -65,7 +63,6 @@ export default function NewSpend2({
   const [query, setQuery] = useState('');
 
   const [submitButtonLoading, setSubmitButtonLoading] = useState(false);
-
 
   useEffect(() => {
     async function getAllMembers() {
@@ -98,7 +95,7 @@ export default function NewSpend2({
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        spenderId: whoPaid?.memberId,
+        spenderId: whoPaid,
         consumers: consumers.map((consumer) => consumer.memberId),
         title: title,
         amount: amount,
@@ -107,9 +104,7 @@ export default function NewSpend2({
     });
     const responseBody = await response.json();
 
-    // Check if the response status is 201 (Created)
     if (responseBody.data.status === 201) {
-      // Clear input fields and state variables
       setConsumers([]);
       setWhoPaid(null);
       setTitle('');
@@ -160,6 +155,29 @@ export default function NewSpend2({
     }
   }
 
+  const { refs, floatingStyles, context } = useFloating({
+    placement: 'top',
+    open: isOpenWhoPaid,
+    onOpenChange: setIsOpenWhoPaid,
+    middleware: [
+      offset(15),
+      flip({ fallbackAxisSideDirection: 'end' }),
+      shift(),
+    ],
+    whileElementsMounted: autoUpdate,
+  });
+
+  const click = useClick(context);
+  const dismiss = useDismiss(context);
+  const role = useRole(context);
+  const { getReferenceProps, getFloatingProps } = useInteractions([
+    click,
+    dismiss,
+    role,
+  ]);
+
+  const headingId = useId();
+
   return (
     <Drawer handleOnly={true}>
       <DrawerTrigger asChild>
@@ -170,179 +188,198 @@ export default function NewSpend2({
           Nuevo gasto
         </button>
       </DrawerTrigger>
-      <DrawerContent className='h-[80svh] max-h-[90svh] px-4 overflow-y-auto flex justify-between'>
-        <div>
-        <div>
+      <DrawerContent>
+        <div className='mx-auto min-h-[80vh] h-full max-h-[80vh] w-full px-4 max-w-[500px] overflow-y-auto overflow-x-hidden'>
           <Handle className='mt-4 px-10'></Handle>
-        </div>
-        <DrawerTitle className='pt-4 text-xl mx-auto font-medium'>
-          Detalles del gasto
-        </DrawerTitle>
-        <div className='h-5'></div>
+          <DrawerTitle>
+            <p className='flex justify-center items-center pt-4 text-xl w-full mx-auto font-medium'>
+              Detalles del gasto
+            </p>
+          </DrawerTitle>
+          <div className='h-5'></div>
 
-        <div className='w-full'>
-          <input
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            type='text'
-            id='first_name'
-            className='w-full text-lg font-medium focus:border-gray-500 outline-none py-4'
-            placeholder='Titulo del gasto. Ej: Gaseosas'
-            required
-          />
-        </div>
-
-        <div className='w-full'>
-          <textarea
-            rows={1}
-            value={notes}
-            onChange={(e) => setNotes(e.target.value)}
-            id='notes'
-            className='w-full text-sm font-normal outline-none py-4'
-            placeholder='(Opcional) Descripción. Ej: 3 Cocas.'
-            required></textarea>
-        </div>
-
-        <div className='flex gap-4'>
-          <div className='flex items-center'>
-            {amount && <p className='text-sm text-gray-900'>$</p>}
+          <div className='w-full'>
             <input
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
               type='text'
-              id='amount'
-              value={amount}
-              onChange={inputAmount}
-              className='w-fit focus:outline-none rounded-lg text-sm text-gray-900'
-              placeholder='Cuanto salió? Ej: 100.50'
+              id='first_name'
+              className='w-full text-lg font-medium focus:border-gray-500 outline-none py-4'
+              placeholder='Titulo del gasto. Ej: Gaseosas'
               required
             />
           </div>
 
-          <Select value={whoPaid || null} onValueChange={(value) => setWhoPaid(value) }>
-            <SelectTrigger className='w-fit border-none'>
-              <span>
-                {whoPaid ? (
-                  <span>Pagó: {whoPaid.memberName}</span>
-                ) : (
-                  <span className='text-gray-400'>Quién pagó?</span>
-                )}
-              </span>
-            </SelectTrigger>
-            <SelectContent className='max-h-[40vh]'>
-              <SelectGroup>
-                <SelectLabel></SelectLabel>
-                {allMembers?.map((member: Person) => (
-                  <SelectItem key={member.memberId} value={member}>
-                    {member.memberName}
-                  </SelectItem>
-                ))}
-              </SelectGroup>
-            </SelectContent>
-          </Select>
-        </div>
-
-        <Listbox value={consumers} onChange={(v) => setConsumers(v)} multiple>
-          <div className='relative z-20'>
-            <div className='relative w-fit min-w-[210px] cursor-default overflow-hidden text-left py-4 '>
-              <ListboxButton className='w-fit border-none text-left text-sm leading-5 text-gray-900 '>
-                <span className='block truncate text-gray-400'>
-                  Entre quienes se divide?
-                </span>
-                <span className='pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2'>
-                  <ChevronUpDownIcon
-                    className='h-5 w-5 text-gray-400'
-                    aria-hidden='true'
-                  />
-                </span>
-              </ListboxButton>
-            </div>
-            <Transition
-              as={Fragment}
-              leave='transition ease-in duration-100'
-              leaveFrom='opacity-100'
-              leaveTo='opacity-0'
-              afterLeave={() => setQuery('')}>
-              <ListboxOptions className='absolute z-20 bottom-full mb-1 max-h-[230px] w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black/5 focus:outline-none sm:text-sm origin-bottom'>
-                {query === '' && (
-                  <div
-                    onClick={toggleSelectAll}
-                    className='relative cursor-default select-none py-2 pl-10 pr-4 font-medium hover:bg-green-50'>
-                    {consumers.length === 0
-                      ? 'Seleccionar todos'
-                      : 'Deseleccionar todos'}
-                    {consumers.length === allMembers?.length ? (
-                      <span className='absolute inset-y-0 left-0 flex items-center pl-3 text-green-600'>
-                        <CheckIcon
-                          className='h-5 w-5 text-green-600'
-                          aria-hidden='true'
-                        />
-                      </span>
-                    ) : null}
-                  </div>
-                )}
-                {allMembers?.length === 0 && (
-                  <div className='relative cursor-default select-none py-2 pl-10 pr-4'>
-                    Sin coincidencias
-                  </div>
-                )}
-                {allMembers?.map((person, personIdx) => (
-                  <ListboxOption
-                    key={personIdx}
-                    className={({ active }) =>
-                      `relative cursor-default select-none py-2 pl-10 pr-4 ${active ? 'bg-green-50  text-green-900' : 'text-gray-900'}`
-                    }
-                    value={person}>
-                    {({ selected }) => (
-                      <>
-                        <span
-                          className={`block truncate ${selected ? 'font-medium' : 'font-normal'}`}>
-                          {person.memberName}
-                        </span>
-                        {selected ? (
-                          <span className='absolute inset-y-0 left-0 flex items-center pl-3 text-green-600'>
-                            <CheckIcon
-                              className='h-5 w-5 text-green-600'
-                              aria-hidden='true'
-                            />
-                          </span>
-                        ) : null}
-                      </>
-                    )}
-                  </ListboxOption>
-                ))}
-              </ListboxOptions>
-            </Transition>
+          <div className='w-full '>
+            <textarea
+              rows={2}
+              value={notes}
+              onChange={(e) => setNotes(e.target.value)}
+              id='notes'
+              className='w-full text-sm font-normal outline-none pt-2 '
+              placeholder='(Opcional) Descripción. Ej: 3 Cocas.'
+              required></textarea>
           </div>
-        </Listbox>
 
-        <div className='no-scrollbar items-baseline flex w-full gap-2 overflow-x-auto [&::-webkit-scrollbar]:hidden'>
-          <p className='text-gray-400 text-sm'>Seleccionados: </p>
-          {consumers.map((p, i) => (
-            <span
-              key={i}
-              className=' my-1 whitespace-nowrap rounded-full bg-green-100 text-green-700 px-3 py-[4px] text-sm font-medium dark:bg-gray-700 dark:text-gray-300'>
-              {p.memberName}
-            </span>
-          ))}
-        </div>
-        </div>
+          <div className='flex gap-4'>
+            <div className='flex items-center max-w-[170px]'>
+              {amount && <p className='text-sm text-gray-900'>$</p>}
+              <input
+                type='text'
+                id='amount'
+                value={amount}
+                onChange={inputAmount}
+                className='w-fit focus:outline-none rounded-lg text-sm text-gray-900'
+                placeholder='Cuanto salió? Ej: 100.50'
+                required
+              />
+            </div>
+            <div className='w-full'>
+              <input
+                ref={refs.setReference}
+                {...getReferenceProps()}
+                value={whoPaid?.memberName}
+                type='text'
+                id='whoPaid'
+                className='w-fit focus:outline-none rounded-lg text-sm text-gray-900'
+                placeholder='Quién pagó?'
+                onTouchStart={() => {
+                  setIsOpenWhoPaid(true);
+                }}
+                onClick={(e) => {
+                  setIsOpenWhoPaid(true);
+                  e.currentTarget.focus();
+                }}
+                required
+              />
+            </div>
 
-        <div className='flex flex-col w-full items-end justify-end gap-6 pb-8'>
-          <button
-            type='button'
-            className={`w-full flex justify-center rounded-md border border-transparent px-4 py-4  font-medium outline-none focus:outline-none focus-visible:ring-2 ${submitButtonLoading ? 'bg-green-200 text-green-600 cursor-not-allowed' : 'bg-green-100 text-green-900 hover:bg-green-200'}`}
-            onClick={submitSpend}
-            disabled={submitButtonLoading}>
-            {submitButtonLoading ? 'Cargando...' : 'Guardar'}
-          </button>
-        </div>
+            {isOpenWhoPaid && (
+              <FloatingFocusManager context={context} modal={true}>
+                <div
+                  className=' shadow-md min-w-44 max-h-[30vh] overflow-y-auto bg-white z-20 search-bar'
+                  ref={refs.setFloating}
+                  style={{
+                    ...floatingStyles,
+                  }}
+                  aria-labelledby={headingId}
+                  {...getFloatingProps()}>
+                  {allMembers && (
+                    <ul>
+                      {allMembers.map((member) => (
+                        <li key={member.memberId}>{member.memberName}</li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
+              </FloatingFocusManager>
+            )}
+          </div>
 
+          <Listbox value={consumers} onChange={(v) => setConsumers(v)} multiple>
+            <div className='relative z-1'>
+              <div className='relative w-fit min-w-[210px] cursor-default overflow-hidden text-left py-4 '>
+                <ListboxButton className='w-fit border-none text-left text-sm leading-5 text-gray-900 '>
+                  <span className='block truncate text-gray-400'>
+                    Entre quienes se divide?
+                  </span>
+                  <span className='pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2'>
+                    <ChevronUpDownIcon
+                      className='h-5 w-5 text-gray-400'
+                      aria-hidden='true'
+                    />
+                  </span>
+                </ListboxButton>
+              </div>
+              <Transition
+                as={Fragment}
+                leave='transition ease-in duration-100'
+                leaveFrom='opacity-100'
+                leaveTo='opacity-0'
+                afterLeave={() => setQuery('')}>
+                <ListboxOptions className='absolute z-1 bottom-full mb-1 max-h-[230px] w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black/5 focus:outline-none sm:text-sm origin-bottom'>
+                  {query === '' && (
+                    <div
+                      onClick={toggleSelectAll}
+                      className='relative cursor-default select-none py-2 pl-10 pr-4 font-medium hover:bg-green-50'>
+                      {consumers.length === 0
+                        ? 'Seleccionar todos'
+                        : 'Deseleccionar todos'}
+                      {consumers.length === allMembers?.length ? (
+                        <span className='absolute inset-y-0 left-0 flex items-center pl-3 text-green-600'>
+                          <CheckIcon
+                            className='h-5 w-5 text-green-600'
+                            aria-hidden='true'
+                          />
+                        </span>
+                      ) : null}
+                    </div>
+                  )}
+                  {allMembers?.length === 0 && (
+                    <div className='relative cursor-default select-none py-2 pl-10 pr-4'>
+                      Sin coincidencias
+                    </div>
+                  )}
+                  {allMembers?.map((person, personIdx) => (
+                    <ListboxOption
+                      key={personIdx}
+                      className={({ active }) =>
+                        `relative cursor-default select-none py-2 pl-10 pr-4 ${active ? 'bg-green-50  text-green-900' : 'text-gray-900'}`
+                      }
+                      value={person}>
+                      {({ selected }) => (
+                        <>
+                          <span
+                            className={`block truncate ${selected ? 'font-medium' : 'font-normal'}`}>
+                            {person.memberName}
+                          </span>
+                          {selected ? (
+                            <span className='absolute inset-y-0 left-0 flex items-center pl-3 text-green-600'>
+                              <CheckIcon
+                                className='h-5 w-5 text-green-600'
+                                aria-hidden='true'
+                              />
+                            </span>
+                          ) : null}
+                        </>
+                      )}
+                    </ListboxOption>
+                  ))}
+                </ListboxOptions>
+              </Transition>
+            </div>
+          </Listbox>
+
+          {consumers.length > 0 && (
+            <div className='no-scrollbar items-baseline flex w-full gap-2 overflow-x-auto [&::-webkit-scrollbar]:hidden'>
+              <p className='text-gray-400 text-sm'>Seleccionados: </p>
+              {consumers.map((p, i) => (
+                <span
+                  key={i}
+                  className=' my-1 whitespace-nowrap rounded-full bg-green-100 text-green-700 px-3 py-[4px] text-sm font-medium dark:bg-gray-700 dark:text-gray-300'>
+                  {p.memberName}
+                </span>
+              ))}
+            </div>
+          )}
+
+          <div className='flex flex-col w-full items-end justify-end gap-6 pt-10 pb-60'>
+            <button
+              type='button'
+              className={`w-full flex justify-center rounded-md border border-transparent px-4 py-4  font-medium outline-none focus:outline-none focus-visible:ring-2 ${submitButtonLoading ? 'bg-green-200 text-green-600 cursor-not-allowed' : 'bg-green-100 text-green-900 hover:bg-green-200'}`}
+              onClick={submitSpend}
+              disabled={submitButtonLoading}>
+              {submitButtonLoading ? 'Cargando...' : 'Guardar'}
+            </button>
+          </div>
+        </div>
       </DrawerContent>
     </Drawer>
   );
 }
-
+/* 
 {
-  /* <Combobox value={whoPaid} onChange={setWhoPaid}>
+<Combobox value={whoPaid} onChange={setWhoPaid}>
           <div className='relative z-30 mt-1'>
             <div className='relative w-full cursor-default overflow-hidden rounded-lg  text-left shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75 focus-visible:ring-offset-2 focus-visible:ring-offset-teal-300 sm:text-sm'>
               <ComboboxInput
@@ -399,8 +436,9 @@ export default function NewSpend2({
               </ComboboxOptions>
             </Transition>
           </div>
-        </Combobox> */
+        </Combobox> 
 }
+        */
 
 /* 
   <>
