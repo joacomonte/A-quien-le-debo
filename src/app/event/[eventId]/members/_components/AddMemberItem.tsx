@@ -18,7 +18,7 @@ export default function AddMemberItem({
 
   const [newName, setNewName] = useState("");
 
-  const inputRef = useRef<any>();
+  const inputRef = useRef<any>(null);
 
   const divAnimation = useAnimation();
 
