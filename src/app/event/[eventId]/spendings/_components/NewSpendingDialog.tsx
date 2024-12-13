@@ -179,6 +179,25 @@ export default function NewSpendingDialog({
   const headingId = useId();
 
 
+  const focusInput = () => {
+    // Multiple attempts with increasing delays
+    [0, 100, 300, 500, 1000].forEach(delay => {
+      setTimeout(() => {
+        inputRef.current?.focus();
+        inputRef.current?.click();
+        // Force keyboard
+        if (inputRef.current) {
+          inputRef.current.readOnly = false;
+          inputRef.current.blur();
+          inputRef.current.focus();
+          // Simulate touch
+          inputRef.current.dispatchEvent(new TouchEvent('touchstart'));
+          inputRef.current.dispatchEvent(new TouchEvent('touchend'));
+        }
+      }, delay);
+    });
+  };
+
   const inputRef = useRef<HTMLInputElement>(null);
 
 
@@ -186,7 +205,8 @@ export default function NewSpendingDialog({
     <>
       <button onClick={() => {
         setIsOpen(true);
-        setTimeout(() => inputRef.current?.focus(), 0); // Small delay to ensure dialog renders before focus
+        focusInput();
+        
       }}  >Open dialog</button>
       <Dialog
         open={isOpen}
@@ -199,9 +219,10 @@ export default function NewSpendingDialog({
         className='relative z-50'>
         <DialogBackdrop className='fixed inset-0 bg-black/30' />
         <div className='fixed inset-0 flex w-screen items-start justify-center'>
-          <DialogPanel className='w-[100svh] max-h-[800px] h-full flex flex-col justify-between max-w-[500px] space-y-4 border bg-white p-4'>
+          <DialogPanel className='w-[100svh] max-h-[800px] h-full flex flex-col justify-between max-w-[500px] space-y-4 border bg-white p-4'
+          onAnimationEnd={focusInput}>
             {step === 0 && (
-              <div className='w-full'>
+              <div className='w-full' onClick={focusInput}>
                 <input
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
@@ -211,7 +232,8 @@ export default function NewSpendingDialog({
                   placeholder='Titulo del gasto. Ej: Gaseosas'
                   required
                   ref={inputRef}
-                  autoComplete="off"
+                  autoFocus
+                  onFocus={e => e.target.click()}
                 />
               </div>
             )}
@@ -391,6 +413,20 @@ export default function NewSpendingDialog({
                 setStep(step + 1);
               }}>
               Siguiente
+            </div>
+            <div
+              className={`w-full flex justify-center rounded-md border border-transparent px-4 py-4 cursor-pointer font-medium outline-none focus:outline-none focus-visible:ring-2 ${submitButtonLoading ? 'bg-green-200 text-green-600 cursor-not-allowed' : 'bg-green-100 text-green-900 hover:bg-green-200'}`}
+              onClick={() => {
+                setStep(step - 1);
+              }}>
+              Volver
+            </div>
+            <div
+              className={`w-full flex justify-center rounded-md border border-transparent px-4 py-4 cursor-pointer font-medium outline-none focus:outline-none focus-visible:ring-2 ${submitButtonLoading ? 'bg-green-200 text-green-600 cursor-not-allowed' : 'bg-green-100 text-green-900 hover:bg-green-200'}`}
+              onClick={() => {
+                setIsOpen(false);
+              }}>
+              Cancelar
             </div>
 
             {step === 5 && (
