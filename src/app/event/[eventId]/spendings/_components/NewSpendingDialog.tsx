@@ -201,7 +201,9 @@ export default function NewSpendingDialog({
       <dialog
         ref={dialogRef}
         className=' h-full max-w-[500px] max-h-[90vh] w-full touch-none px-4'>
-        <h2 className='text-sm text-gray-400 text-center my-4'>Paso {step+1} / 5</h2>
+        <h2 className='text-sm text-gray-400 text-center my-4'>
+          Paso {step + 1} / 5
+        </h2>
         {step === 0 && (
           <div className='w-full h-[35svh] '>
             <input
@@ -246,7 +248,6 @@ export default function NewSpendingDialog({
                 ref={inputRef}
               />
             </div>
-
           </div>
         )}
 
@@ -270,9 +271,29 @@ export default function NewSpendingDialog({
                 }}
                 required
               />
+
+              <div className='h-[62svh] overflow-scroll'>
+                {allMembers && (
+                  <ul>
+                    {allMembers.map((member) => (
+                      <li
+                        key={member.memberId}
+                        onClick={() => setWhoPaid(member)}
+                        className={`cursor-pointer ${
+                          whoPaid?.memberId === member.memberId
+                            ? 'bg-green-50'
+                            : ''
+                        }`}>
+                        {member.memberName}
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
             </div>
 
-            {isOpenWhoPaid && (
+            {/*
+             {isOpenWhoPaid && (
               <FloatingFocusManager context={context} modal={true}>
                 <div
                   className=' shadow-md min-w-44 max-h-[30vh] overflow-y-auto bg-white z-20 search-bar'
@@ -291,7 +312,7 @@ export default function NewSpendingDialog({
                   )}
                 </div>
               </FloatingFocusManager>
-            )}
+            )} */}
           </>
         )}
 
@@ -389,10 +410,7 @@ export default function NewSpendingDialog({
           </>
         )}
 
-        
-
         <div className='flex gap-4 w-full'>
-
           <button
             onClick={() => dialogRef?.current?.close()}
             className='w-2/10 rounded-lg py-6 px-4 bg-gray-100 text-gray-600 cursor-pointer'>
@@ -437,8 +455,6 @@ export default function NewSpendingDialog({
           </div>
         </div>
 
-
-
         {step === 5 && (
           <button
             type='button'
@@ -448,8 +464,6 @@ export default function NewSpendingDialog({
             {submitButtonLoading ? 'Cargando...' : 'Guardar'}
           </button>
         )}
-
-
       </dialog>
     </>
   );
