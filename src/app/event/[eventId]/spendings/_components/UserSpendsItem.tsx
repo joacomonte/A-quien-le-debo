@@ -20,6 +20,7 @@ export default function UserSpendsItem({ title, notes, amount, whoPaid, spendId,
   const [whoPaidName, setWhoPaidName] = useState<string | null>(null);
 
   const [isOpen, setIsOpen] = useState(false);
+  const [isPopoverOpen, setIsPopoverOpen] = useState(false);
 
   const toggleOpen = () => setIsOpen(!isOpen);
 
@@ -43,18 +44,24 @@ export default function UserSpendsItem({ title, notes, amount, whoPaid, spendId,
     fetchPaidByMember();
   }, []);
 
-  async function removeSpending() {  
-    try{
+  async function removeSpending() {
+    setIsPopoverOpen(false);
+    try {
       const response = await fetch(`/api/event/${eventId}/spendings`, {
         cache: 'no-store',
         method: 'DELETE',
-        headers: {'Content-Type': 'application/json',},
-        body: JSON.stringify( {spendId: spendId}),
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ spendId: spendId }),
       });
-      console.log(response);
-    }  catch (error) {
-      console.error("Error updating spending:", error);
-    } 
+  
+      if (response.ok) {
+        window.location.reload();
+      } else {
+        console.error('Error deleting spending:', response.status);
+      }
+    } catch (error) {
+      console.error('Error deleting spending:', error);
+    }
   }
 
   return (
@@ -70,9 +77,9 @@ export default function UserSpendsItem({ title, notes, amount, whoPaid, spendId,
       <Transition show={isOpen} enter="transition duration-300 ease-out" enterFrom="transform scale-95 opacity-0" enterTo="transform scale-100 opacity-100" leave="transition duration-300 ease-out" leaveFrom="transform scale-100 opacity-100" leaveTo="transform scale-95 opacity-0">
         <div className="flex justify-between gap-3 px-4 py-3 text-sm text-gray-500">
           {notes ? <p>{notes}</p> : <p>Sin notas</p>}
-          <Popover>
+          <Popover open={isPopoverOpen}>
           <PopoverTrigger asChild>
-            <div className="h-5 w-5 text-gray-400 cursor-pointer focus:outline-none ">
+            <div onClick={() => setIsPopoverOpen(true)} className="h-5 w-5 text-gray-400 cursor-pointer focus:outline-none ">
               <svg className='fill-current' viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
                 <g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g>
