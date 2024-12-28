@@ -63,3 +63,35 @@ export async function getSpendings(eventId: string) {
     throw error;
   }
 }
+
+export async function deleteSpending(eventId: string, spendId: string) {
+  try {
+    // Delete the spending from the "Spendings" table
+    const { error: spendingError } = await supabase
+      .from("Spendings")
+      .delete()
+      .eq("eventId", eventId)
+      .eq("spendId", spendId);
+
+    if (spendingError) {
+      console.error("Error deleting spending:", spendingError);
+      throw spendingError;
+    }
+
+    // Delete the associated entries from the "spendConsumers" table
+    const { error: spendConsumersError } = await supabase
+      .from("spendConsumers")
+      .delete()
+      .eq("spendId", parseInt(spendId));
+
+    if (spendConsumersError) {
+      console.error("Error deleting spendConsumers:", spendConsumersError);
+      throw spendConsumersError;
+    }
+
+    return { deleted: true };
+  } catch (error) {
+    console.error("Error deleting spending:", error);
+    throw error;
+  }
+}

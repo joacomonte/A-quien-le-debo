@@ -43,9 +43,9 @@ export default function NewSpendingDialog({
       const responseBody: ApiResponse<Member[]> = await response.json();
 
       if (responseBody.message === 'OK') {
-        const allMembers = responseBody.data.map((member: Member) => member)
+        const allMembers = responseBody.data.map((member: Member) => member);
         setAllMembers(allMembers);
-        setConsumers(allMembers)
+        setConsumers(allMembers);
       }
     }
 
@@ -61,7 +61,7 @@ export default function NewSpendingDialog({
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        spenderId: whoPaid,
+        spenderId: whoPaid?.memberId,
         consumers: consumers.map((consumer) => consumer.memberId),
         title: title,
         amount: amount,
@@ -70,7 +70,7 @@ export default function NewSpendingDialog({
     });
     const responseBody = await response.json();
 
-    if (responseBody.data.status === 201) {
+    if (responseBody.status === 'OK') {
       setConsumers([]);
       setWhoPaid(null);
       setTitle('');
@@ -79,7 +79,7 @@ export default function NewSpendingDialog({
       setQuery('');
       setSubmitButtonLoading(false);
 
-      closeModal();
+      dialogRef?.current?.close();
       toast.success('Spending added successfully!');
       triggerParentUpdate();
     } else {
@@ -126,8 +126,9 @@ export default function NewSpendingDialog({
 
   return (
     <>
-      <button className="w-full rounded-lg  text-sm font-medium text-gray-900 h-[60px] text-center border-2 border-gray-100"
-      onClick={() => dialogRef?.current?.showModal()}>
+      <button
+        className='w-full rounded-lg  text-sm font-medium text-gray-900 h-[60px] text-center border-2 border-gray-100 mb-2'
+        onClick={() => dialogRef?.current?.showModal()}>
         <span>Agregar un gasto</span>
       </button>
 
@@ -201,30 +202,30 @@ export default function NewSpendingDialog({
               <div className='h-[62svh] overflow-scroll'>
                 {allMembers && (
                   <ul>
-                  {allMembers.map((member) => (
-                    <li
-                      key={member.memberId}
-                      onClick={() => setWhoPaid(member)}
-                      className="flex items-center cursor-pointer">
-                      {whoPaid?.memberId === member.memberId && (
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          strokeWidth={2}
-                          stroke="currentColor"
-                          className="size-4 mr-1 text-green-500">
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="m4.5 12.75 6 6 9-13.5"
-                          />
-                        </svg>
-                      )}
-                      {member.memberName}
-                    </li>
-                  ))}
-                </ul>
+                    {allMembers.map((member) => (
+                      <li
+                        key={member.memberId}
+                        onClick={() => setWhoPaid(member)}
+                        className='flex items-center cursor-pointer'>
+                        {whoPaid?.memberId === member.memberId && (
+                          <svg
+                            xmlns='http://www.w3.org/2000/svg'
+                            fill='none'
+                            viewBox='0 0 24 24'
+                            strokeWidth={2}
+                            stroke='currentColor'
+                            className='size-4 mr-1 text-green-500'>
+                            <path
+                              strokeLinecap='round'
+                              strokeLinejoin='round'
+                              d='m4.5 12.75 6 6 9-13.5'
+                            />
+                          </svg>
+                        )}
+                        {member.memberName}
+                      </li>
+                    ))}
+                  </ul>
                 )}
               </div>
             </div>
@@ -272,15 +273,19 @@ export default function NewSpendingDialog({
                             const isSelected = prevConsumers.some(
                               (c) => c.memberId === member.memberId
                             );
-                        
-                            const updatedConsumers = new Set(prevConsumers.map(c => c.memberId));// Use a new set to prevent duplicate entries or stale state issues
-                        
+
+                            const updatedConsumers = new Set(
+                              prevConsumers.map((c) => c.memberId)
+                            ); // Use a new set to prevent duplicate entries or stale state issues
+
                             if (isSelected) {
                               updatedConsumers.delete(member.memberId);
                             } else {
                               updatedConsumers.add(member.memberId);
                             }
-                            return allMembers.filter((m) => updatedConsumers.has(m.memberId));
+                            return allMembers.filter((m) =>
+                              updatedConsumers.has(m.memberId)
+                            );
                           });
                         }}
                         className={`flex items-center cursor-pointer w-full ${
@@ -323,8 +328,16 @@ export default function NewSpendingDialog({
           </button>
 
           <div
-            className='w-2/10 rounded-lg py-6 px-6 bg-green-100 text-green-800 cursor-pointer'
-            onClick={() => handleStepChange(false)}>
+            className={`w-2/10 rounded-lg py-6 px-6 bg-green-100 text-green-800 cursor-pointer ${
+              step === 0 ? ' !cursor-not-allowed bg-gray-200 text-gray-800' : ''
+            }`}
+            onClick={(e) => {
+              if (step !== 0) {
+                handleStepChange(false);
+              } else {
+                e.preventDefault();
+              }
+            }}>
             <svg
               xmlns='http://www.w3.org/2000/svg'
               fill='none'
@@ -340,35 +353,37 @@ export default function NewSpendingDialog({
             </svg>
           </div>
 
-          <div
-            className='w-full rounded-lg py-6 px-6 bg-green-100 text-green-800 cursor-pointer flex justify-end gap-4 pr-8'
-            onClick={() => handleStepChange(true)}>
-            <p>Siguiente</p>
-            <svg
-              xmlns='http://www.w3.org/2000/svg'
-              fill='none'
-              viewBox='0 0 24 24'
-              strokeWidth={1.5}
-              stroke='currentColor'
-              className='size-6'>
-              <path
-                strokeLinecap='round'
-                strokeLinejoin='round'
-                d='M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3'
-              />
-            </svg>
-          </div>
-        </div>
+          {step < 4 && (
+            <div
+              className='w-full rounded-lg py-6 px-6 bg-green-100 text-green-800 cursor-pointer flex justify-center gap-6 pr-8'
+              onClick={() => handleStepChange(true)}>
+              <p>Siguiente</p>
+              <svg
+                xmlns='http://www.w3.org/2000/svg'
+                fill='none'
+                viewBox='0 0 24 24'
+                strokeWidth={1.5}
+                stroke='currentColor'
+                className='size-6'>
+                <path
+                  strokeLinecap='round'
+                  strokeLinejoin='round'
+                  d='M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3'
+                />
+              </svg>
+            </div>
+          )}
 
-        {step === 5 && (
-          <button
-            type='button'
-            className={`w-full flex justify-center rounded-md border border-transparent px-4 py-4  font-medium outline-none focus:outline-none focus-visible:ring-2 ${submitButtonLoading ? 'bg-green-200 text-green-600 cursor-not-allowed' : 'bg-green-100 text-green-900 hover:bg-green-200'}`}
-            onClick={submitSpend}
-            disabled={submitButtonLoading}>
-            {submitButtonLoading ? 'Cargando...' : 'Guardar'}
-          </button>
-        )}
+          {step === 4 && (
+            <button
+              type='button'
+              className={`w-full rounded-lg py-6 px-6 bg-green-600 text-green-50 cursor-pointer flex justify-center gap-6 pr-8' ${submitButtonLoading ? 'bg-green-200 text-green-600 cursor-not-allowed' : 'bg-green-100 text-green-900 hover:bg-green-700'}`}
+              onClick={submitSpend}
+              disabled={submitButtonLoading}>
+              {submitButtonLoading ? 'Cargando...' : 'Guardar'}
+            </button>
+          )}
+        </div>
       </dialog>
     </>
   );

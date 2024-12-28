@@ -1,7 +1,5 @@
-import NewSpend from '@/app/event/[eventId]/spendings/_components/NewSpend';
 import { revalidatePath } from 'next/cache';
 import SpendingsList from './_components/SpendingsList';
-import NewSpend2 from './_components/NewSpend2';
 import NewSpendingDialog from './_components/NewSpendingDialog';
 
 type PageProps = {

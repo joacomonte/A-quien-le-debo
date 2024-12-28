@@ -41,7 +41,7 @@ const SpendingsList: React.FC<SpendingsListProps> = ({ eventId }) => {
   };
 
   return (
-    <div className="w-full flex flex-col gap-2 py-3 max-h-[40svh] overflow-scroll">
+    <div className="w-full flex flex-col gap-2 max-h-[40svh] overflow-scroll">
       {isLoading ? (
         <>
           {Array.from({ length: 4 }).map((_, index) => (
@@ -56,6 +56,7 @@ const SpendingsList: React.FC<SpendingsListProps> = ({ eventId }) => {
             amount={spending.amount}
             whoPaid={spending.spenderId}
             notes={spending.notes}
+            spendId={spending.spendId}
             eventId={eventId}
           />
         ))

@@ -14,7 +14,7 @@ export function createSuccessResponse<DataType>(
   const response: ApiResponse<DataType> = {
     data: data,
     status: "OK",
-    message: message || "", // Provide an empty string as default
+    message: message || "",
   };
   return new Response(JSON.stringify(response));
 }
