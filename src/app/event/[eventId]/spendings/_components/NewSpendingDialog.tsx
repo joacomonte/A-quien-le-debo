@@ -201,19 +201,30 @@ export default function NewSpendingDialog({
               <div className='h-[62svh] overflow-scroll'>
                 {allMembers && (
                   <ul>
-                    {allMembers.map((member) => (
-                      <li
-                        key={member.memberId}
-                        onClick={() => setWhoPaid(member)}
-                        className={`cursor-pointer ${
-                          whoPaid?.memberId === member.memberId
-                            ? 'bg-green-50'
-                            : ''
-                        }`}>
-                        {member.memberName}
-                      </li>
-                    ))}
-                  </ul>
+                  {allMembers.map((member) => (
+                    <li
+                      key={member.memberId}
+                      onClick={() => setWhoPaid(member)}
+                      className="flex items-center cursor-pointer">
+                      {whoPaid?.memberId === member.memberId && (
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          strokeWidth={2}
+                          stroke="currentColor"
+                          className="size-4 mr-1 text-green-500">
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="m4.5 12.75 6 6 9-13.5"
+                          />
+                        </svg>
+                      )}
+                      {member.memberName}
+                    </li>
+                  ))}
+                </ul>
                 )}
               </div>
             </div>
