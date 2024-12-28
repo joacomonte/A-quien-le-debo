@@ -14,7 +14,7 @@ export default async function Page({ params }: PageProps) {
         <h1 className="flex items-start self-start pb-6 pt-12 text-2xl">
           Miembros
         </h1>
-        <div className="w-full overflow-y-auto bg-white scroll-fade h-[60svh]">
+        <div className="w-full overflow-y-auto bg-white scroll-fade ">
           <UserList eventId={eventId} />
         </div>
       </main>
