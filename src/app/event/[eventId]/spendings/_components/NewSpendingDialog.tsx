@@ -116,7 +116,7 @@ export default function NewSpendingDialog({
   return (
     <>
       <button
-        className='w-full rounded-lg  text-sm font-medium text-gray-900 h-[60px] text-center border-2 border-gray-100 mb-2'
+        className='w-full rounded-lg text-sm font-medium text-gray-900 min-h-[60px] h-[60px] text-center border-2 border-gray-100 mb-2'
         onClick={() => dialogRef?.current?.showModal()}>
         <span>Agregar un gasto</span>
       </button>
