@@ -43,11 +43,9 @@ export default function NewSpendingDialog({
       const responseBody: ApiResponse<Member[]> = await response.json();
 
       if (responseBody.message === 'OK') {
-        setAllMembers(responseBody.data.map((member: Member) => member));
-        console.log(
-          'members',
-          responseBody.data.map((member: Member) => member)
-        );
+        const allMembers = responseBody.data.map((member: Member) => member)
+        setAllMembers(allMembers);
+        setConsumers(allMembers)
       }
     }
 
@@ -128,8 +126,9 @@ export default function NewSpendingDialog({
 
   return (
     <>
-      <button onClick={() => dialogRef?.current?.showModal()}>
-        Open Dialog
+      <button className="w-full rounded-lg  text-sm font-medium text-gray-900 h-[60px] text-center border-2 border-gray-100"
+      onClick={() => dialogRef?.current?.showModal()}>
+        <span>Agregar un gasto</span>
       </button>
 
       <dialog
@@ -259,17 +258,18 @@ export default function NewSpendingDialog({
                         key={member.memberId}
                         onClick={() => {
                           setConsumers((prevConsumers) => {
-                            if (
-                              prevConsumers.some(
-                                (c) => c.memberId === member.memberId
-                              )
-                            ) {
-                              return prevConsumers.filter(
-                                (c) => c.memberId !== member.memberId
-                              );
+                            const isSelected = prevConsumers.some(
+                              (c) => c.memberId === member.memberId
+                            );
+                        
+                            const updatedConsumers = new Set(prevConsumers.map(c => c.memberId));// Use a new set to prevent duplicate entries or stale state issues
+                        
+                            if (isSelected) {
+                              updatedConsumers.delete(member.memberId);
                             } else {
-                              return [...prevConsumers, member];
+                              updatedConsumers.add(member.memberId);
                             }
+                            return allMembers.filter((m) => updatedConsumers.has(m.memberId));
                           });
                         }}
                         className={`flex items-center cursor-pointer w-full ${
