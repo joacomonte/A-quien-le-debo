@@ -41,7 +41,7 @@ const SpendingsList: React.FC<SpendingsListProps> = ({ eventId }) => {
   };
 
   return (
-    <div className="w-full flex flex-col gap-2 py-3">
+    <div className="w-full flex flex-col gap-2 py-3 max-h-[40svh] overflow-scroll">
       {isLoading ? (
         <>
           {Array.from({ length: 4 }).map((_, index) => (
