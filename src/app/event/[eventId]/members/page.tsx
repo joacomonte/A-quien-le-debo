@@ -1,5 +1,4 @@
 import UserList from "@/app/event/[eventId]/members/_components/MembersList";
-import { Suspense } from "react";
 
 type PageProps = {
   params: Promise<{ eventId: string }>
@@ -15,7 +14,7 @@ export default async function Page({ params }: PageProps) {
         <h1 className="flex items-start self-start pb-6 pt-12 text-2xl">
           Miembros
         </h1>
-        <div className="w-full overflow-y-auto bg-white ">
+        <div className="w-full overflow-y-auto bg-white scroll-fade h-[60svh]">
           <UserList eventId={eventId} />
         </div>
       </main>

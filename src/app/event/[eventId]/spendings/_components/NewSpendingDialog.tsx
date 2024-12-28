@@ -16,8 +16,6 @@ export default function NewSpendingDialog({
 
   const [consumers, setConsumers] = useState<Member[]>([]);
 
-  const [isOpen, setIsOpen] = useState(false);
-
   const [whoPaid, setWhoPaid] = useState<Member | null>(null);
 
   const [title, setTitle] = useState<string>('');
@@ -26,11 +24,15 @@ export default function NewSpendingDialog({
 
   const [amount, setAmount] = useState<string>('');
 
-  const [query, setQuery] = useState('');
-
   const [submitButtonLoading, setSubmitButtonLoading] = useState(false);
 
   const [step, setStep] = useState<number>(0);
+
+  const dialogRef = useRef<HTMLDialogElement>(null);
+
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  const areaRef = useRef<HTMLTextAreaElement>(null);
 
   useEffect(() => {
     async function getAllMembers() {
@@ -50,7 +52,11 @@ export default function NewSpendingDialog({
     }
 
     getAllMembers();
-  }, [eventId]); // Dependency array with eventId
+  }, [eventId]);
+
+  useEffect(() => {
+    (inputRef.current ?? areaRef.current)?.focus();
+  }, [step]);
 
   async function submitSpend() {
     setSubmitButtonLoading(true);
@@ -76,7 +82,6 @@ export default function NewSpendingDialog({
       setTitle('');
       setNotes('');
       setAmount('');
-      setQuery('');
       setSubmitButtonLoading(false);
 
       dialogRef?.current?.close();
@@ -95,28 +100,12 @@ export default function NewSpendingDialog({
     }
   };
 
-  function closeModal() {
-    setIsOpen(false);
-  }
-
-  function openModal() {
-    setIsOpen(true);
-  }
-
   function inputAmount(e: any) {
     const input = e.target.value;
     if (/^\d*\.?\d*$/.test(input)) {
       setAmount(input);
     }
   }
-
-  useEffect(() => {
-    (inputRef.current ?? areaRef.current)?.focus();
-  }, [step]);
-
-  const dialogRef = useRef<HTMLDialogElement>(null);
-  const inputRef = useRef<HTMLInputElement>(null);
-  const areaRef = useRef<HTMLTextAreaElement>(null);
 
   const handleStepChange = (increment: boolean) => {
     setStep((prevStep) =>
@@ -199,7 +188,7 @@ export default function NewSpendingDialog({
                 )}
               </p>
 
-              <div className='h-[62svh] overflow-scroll'>
+              <div className='h-[62svh] overflow-scroll scroll-fade'>
                 {allMembers && (
                   <ul>
                     {allMembers.map((member) => (
@@ -242,7 +231,7 @@ export default function NewSpendingDialog({
                   : `Se divide entre ${consumers.length}`}
               </p>
 
-              <div className='h-[55svh] overflow-scroll'>
+              <div className='h-[55svh] overflow-scroll scroll-fade'>
                 {allMembers && (
                   <ul>
                     <li
