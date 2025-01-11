@@ -50,9 +50,9 @@ export default async function PayTo({ params }: PageProps) {
   });
 
 
-  function getPaymentInstructions(item, data) {
-    const creditors = [];
-    const debtors = [];
+  function getPaymentInstructions(item: { balance: number; name: any; }, data: any[]) {
+    const creditors: any[] = [];
+    const debtors: any[] = [];
   
     // Separar a los acreedores y deudores
     data.forEach((entry) => {
